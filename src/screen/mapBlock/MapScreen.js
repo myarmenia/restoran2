@@ -2,7 +2,7 @@
 import { LatLng, LeafletView } from "react-native-leaflet-view";
 
 
-const DEFAULT_COORDINATE: LatLng = {
+const DEFAULT_COORDINATE = {
   lat: 37.78825,
   lng: -122.4324,
 };
@@ -16,7 +16,7 @@ const MapScreen = () => {
           icon: "📍",
           size: [32, 32],
         },
-        
+
       ]}
       mapCenterPosition={DEFAULT_COORDINATE}
     />
