@@ -12,7 +12,7 @@ const SimpleHeader = ({ title, right }) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
         >
-        <View  style={{ marginRight: right ? right : -20 }}>
+        <View style={{ marginRight: !!right ? right : -20 }}>
           <BackArrowSvg />
         </View>
         </TouchableOpacity>
