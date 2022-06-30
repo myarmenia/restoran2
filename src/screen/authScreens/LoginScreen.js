@@ -9,7 +9,6 @@ import { Login } from "../../store/reducers/auth/action";
 import { axiosInstance } from "../../request";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { NavigationRouteContext } from '@react-navigation/native';
 
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -20,7 +19,6 @@ const LoginScreen = ({ navigation }) => {
   const goToHomePage = useCallback(async () => {
     setShowError(false);
     await dispatch(Login({ email, password }));
-    //dispatch(Menu(45));
     const token = await AsyncStorage.getItem("token");
     console.log("lalala ---> ", token);
     if (token) {
@@ -30,13 +28,13 @@ const LoginScreen = ({ navigation }) => {
     }
   }, [email, password, dispatch]);
 
-  
+
 
   const goToRegistrationScreen = () => {
     navigation.replace("register");
   };
 
-  
+
   return (
     <View style={{ backgroundColor: "#000000" }}>
       <Text style={styles.titleText}>Вход</Text>
