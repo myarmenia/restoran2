@@ -15,6 +15,34 @@ export const Login = createAsyncThunk("auth/Login", async (data) => {
     thunkAPI.rejectWithValue("some value");
   }
 });
+export const SendCode = createAsyncThunk("auth/SendCode", async (data) => {
+  try {
+    console.log(data);
+    const response = await axiosInstance.post("phone/check", {
+      ...data,
+    });
+    console.log(response.data);
+    return response.data;
+  } catch {
+    console.log("something went wrong during login thunk");
+    thunkAPI.rejectWithValue("some value");
+  }
+});
+
+
+export const SendPhone = createAsyncThunk("auth/SendPhone", async (data) => {
+  try {
+    console.log(data);
+    const response = await axiosInstance.get("phone/register", {
+      ...data,
+    });
+    console.log(response.data);
+    return response.data;
+  } catch {
+    console.log("something went wrong during login thunk");
+    thunkAPI.rejectWithValue("some value");
+  }
+});
 
 export const Registration = createAsyncThunk(
   "auth/Registration",

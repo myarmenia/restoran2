@@ -2,12 +2,16 @@ import React, {memo, useState} from 'react'
 import {Text, View, StyleSheet, TextInput, Dimensions} from 'react-native'
 import MainButton from '../UI/buttons/MainButton';
 import { useDispatch } from "react-redux";
+import {SendPhone} from "../../store/reducers/auth/action"
 
 const SendNumber = ({navigation}) => {
     const [number, setNumber] = useState('')
     const dispatch = useDispatch();
     const goToCodeInputPage = () => {
-        navigation.replace("sendCode");
+        dispatch(SendPhone({
+            "phone_number": number
+        }))
+        navigation.navigate("sendCode");
     };
     return (
         <View style={styles.container}>
@@ -19,11 +23,11 @@ const SendNumber = ({navigation}) => {
                 dataDetectorTypes='phoneNumber'
                 keyboardType='phone-pad'
                 autoCompleteType='cc-number'
-                placeholder="+7 XXX XXXX XXX"
+                placeholder="+7 XXX XXX XX XXX"
                 placeholderTextColor={'#5F6368'}
                 onChangeText={(text) => {
-                    let x = text.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
-                    let num = !x[2] ? x[1] : '+ (' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : x[3]) + (x[4] ? '-' + x[4] : '');
+                    let x = text.replace(/\D/g, '').match(/(\d)(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+                    let num = !x[2] ? x[1] : '+' + x[1] + ' (' + x[2] + ') ' + x[3] + (x[4] ? '-' + x[4] : x[4]) + (x[5] ? '-' + x[5] : '');
                     setNumber(num)
                 }}/>
             <Text style={styles.sendText}>Отправим на этот номер код подтверждения</Text>

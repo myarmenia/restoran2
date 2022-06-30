@@ -34,7 +34,7 @@ const RegisterScreen = ({ navigation }) => {
       name
     ) {
       dispatch(Registration(data));
-      navigation.replace("sendNumber");
+      navigation.navigate("sendNumber");
     } else {
       console.log("Wrong Data");
     }
