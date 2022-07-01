@@ -1,10 +1,17 @@
 import React, {memo, useState} from 'react';
 import {Text, View, StyleSheet, TextInput, Dimensions} from 'react-native';
 import MainButton from '../UI/buttons/MainButton';
+import {SendPhone} from "../../store/reducers/auth/action";
 
-const SendCode = () => {
+const SendCode = ({route}) => {
     const [value, setValue] = useState('');
 
+    const goToLoginPage = () => {
+        dispatch(SendPhone({
+            phone_number: route.params.phone_number,
+            code: value
+        }))
+    };
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Введите код подтверждения</Text>

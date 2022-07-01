@@ -9,9 +9,11 @@ const SendNumber = ({navigation}) => {
     const dispatch = useDispatch();
     const goToCodeInputPage = () => {
         dispatch(SendPhone({
-            "phone_number": number
+            "phone_number": number.replace(/\D/g,'')
         }))
-        navigation.navigate("sendCode");
+        navigation.navigate("sendCode", {
+            phone_number: number.replace(/\D/g,'')
+        });
     };
     return (
         <View style={styles.container}>

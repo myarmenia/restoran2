@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Dimensions } from "react-native";
 import MainButton from "../../components/UI/buttons/MainButton";
 import CustomInput from "../../components/UI/inputs/CustomInput";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -11,6 +11,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = ({ navigation }) => {
+  const { user, token } = useSelector(({ auth }) => auth);
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,24 +20,23 @@ const LoginScreen = ({ navigation }) => {
   const goToHomePage = useCallback(async () => {
     setShowError(false);
     await dispatch(Login({ email, password }));
-    const token = await AsyncStorage.getItem("token");
+//    const token = await AsyncStorage.getItem("token");
     console.log("lalala ---> ", token);
-    if (token) {
-      navigation.replace("Home");
+    if(!user?.email_verified_at) {
+        navigation.navigate("sendNumber");
+    } else if (token && !!user?.email_verified_at) {
+      navigation.navigate("Home");
     } else {
       setShowError(true);
     }
   }, [email, password, dispatch]);
 
-
-
   const goToRegistrationScreen = () => {
     navigation.replace("register");
   };
 
-
   return (
-    <View style={{ backgroundColor: "#000000" }}>
+    <View style={styles.container}>
       <Text style={styles.titleText}>Вход</Text>
       <View style={{ marginBottom: -5 }}>
         <CustomInput value={email} onChangeText={setEmail} />
@@ -73,6 +73,11 @@ const LoginScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: "#000000",
+        minHeight: Dimensions.get('screen').height,
+//        paddingHorizontal: 46
+    },
   titleText: {
     fontSize: 24,
     color: "#FFFFFF",

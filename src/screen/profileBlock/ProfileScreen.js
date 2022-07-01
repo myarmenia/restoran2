@@ -1,4 +1,4 @@
-import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
 import ProfileSvg from "../../assets/svg/ProfileSvg";
 import LinearGradient from "react-native-linear-gradient";
 import EditSvg from "../../assets/svg/edit/EditSvg";
@@ -8,9 +8,8 @@ import { useDispatch } from "react-redux";
 const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   return (
-    <View>
-      <LinearGradient colors={["black", "black"]}>
-        <View style={styles.container}>
+    <View style={styles.container}>
+        <View>
           <View style={{ flexDirection: "row", marginHorizontal: 40 }}>
             <View style={{ flex: 2 }}>
               <ProfileSvg />
@@ -123,15 +122,15 @@ const ProfileScreen = ({ navigation }) => {
             Выход
           </Text>
         </TouchableOpacity>
-      </LinearGradient>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
-    marginBottom: 10,
+    paddingTop: 30,
+    backgroundColor: "#000000",
+    minHeight: Dimensions.get('screen').height,
   },
 });
 
