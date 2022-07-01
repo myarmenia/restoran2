@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { AutoStack } from "./AutoStack";
-import { SummaryNavigation } from "../navigation/SummaryNavigation";
+import { SummaryNavigation } from "./SummaryNavigation";
 import { useSelector } from "react-redux";
 
 const Route = () => {

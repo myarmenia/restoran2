@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, Dimensions } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import TopRestaurants from "../../components/TopRestaurants";
 import VirtualizedView from "../../utils/VirtualizedView";
@@ -7,28 +7,25 @@ import SimpleHeader from '../../components/headers/SimpleHeader';
 import Favorites from "../../components/Favorites";
 import { useSelector } from "react-redux";
 
-
-
-
 const FavoritesScreen = () => {
   const { restaurants } = useSelector((state) => state.home);
 
   return (
-    <View>
-      <LinearGradient colors={["black", "black"]}> 
+    <View style={styles.container}>
         <VirtualizedView>
-        <SimpleHeader title={'Актуальные брони'}/>
-          
-
-<Favorites state={restaurants}/>
-
+            <SimpleHeader title={'Актуальные брони'}/>
+            <Favorites state={restaurants}/>
         </VirtualizedView>
-      </LinearGradient>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    paddingTop: 30,
+    backgroundColor: "#000000",
+    minHeight: Dimensions.get('screen').height,
+  },
   text: {
     marginTop: 30,
     fontSize: 16,

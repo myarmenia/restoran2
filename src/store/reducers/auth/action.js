@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { axiosInstance } from "../../../request";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Login = createAsyncThunk("auth/Login", async (data) => {
   try {
@@ -16,10 +17,12 @@ export const Login = createAsyncThunk("auth/Login", async (data) => {
   }
 });
 export const SendCode = createAsyncThunk("auth/SendCode", async (data) => {
+  const bearer = await AsyncStorage.getItem("bearer");
+  const token = await AsyncStorage.getItem("token");
   try {
-    console.log(data);
     const response = await axiosInstance.post("phone/check", {
       ...data,
+      headers: { Authorization: `${bearer}: ${token}` },
     });
     console.log(response.data);
     return response.data;
@@ -31,10 +34,13 @@ export const SendCode = createAsyncThunk("auth/SendCode", async (data) => {
 
 
 export const SendPhone = createAsyncThunk("auth/SendPhone", async (data) => {
+  const bearer = await AsyncStorage.getItem("bearer");
+  const token = await AsyncStorage.getItem("token");
+  console.log('num', data, bearer, token);
   try {
-    console.log(data);
     const response = await axiosInstance.get("phone/register", {
       ...data,
+      headers: { Authorization: `${bearer}: ${token}` },
     });
     console.log(response.data);
     return response.data;

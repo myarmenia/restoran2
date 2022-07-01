@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Dimensions } from "react-native";
 import MainButton from "../../components/UI/buttons/MainButton";
 import CustomInput from "../../components/UI/inputs/CustomInput";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -34,7 +34,7 @@ const RegisterScreen = ({ navigation }) => {
       name
     ) {
       dispatch(Registration(data));
-      navigation.navigate("sendNumber");
+      navigation.navigate("login");
     } else {
       console.log("Wrong Data");
     }
@@ -42,7 +42,7 @@ const RegisterScreen = ({ navigation }) => {
 
 
   return (
-    <View style={{ backgroundColor: "#000000" }}>
+    <View style={styles.container}>
       <Text style={styles.titleText}>Регистрация</Text>
       <View style={{ marginBottom: -8 }}>
         <CustomInput placeholder={"Имя"} value={name} onChangeText={setName} />
@@ -94,6 +94,11 @@ const RegisterScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: "#000000",
+        minHeight: Dimensions.get('screen').height,
+//        paddingHorizontal: 46
+    },
   titleText: {
     fontSize: 24,
     color: "#FFFFFF",

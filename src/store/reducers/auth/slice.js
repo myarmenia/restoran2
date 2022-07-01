@@ -6,6 +6,7 @@ const initialState = {
   auth: false,
   token: "",
   tokenType: "",
+  user: {}
 };
 
 const slice = createSlice({
@@ -13,17 +14,21 @@ const slice = createSlice({
   initialState,
   reducers: {
     signOut: (state) => {
-      console.log("mtaaaaa");
       state.auth = false;
       AsyncStorage.setItem("token", "");
+      AsyncStorage.setItem("bearer", "");
     },
   },
   extraReducers: {
     [Login.fulfilled]: (state, action) => {
       if (action.payload["access_token"]) {
-        AsyncStorage.setItem("token", action.payload["access_token"]);
+        console.log('stegh em es');
+        AsyncStorage.setItem("token", JSON.stringify(action.payload["access_token"]));
+        AsyncStorage.setItem("bearer", JSON.stringify(action.payload["token_type"]));
       }
-      state.auth = true;
+      if (!!action.payload["email_verified_at"]) {
+          state.auth = true;
+      }
       state.tokenType = action.payload["token_type"];
       state.refreshToken = action.payload["refresh_token"];
     },
