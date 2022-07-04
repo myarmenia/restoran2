@@ -1,16 +1,22 @@
 import React, {memo, useState} from 'react';
 import {Text, View, StyleSheet, TextInput, Dimensions} from 'react-native';
 import MainButton from '../UI/buttons/MainButton';
-import {SendPhone} from "../../store/reducers/auth/action";
+import {SendCodeNum} from "../../store/reducers/auth/action";
+import {useDispatch, useSelector} from "react-redux";
 
 const SendCode = ({route}) => {
     const [value, setValue] = useState('');
+    const dispatch = useDispatch();
+    const { message } = useSelector(({ auth }) => auth);
 
-    const goToLoginPage = () => {
-        dispatch(SendPhone({
+    const goToLoginPage = async () => {
+        await dispatch(SendCodeNum({
             phone_number: route.params.phone_number,
             code: value
         }))
+        if(message === "Your Phone Number Saved Success") {
+
+        }
     };
     return (
         <View style={styles.container}>
@@ -30,9 +36,9 @@ const SendCode = ({route}) => {
                 }}
             />
             <Text style={styles.sendText}>
-                на номер +7 XXX XXXX XXX отправлен код подтверждения
+                на номер +{route.params.phone_number} отправлен код подтверждения
             </Text>
-            <MainButton textBtn={'Войти'}/>
+            <MainButton goTo={goToLoginPage} textBtn={'Войти'}/>
         </View>
     );
 };
@@ -40,7 +46,7 @@ const SendCode = ({route}) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#000000",
-        minHeight: Dimensions.get('screen').height,
+        minHeight: Dimensions.get('window').height,
         paddingHorizontal: 46
     },
     input: {

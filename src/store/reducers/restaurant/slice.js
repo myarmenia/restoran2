@@ -1,15 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Login, Registration } from "./actions";
-import { Registration, Login } from "../../store/auth/actions";
+import {
+  Favorite,
+  Favorites,
+  Feedback,
+  Kitchen,
+  Menu,
+  Menus,
+  MenusByMenuID,
+  Orders,
+  orderStore,
+  Preference,
+  Preferences,
+  Restaurant,
+  Restaurants
+} from "./action";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const initialState = {
+  restaurants: []
+};
 
 const slice = createSlice({
   name: "restaurant",
+  initialState,
   reducers: {
   },
   extraReducers: {
-    [Restaurant.fulfilled]: (state) => {
-      state.name = { ...state.name };
+    [Restaurant.fulfilled]: (state, {payload}) => {
+      state.restaurants = payload;
     },
     [Restaurants.fulfilled]: (state) => {
       state.name = { ...state.name };

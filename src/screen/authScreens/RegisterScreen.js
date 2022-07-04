@@ -96,7 +96,7 @@ const RegisterScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#000000",
-        minHeight: Dimensions.get('screen').height,
+        minHeight: Dimensions.get('window').height,
 //        paddingHorizontal: 46
     },
   titleText: {

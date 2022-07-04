@@ -1,31 +1,27 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../../request";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-
-
 
 export const Restaurant = createAsyncThunk(
-  "restaurant",
+  "restaurant/Restaurant",
   async (data, thunkAPI) => {
     console.log(data);
     try {
       const response = await axiosInstance.get(`restaurant`);
       console.log('aaa',response.data);
-      return response.data;
+      return response.data.data;
     } catch (e) {
       console.log(e);
       return thunkAPI.rejectWithValue("inch vor arjeq");
     }
-    
+
   }
 );
 
 
 
 export const Restaurants = createAsyncThunk(
-  "restaurant/{id}",
+  "restaurant/Restaurants",
   async (data, thunkAPI) => {
     console.log(data);
     try {
@@ -39,7 +35,7 @@ export const Restaurants = createAsyncThunk(
 );
 
 export const Menu = createAsyncThunk(
-  "menu/{id}",
+  "restaurant/Menu",
   async (data, thunkAPI) => {
     console.log(data);
     try {
@@ -55,7 +51,7 @@ export const Menu = createAsyncThunk(
 );
 
 export const Menus = createAsyncThunk(
-  "categories/{id}",
+  "restaurant/Menus",
   async (data, thunkAPI) => {
     console.log(data);
     try {
@@ -69,7 +65,7 @@ export const Menus = createAsyncThunk(
 );
 
 export const MenusByMenuID = createAsyncThunk(
-  "restaurant/menu/single/{id}",
+  "restaurant/MenusByMenuID",
   async (data, thunkAPI) => {
     console.log(data);
     try {
@@ -85,7 +81,7 @@ export const MenusByMenuID = createAsyncThunk(
 );
 
 export const Kitchen = createAsyncThunk(
-  "restaurant/kitchen",
+  "restaurant/Kitchen",
   async (data, thunkAPI) => {
     console.log(data);
     try {
@@ -99,7 +95,7 @@ export const Kitchen = createAsyncThunk(
 );
 
 export const Orders = createAsyncThunk(
-  "order",
+  "restaurant/Orders",
   async (data, thunkAPI) => {
     console.log(data);
     try {
@@ -116,7 +112,7 @@ export const Orders = createAsyncThunk(
 
 
 export const orderStore = createAsyncThunk(
-  "order/store",
+  "restaurant/orderStore",
   async (data, thunkAPI) => {
     console.log(data);
     try {
@@ -133,7 +129,7 @@ export const orderStore = createAsyncThunk(
 
 
 export const Favorite = createAsyncThunk(
-  "restaurant/favorites",
+  "restaurant/Favorite",
   async (data, thunkAPI) => {
     console.log(data);
     try {
@@ -149,7 +145,7 @@ export const Favorite = createAsyncThunk(
 );
 
 export const Favorites = createAsyncThunk(
-  "restaurant/favorites/{id}",
+  "restaurant/Favorites",
   async (data, thunkAPI) => {
     console.log(data);
     try {
@@ -166,7 +162,7 @@ export const Favorites = createAsyncThunk(
 
 
 export const Preference = createAsyncThunk(
-  "menu/preference",
+  "restaurant/Preference",
   async (data, thunkAPI) => {
     console.log(data);
     try {
@@ -183,7 +179,7 @@ export const Preference = createAsyncThunk(
 
 
 export const Preferences = createAsyncThunk(
-  "menu/preference/{id}",
+  "restaurant/Preferences",
   async (data, thunkAPI) => {
     console.log(data);
     try {
@@ -201,7 +197,7 @@ export const Preferences = createAsyncThunk(
 
 
 export const Feedback = createAsyncThunk(
-  "feedback",
+  "restaurant/Feedback",
   async (data, thunkAPI) => {
     console.log(data);
     try {
@@ -215,15 +211,5 @@ export const Feedback = createAsyncThunk(
     }
   }
 );
-
-
-
-export const postDataApi = createAsyncThunk("", async (url, post, token) => {
-  const res = await axiosInstance.post(`/api/${url}`, post, {
-    headers: { Authorization: `Bearer: ${AsyncStorage.getItem("token")}` },
-  });
-
-  return res.data;
-});
 
 

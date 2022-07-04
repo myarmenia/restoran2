@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Login, Registration } from "./action";
+import {Login, Registration, SendCodeNum, SendPhone} from "./action";
 
 const initialState = {
   auth: false,
   token: "",
   tokenType: "",
-  user: {}
+  user: {},
+  message: ""
 };
 
 const slice = createSlice({
@@ -17,22 +18,36 @@ const slice = createSlice({
       state.auth = false;
       AsyncStorage.setItem("token", "");
       AsyncStorage.setItem("bearer", "");
+      AsyncStorage.setItem("refreshToken", "");
+      state.token = "";
+      state.tokenType = "";
+      state.refreshToken = "";
+      state.user = {};
     },
   },
   extraReducers: {
-    [Login.fulfilled]: (state, action) => {
-      if (action.payload["access_token"]) {
-        console.log('stegh em es');
-        AsyncStorage.setItem("token", JSON.stringify(action.payload["access_token"]));
-        AsyncStorage.setItem("bearer", JSON.stringify(action.payload["token_type"]));
+    [Login.fulfilled]: (state, {payload}) => {
+      if (payload["access_token"]) {
+        AsyncStorage.setItem("token", payload["access_token"]);
+        AsyncStorage.setItem("bearer", payload["token_type"]);
+        AsyncStorage.setItem("refreshToken", payload["refresh_token"]);
       }
-      if (!!action.payload["email_verified_at"]) {
+      if (!!payload?.user["phone_number"]) {
           state.auth = true;
       }
-      state.tokenType = action.payload["token_type"];
-      state.refreshToken = action.payload["refresh_token"];
+      state.token = payload["access_token"];
+      state.tokenType = payload["token_type"];
+      state.refreshToken = payload["refresh_token"];
+      state.user = payload.user;
     },
     [Registration.fulfilled]: (state) => {
+      state.name = { ...state.name };
+    },
+    [SendCodeNum.fulfilled]: (state, {payload}) => {
+      state.message = payload.message;
+      state.auth = true;
+    },
+    [SendPhone.fulfilled]: (state) => {
       state.name = { ...state.name };
     },
   },

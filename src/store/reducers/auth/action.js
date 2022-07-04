@@ -16,18 +16,18 @@ export const Login = createAsyncThunk("auth/Login", async (data) => {
     thunkAPI.rejectWithValue("some value");
   }
 });
-export const SendCode = createAsyncThunk("auth/SendCode", async (data) => {
+export const SendCodeNum = createAsyncThunk("auth/SendCode", async (data) => {
   const bearer = await AsyncStorage.getItem("bearer");
   const token = await AsyncStorage.getItem("token");
+  console.log(data)
   try {
     const response = await axiosInstance.post("phone/check", {
       ...data,
-      headers: { Authorization: `${bearer}: ${token}` },
-    });
+    }, {headers: { Authorization: `${bearer} ${token}` }});
     console.log(response.data);
     return response.data;
-  } catch {
-    console.log("something went wrong during login thunk");
+  } catch (e) {
+    console.log("something went wrong during login thunk",e);
     thunkAPI.rejectWithValue("some value");
   }
 });
@@ -36,16 +36,14 @@ export const SendCode = createAsyncThunk("auth/SendCode", async (data) => {
 export const SendPhone = createAsyncThunk("auth/SendPhone", async (data) => {
   const bearer = await AsyncStorage.getItem("bearer");
   const token = await AsyncStorage.getItem("token");
-  console.log('num', data, bearer, token);
   try {
-    const response = await axiosInstance.get("phone/register", {
-      ...data,
-      headers: { Authorization: `${bearer}: ${token}` },
+    const response = await axiosInstance.get(`phone/reg?phone_number=${data.phone_number}`, {
+      headers: { Authorization: `${bearer} ${token}` },
     });
     console.log(response.data);
     return response.data;
-  } catch {
-    console.log("something went wrong during login thunk");
+  } catch (e){
+    console.log("something went wrong during login thunk", e);
     thunkAPI.rejectWithValue("some value");
   }
 });
