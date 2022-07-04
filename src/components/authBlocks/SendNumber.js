@@ -9,7 +9,7 @@ const SendNumber = ({navigation}) => {
     const dispatch = useDispatch();
     const goToCodeInputPage = () => {
         dispatch(SendPhone({
-            "phone_number": number.replace(/\D/g,'')
+            phone_number: number.replace(/\D/g,'')
         }))
         navigation.navigate("sendCode", {
             phone_number: number.replace(/\D/g,'')
@@ -41,7 +41,7 @@ const SendNumber = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#000000",
-        minHeight: Dimensions.get('screen').height,
+        minHeight: Dimensions.get('window').height,
         paddingHorizontal: 46
     },
     input: {

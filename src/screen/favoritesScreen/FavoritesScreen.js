@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 30,
     backgroundColor: "#000000",
-    minHeight: Dimensions.get('screen').height,
+    minHeight: Dimensions.get('window').height,
   },
   text: {
     marginTop: 30,
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
 
- 
+
 });
 
 export default FavoritesScreen;

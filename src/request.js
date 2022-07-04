@@ -1,11 +1,6 @@
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const baseURL = "http://back.tap-table.ru/api/";
-const token = AsyncStorage.getItem("token")
-  ? AsyncStorage.getItem("token")
-  : null;
-
+const baseURL = "https://back.tap-table.ru/api/";
 export const axiosInstance = axios.create({
   baseURL,
 });

@@ -11,25 +11,30 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = ({ navigation }) => {
-  const { user, token } = useSelector(({ auth }) => auth);
+  const { user, token, auth } = useSelector(({ auth }) => auth);
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showError, setShowError] = useState(false);
 
-  const goToHomePage = useCallback(async () => {
+  const goTo = useCallback(async () => {
     setShowError(false);
     await dispatch(Login({ email, password }));
-//    const token = await AsyncStorage.getItem("token");
-    console.log("lalala ---> ", token);
-    if(!user?.email_verified_at) {
-        navigation.navigate("sendNumber");
-    } else if (token && !!user?.email_verified_at) {
-      navigation.navigate("Home");
-    } else {
-      setShowError(true);
-    }
+    await goToHomePage();
   }, [email, password, dispatch]);
+
+  const goToHomePage = () => {
+      console.log(auth, user?.phone_number)
+      if(email && password) {
+          if(!auth && !user?.phone_number) {
+              navigation.navigate("sendNumber");
+          } else {
+              setShowError(true);
+          }
+      } else {
+          setShowError(true);
+      }
+  }
 
   const goToRegistrationScreen = () => {
     navigation.replace("register");
@@ -54,7 +59,7 @@ const LoginScreen = ({ navigation }) => {
         </Text>
       )}
       <View style={{ marginTop: 50, paddingHorizontal: 40 }}>
-        <MainButton textBtn={"Войти"} goTo={goToHomePage} />
+        <MainButton textBtn={"Войти"} goTo={goTo} />
       </View>
 
       <View style={{ marginTop: 10 }}>
@@ -75,7 +80,7 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#000000",
-        minHeight: Dimensions.get('screen').height,
+        minHeight: Dimensions.get('window').height,
 //        paddingHorizontal: 46
     },
   titleText: {
