@@ -35,7 +35,7 @@ const AddDishesScreen = () => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#000000",
-        minHeight: Dimensions.get('window').height,
+        minHeight: Dimensions.get('screen').height,
     },
     text: {
         color: '#FFFFFF',
