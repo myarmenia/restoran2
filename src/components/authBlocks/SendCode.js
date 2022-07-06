@@ -46,7 +46,7 @@ const SendCode = ({route}) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#000000",
-        minHeight: Dimensions.get('window').height,
+        minHeight: Dimensions.get('screen').height,
         paddingHorizontal: 46
     },
     input: {
