@@ -14,7 +14,7 @@ const RegisterScreen = ({navigation, route}) => {
     new RegExp('^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})'),
   );
   const emailRegExpRef = useRef(
-    new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}'),
+    new RegExp('^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}'),
   );
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
