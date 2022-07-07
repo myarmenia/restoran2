@@ -7,6 +7,7 @@ import RegisterScreen from '../screen/authScreens/RegisterScreen';
 import SendCode from '../components/authBlocks/SendCode';
 import SendNumber from '../components/authBlocks/SendNumber';
 import SimpleHeader from '../components/headers/SimpleHeader';
+import PrivacyPolicyScreen from '../screen/privacyPolicyScreen/PrivacyPolicyScreen';
 
 const Stack = createStackNavigator();
 
@@ -59,6 +60,13 @@ export const AutoStack = () => (
       component={SendNumber}
       options={{
         header: () => <SimpleHeader title={'Вход по номеру телефона'} />,
+      }}
+    />
+    <Stack.Screen
+      name="PrivacyPolicyScreen"
+      component={PrivacyPolicyScreen}
+      options={{
+        header: () => <SimpleHeader title={'Политика Конфиденциальности'} />,
       }}
     />
   </Stack.Navigator>

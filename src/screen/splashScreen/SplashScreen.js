@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
-import {ActivityIndicator, View} from 'react-native';
-
+import {ActivityIndicator, Dimensions, StyleSheet, View} from 'react-native';
 
 const SplashScreen = ({navigation}) => {
   useEffect(() => {
@@ -10,10 +9,18 @@ const SplashScreen = ({navigation}) => {
   }, [navigation]);
 
   return (
-    <View>
+    <View style={styles.container}>
       <ActivityIndicator size="large" color="#00ff00" />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#000000',
+    minHeight: Dimensions.get('window').height,
+    justifyContent: 'center',
+  },
+});
 
 export default SplashScreen;

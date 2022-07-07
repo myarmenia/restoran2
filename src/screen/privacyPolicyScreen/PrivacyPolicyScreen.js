@@ -1,19 +1,20 @@
-import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-// import VirtualizedView from "../../utils/VirtualizedView";
-import SimpleHeader from '../../components/headers/SimpleHeader';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, Text, ScrollView, Dimensions} from 'react-native';
 import {useSelector} from 'react-redux';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
 import MainButton from '../../components/UI/buttons/MainButton';
 
-const PrivacyPolicyScreen = () => {
+const PrivacyPolicyScreen = ({navigation, route}) => {
   const {restaurants} = useSelector(state => state.home);
+  const [checked, setChecked] = useState(route?.params?.checked || false);
+
+  useEffect(() => {
+    setChecked(route?.params?.checked);
+  }, [route?.params?.checked]);
+
   return (
-    <View>
-      <LinearGradient colors={['black', 'black']}>
-        {/*<VirtualizedView>*/}
-        <SimpleHeader title={'ПОЛИТИКА  КОНФИДЕНЦИАЛЬНОСТИ '} />
+    <View style={styles.container}>
+      <ScrollView>
         <Text style={styles.title}>
           ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ ДЛЯ МОБИЛЬНОГО ПРИЛОЖЕНИЯ
         </Text>
@@ -420,17 +421,31 @@ const PrivacyPolicyScreen = () => {
           обнародованы или опубликованы в рамках такой публикации и/или
           контента.
         </Text>
-        <Checkbox text={'Я согласен(а)'} />
-        <View style={{marginTop: 30, marginHorizontal: 30, marginBottom: 80}}>
-          <MainButton textBtn={'Подтвердить'} />
+        <Checkbox
+          text={'Я согласен(а)'}
+          checked={checked}
+          setChecked={setChecked}
+        />
+        <View style={{marginTop: 30, marginHorizontal: 30, marginBottom: 100}}>
+          <MainButton
+            textBtn={'Подтвердить'}
+            goTo={() => {
+              navigation.navigate('register', {
+                checked: checked,
+              });
+            }}
+          />
         </View>
-        {/*</VirtualizedView>*/}
-      </LinearGradient>
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#000000',
+    minHeight: Dimensions.get('window').height,
+  },
   text: {
     marginTop: 30,
     fontSize: 16,

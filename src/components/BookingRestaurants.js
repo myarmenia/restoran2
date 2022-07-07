@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -8,47 +9,42 @@ import {
 } from 'react-native';
 import MarkSvg from '../assets/svg/homeScreen/MarkSvg';
 import {initialState1} from '../components/UI/RestaurantsData';
-import MoreSvg from '../assets/svg/MoreSvg'
+import MoreSvg from '../assets/svg/MoreSvg';
 
 const BookingRestaurants = ({state}) => {
   return (
-<FlatList
-            data={initialState1}
-            showsVerticalScrollIndicator={false}
-            numColumns={2}
-            keyExtractor={(item, index) => index.toString()}
-            contentContainerStyle={styles.list}
-            columnWrapperStyle={{justifyContent: 'space-between'}}
-             renderItem={({item}) => (
+    <FlatList
+      data={initialState1}
+      showsVerticalScrollIndicator={false}
+      numColumns={2}
+      keyExtractor={(item, index) => index.toString()}
+      contentContainerStyle={styles.list}
+      columnWrapperStyle={{justifyContent: 'space-between'}}
+      renderItem={({item}) => (
         <View style={styles.container}>
-          <TouchableOpacity style={styles.mark}>
-          </TouchableOpacity>
-          <View
-            style={styles.subContainer}
-            activeOpacity={0.7}>
+          <TouchableOpacity style={styles.mark} />
+          <View style={styles.subContainer} activeOpacity={0.7}>
             <Image style={styles.img} resizeMode="cover" source={item.img} />
             <Text style={styles.name}>{item.title}</Text>
             <Text style={styles.categories}>{item.bookDate}</Text>
             <Text style={styles.categories}>{item.isMenuSelected}</Text>
           </View>
-          <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginTop:10 }}>
-          <Text style={{color:'#FFFFFF', marginRight:5}}>
-            Подробнее
-          </Text>
-          <View style={{flexDirection:'row', alignItems:'center', marginTop:4 }}>
-              <MoreSvg/>
-              <MoreSvg/>
-          </View>
-             
+          <TouchableOpacity
+            style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+            <Text style={{color: '#FFFFFF', marginRight: 5}}>Подробнее</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 4,
+              }}>
+              <MoreSvg />
+              <MoreSvg />
+            </View>
           </TouchableOpacity>
         </View>
       )}
-
-
-
-        />
-
-
+    />
   );
 };
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-// import VirtualizedView from "../../utils/VirtualizedView";
 import SimpleHeader from '../../components/headers/SimpleHeader';
 import {useSelector} from 'react-redux';
 import Checkbox from '../../components/UI/checkbox/Checkbox';

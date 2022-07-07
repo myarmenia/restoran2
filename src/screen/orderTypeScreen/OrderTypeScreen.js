@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import FeedBackSvg from '../../assets/svg/FeedBackSvg';
-import { axiosInstance } from '../../request';
+import {axiosInstance} from '../../request';
 // import CustomDataPicker from '../../components/UI/customDataPicker/CustomDataPicker';
 
 const OrderTypeScreen = ({navigation}) => {
@@ -30,7 +30,8 @@ const OrderTypeScreen = ({navigation}) => {
           height: 2,
           backgroundColor: '#17181B',
           marginTop: 20,
-        }}></View>
+        }}
+      />
       <Text
         style={{
           fontSize: 16,
@@ -50,6 +51,3 @@ const OrderTypeScreen = ({navigation}) => {
 const styles = StyleSheet.create({});
 
 export default OrderTypeScreen;
-
-
-

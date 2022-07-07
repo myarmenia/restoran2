@@ -1,19 +1,35 @@
 import * as React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faSquare, faSquareCheck} from '@fortawesome/free-regular-svg-icons';
+import {CheckBox} from 'react-native-elements';
 
-const MyComponent = ({text}) => {
-  const [checked, setChecked] = React.useState(false);
-
+const MyComponent = ({text, goTo, checked, setChecked}) => {
   return (
     <View style={styles.container}>
       <CheckBox
-        value={checked}
-        onValueChange={() => {
+        checked={checked}
+        onPress={() => {
           setChecked(!checked);
         }}
+        checkedIcon={
+          <FontAwesomeIcon
+            icon={faSquareCheck}
+            border
+            color={'white'}
+            size={24}
+          />
+        }
+        uncheckedIcon={
+          <FontAwesomeIcon icon={faSquare} border color={'white'} size={24} />
+        }
       />
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          if (goTo) {
+            goTo();
+          }
+        }}>
         <Text style={{color: '#5F6368', fontSize: 16}}>{text}</Text>
       </TouchableOpacity>
     </View>
@@ -23,7 +39,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 60,
+    marginLeft: 40,
   },
 });
 export default MyComponent;

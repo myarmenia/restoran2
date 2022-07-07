@@ -1,8 +1,8 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "../screen/homBlock/HomeScreen";
-import TitleBlock from "../screen/homBlock/TitleBlock";
-import OrderTypeScreen from "../screen/orderTypeScreen/OrderTypeScreen";
+import React from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
+import HomeScreen from '../screen/homBlock/HomeScreen';
+import TitleBlock from '../screen/homBlock/TitleBlock';
+import OrderTypeScreen from '../screen/orderTypeScreen/OrderTypeScreen';
 
 const Stack = createStackNavigator();
 
@@ -15,5 +15,5 @@ export const HomeStackNavigation = () => (
     screenOptions={{
       headerShown: false,
     }}
-  ></Stack.Navigator>
+  />
 );
