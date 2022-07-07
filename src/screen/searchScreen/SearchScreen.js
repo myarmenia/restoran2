@@ -1,18 +1,18 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import VirtualizedView from "../../utils/VirtualizedView";
+// import VirtualizedView from "../../utils/VirtualizedView";
 import SearchHeader from '../../components/headers/SearchHeader';
 
 
 const SearchScreen = () => {
   return (
     <View>
-      <LinearGradient colors={["black", "black"]}> 
-        <VirtualizedView>
+      <LinearGradient colors={["black", "black"]}>
+        {/*<VirtualizedView>*/}
        <SearchHeader/>
-         
-        </VirtualizedView>
+
+        {/*</VirtualizedView>*/}
       </LinearGradient>
     </View>
   );
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     marginLeft: 40,
   },
 
- 
+
 });
 
 export default SearchScreen;
