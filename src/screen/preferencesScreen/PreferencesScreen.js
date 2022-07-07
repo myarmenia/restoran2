@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import VirtualizedView from "../../utils/VirtualizedView";
+// import VirtualizedView from "../../utils/VirtualizedView";
 import SimpleHeader from '../../components/headers/SimpleHeader';
 import Preferences from "../../components/Preferences";
 import { useSelector } from "react-redux";
@@ -14,11 +14,11 @@ const PreferencesScreen = () => {
 
   return (
     <View>
-      <LinearGradient colors={["black", "black"]}> 
-        <VirtualizedView>
+      <LinearGradient colors={["black", "black"]}>
+        {/*<VirtualizedView>*/}
         <SimpleHeader title={'Предпочтения'}/>
 <Preferences />
-        </VirtualizedView>
+        {/*</VirtualizedView>*/}
       </LinearGradient>
     </View>
   );
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
 
- 
+
 });
 
 export default PreferencesScreen;

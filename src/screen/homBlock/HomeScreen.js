@@ -1,55 +1,45 @@
-import React, {useEffect} from "react";
-import {Text, StyleSheet, View, Dimensions, ScrollView} from "react-native";
-import {useSelector, useDispatch} from "react-redux";
-import CategoriesBlock from "../../screen/homBlock/CategoriesBlock";
-import TopRestaurants from "../../components/TopRestaurants";
-import SearchHeader from "../../components/headers/SearchHeader";
-import {Restaurant} from "../../store/reducers/restaurant/action"
+import React, {useEffect} from 'react';
+import {Text, StyleSheet, View, Dimensions, ScrollView} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import CategoriesBlock from '../../screen/homBlock/CategoriesBlock';
+import TopRestaurants from '../../components/TopRestaurants';
+import SearchHeader from '../../components/headers/SearchHeader';
+import {Restaurant} from '../../store/reducers/restaurant/action';
 
 const HomeScreen = ({navigation}) => {
-    const {restaurants} = useSelector((state) => state.restaurant);
+  const {restaurants} = useSelector(state => state.restaurant);
 
-    const dispatch = useDispatch();
-    const goToRestaurantPage = (item) => {
-        navigation.navigate("ChooseTable", {
-            item,
-        });
-    };
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(Restaurant())
-    }, []);
+  useEffect(() => {
+    dispatch(Restaurant());
+  }, []);
 
-    return (
-        <View style={styles.container}>
-            <ScrollView style={{marginBottom: 80}}>
-                <SearchHeader/>
-                <Text style={styles.text}>Категории</Text>
-                <CategoriesBlock/>
-                <Text style={styles.text}>Топ рестораны</Text>
-                <TopRestaurants state={restaurants}/>
-                <TopRestaurants state={restaurants}/>
-                <TopRestaurants state={restaurants}/>
-                <TopRestaurants state={restaurants}/>
-                <TopRestaurants state={restaurants}/>
-                <TopRestaurants state={restaurants}/>
-            </ScrollView>
-        </View>
-    );
+  return (
+    <View style={styles.container}>
+      <ScrollView style={{marginBottom: 80}}>
+        <SearchHeader />
+        <Text style={styles.text}>Категории</Text>
+        <CategoriesBlock />
+        <Text style={styles.text}>Топ рестораны</Text>
+        <TopRestaurants state={restaurants} />
+      </ScrollView>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: "#000000",
-        minHeight: Dimensions.get('screen').height,
-    },
-    text: {
-        marginTop: 30,
-        fontSize: 16,
-        color: "#FFFFFF",
-        marginBottom: 20,
-        marginLeft: 10,
-    },
+  container: {
+    backgroundColor: '#000000',
+    minHeight: 1600,
+  },
+  text: {
+    marginTop: 30,
+    fontSize: 16,
+    color: '#FFFFFF',
+    marginBottom: 20,
+    marginLeft: 10,
+  },
 });
 
 export default HomeScreen;

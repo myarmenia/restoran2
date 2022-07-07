@@ -1,4 +1,3 @@
-
 import React, {memo, useEffect, useState} from 'react';
 import {View, TextInput, TouchableOpacity, Dimensions, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
     },
     input: {
-        backgroundColor: "transparent",   
+        backgroundColor: "transparent",
         fontSize: 18,
         color: '#fff',
         height: 50,

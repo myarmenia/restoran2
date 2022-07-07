@@ -1,10 +1,9 @@
 import React from "react";
 import {Text, StyleSheet, View, Dimensions} from "react-native";
-import LinearGradient from "react-native-linear-gradient";
 import {useSelector} from "react-redux";
 import AddSvg from '../../assets/svg/AddSvg';
 import AddDishes from '../../components/AddDishes';
-import VirtualizedView from "../../utils/VirtualizedView";
+// import VirtualizedView from "../../utils/VirtualizedView";
 
 
 const AddDishesScreen = () => {
@@ -12,7 +11,7 @@ const AddDishesScreen = () => {
 
     return (
         <View style={styles.container}>
-            <VirtualizedView>
+            {/*<VirtualizedView>*/}
                 <View style={styles.header}>
                     <Text style={styles.text}>
                         Бронь в “Название рест.” в ДД.ММ, 17:30
@@ -27,7 +26,7 @@ const AddDishesScreen = () => {
                 </View>
                 <View style={styles.line}/>
                 <AddDishes/>
-            </VirtualizedView>
+            {/*</VirtualizedView>*/}
         </View>
     );
 };

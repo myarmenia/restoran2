@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import VirtualizedView from "../../utils/VirtualizedView";
+// import VirtualizedView from "../../utils/VirtualizedView";
 import SimpleHeader from '../../components/headers/SimpleHeader';
 import { useSelector } from "react-redux";
 import Checkbox from '../../components/UI/checkbox/Checkbox';
@@ -14,14 +14,14 @@ const ConsentToProcessing = () => {
   const { restaurants } = useSelector((state) => state.home);
   return (
     <View>
-      <LinearGradient colors={["black", "black"]}> 
-        <VirtualizedView>
+      <LinearGradient colors={["black", "black"]}>
+        {/*<VirtualizedView>*/}
         <SimpleHeader title={'Согласие на обработку   '} />
         <Text style={styles.title}>
         Согласие на обработку персональных данных физических лиц
         </Text>
         <Text style={[styles.information,{marginTop:20}]}>
-        Версия: 1.0, Дата публикации 1.06.2022 
+        Версия: 1.0, Дата публикации 1.06.2022
 Физическое лицо (Пользователь), используя мобильное приложение «Taptable» или интернет-сайт по адресу http://back.tap-table.ru/ (совместно именуемые Сервис) и направляя запрос на обратную связь, дает ООО «ТАПТЭЙБЛ» (Администрация) свое согласие на обработку персональных данных (далее - Согласие) на изложенных ниже условиях:
         </Text>
         <Text style={[styles.header, {marginTop:20}]}>
@@ -77,7 +77,7 @@ const ConsentToProcessing = () => {
         <Text style={[styles.header, {marginTop:5}]}>
         8. Срок, в течение которого действует Согласие: до прекращения работы Сервиса или отзыва Согласия.
         </Text>
-        <Text style={[styles.header, {marginTop:5}]}>  
+        <Text style={[styles.header, {marginTop:5}]}>
         9. Пользователь вправе отозвать Согласие путем направления Администрации заявления:
         </Text>
         <Text style={styles.information}>
@@ -101,11 +101,11 @@ const ConsentToProcessing = () => {
 КПП 99999999
 Адрес электронной почты: tap-table@yandex.ru.
         </Text>
-        <Checkbox text={'Я согласен(а)'}/> 
+        <Checkbox text={'Я согласен(а)'}/>
 <View style={{marginTop:30,marginHorizontal:30, marginBottom:80}}>
         <MainButton textBtn={'Подтвердить'} />
-</View>   
-        </VirtualizedView>
+</View>
+        {/*</VirtualizedView>*/}
       </LinearGradient>
     </View>
   );
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   },
 title:{
   color:'#fff',
-   fontSize:17, 
+   fontSize:17,
    marginHorizontal:32,
    marginTop:20,
    fontWeight:'bold'
@@ -137,7 +137,7 @@ information:{
   fontSize:16,
   marginLeft: 32
 }
- 
+
 });
 
 export default ConsentToProcessing;

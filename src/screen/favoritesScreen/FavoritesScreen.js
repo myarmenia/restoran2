@@ -1,8 +1,6 @@
 import React from "react";
 import { Text, StyleSheet, View, Dimensions } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
-import TopRestaurants from "../../components/TopRestaurants";
-import VirtualizedView from "../../utils/VirtualizedView";
+// import VirtualizedView from "../../utils/VirtualizedView";
 import SimpleHeader from '../../components/headers/SimpleHeader';
 import Favorites from "../../components/Favorites";
 import { useSelector } from "react-redux";
@@ -12,10 +10,10 @@ const FavoritesScreen = () => {
 
   return (
     <View style={styles.container}>
-        <VirtualizedView>
+        {/*<VirtualizedView>*/}
             <SimpleHeader title={'Актуальные брони'}/>
             <Favorites state={restaurants}/>
-        </VirtualizedView>
+        {/*</VirtualizedView>*/}
     </View>
   );
 };
