@@ -31,7 +31,7 @@ const HomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#000000',
-    minHeight: 1600,
+    minHeight: Dimensions.get('window').height,
   },
   text: {
     marginTop: 30,

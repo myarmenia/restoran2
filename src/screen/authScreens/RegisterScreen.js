@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {StyleSheet, View, Text, Dimensions} from 'react-native';
 import MainButton from '../../components/UI/buttons/MainButton';
 import CustomInput from '../../components/UI/inputs/CustomInput';
@@ -7,7 +7,8 @@ import {useDispatch} from 'react-redux';
 import {Registration} from '../../store/reducers/auth/action';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
 
-const RegisterScreen = ({navigation}) => {
+const RegisterScreen = ({navigation, route}) => {
+  const [checked, setChecked] = useState(route?.params?.checked || false);
   const dispatch = useDispatch();
   const passRegExpRef = useRef(
     new RegExp('^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})'),
@@ -21,8 +22,11 @@ const RegisterScreen = ({navigation}) => {
   const [pass1, setPass1] = useState('');
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    setChecked(route?.params?.checked);
+  }, [route?.params?.checked]);
+
   const goToLoginPage = () => {
-    console.log(pass, passRegExpRef.current.test(pass));
     setError('');
     const data = {
       name,
@@ -127,7 +131,16 @@ const RegisterScreen = ({navigation}) => {
         <></>
       )}
       <View style={{marginTop: 10}}>
-        <Checkbox text={'Политика Конфиденциальности'} />
+        <Checkbox
+          text={'Политика Конфиденциальности'}
+          goTo={() =>
+            navigation.navigate('PrivacyPolicyScreen', {
+              checked: checked,
+            })
+          }
+          checked={checked}
+          setChecked={setChecked}
+        />
       </View>
       <View style={{marginTop: 20, marginHorizontal: 40}}>
         <MainButton textBtn={'Зарегистрироватся'} goTo={goToLoginPage} />
@@ -153,7 +166,7 @@ const RegisterScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#000000',
-    minHeight: Dimensions.get('screen').height,
+    minHeight: Dimensions.get('window').height,
     //        paddingHorizontal: 46
   },
   titleText: {
