@@ -11,11 +11,7 @@ const HomeScreen = ({ navigation }) => {
   const [rest, setRest] = useState(restaurants);
 
   const dispatch = useDispatch();
-  const goToRestaurantPage = (item) => {
-    navigation.navigate("ChooseTable", {
-      item,
-    });
-  };
+
 
   useEffect(() => {
     console.log("rest", restaurants);
