@@ -134,6 +134,10 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    dexOptions {
+        javaMaxHeapSize "4g" 
+    }
+
     defaultConfig {
         applicationId "com.tabtable"
         minSdkVersion rootProject.ext.minSdkVersion
