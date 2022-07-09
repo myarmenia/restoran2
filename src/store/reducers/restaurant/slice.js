@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from '@reduxjs/toolkit';
 import {
   Favorite,
   Favorites,
@@ -12,98 +12,100 @@ import {
   Preference,
   Preferences,
   Restaurant,
-  Restaurants
-} from "./action";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+  Restaurants,
+} from './action';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
-  restaurants: []
+  restaurants: [],
 };
 
 const slice = createSlice({
-  name: "restaurant",
+  name: 'restaurant',
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: {
     [Restaurant.fulfilled]: (state, {payload}) => {
       state.restaurants = payload;
     },
-    [Restaurants.fulfilled]: (state) => {
-      state.name = { ...state.name };
+    [Restaurants.fulfilled]: (state, action) => {
+      state.restaurant = action.payload;
     },
-    [Menu.fulfilled]: (state) => {
-      state.name = { ...state.name };
+    [Menu.fulfilled]: (state, action) => {
+      state.menu = action.payload;
     },
-    [Menus.fulfilled]: (state) => {
-      state.name = { ...state.name };
+    [Menus.fulfilled]: (state, action) => {
+      state.menus = action.payload;
     },
-    [MenusByMenuID.fulfilled]: (state) => {
-      state.name = { ...state.name };
+    [MenusByMenuID.fulfilled]: (state, action) => {
+      state.byId = action.payload;
     },
-    [Kitchen.fulfilled]: (state) => {
-      state.name = { ...state.name };
+    [Kitchen.fulfilled]: (state, action) => {
+      state.kitchen = action.payload;
     },
     [Orders.fulfilled]: (state, action) => {
-      state.load = false
-      state.user = action.payload
-      AsyncStorage.setItem('http://back.tap-table.ru/api/order', action.payload.token)
-      state.error = ''
-      state.message = ''
-      state.isAuth = true
+      state.orders = action.payload;
     },
     [orderStore.fulfilled]: (state, action) => {
-      state.load = false
-      state.user = action.payload
-      AsyncStorage.setItem('http://back.tap-table.ru/api/order/store', action.payload.token)
-      state.error = ''
-      state.message = ''
-      state.isAuth = true
+      state.orderStore = action.payload;
     },
     [Favorite.fulfilled]: (state, action) => {
-      state.load = false
-      state.user = action.payload
-      AsyncStorage.setItem('http://back.tap-table.ru/api/restaurant/favorites', action.payload.token)
-      state.error = ''
-      state.message = ''
-      state.isAuth = true
+      state.favorite = action.payload;
     },
     [Favorites.fulfilled]: (state, action) => {
-      state.load = false
-      state.user = action.payload
-      AsyncStorage.setItem('http://back.tap-table.ru/api/restaurant/favorites/${data?.id}', action.payload.token)
-      state.error = ''
-      state.message = ''
-      state.isAuth = true
+      state.favorites = action.payload;
     },
     [Preference.fulfilled]: (state, action) => {
-      state.load = false
-      state.user = action.payload
-      AsyncStorage.setItem('http://back.tap-table.ru/api/restaurant/menu/preference', action.payload.token)
-      state.error = ''
-      state.message = ''
-      state.isAuth = true
+      state.preference = action.payload;
     },
     [Preferences.fulfilled]: (state, action) => {
-      state.load = false
-      state.user = action.payload
-      AsyncStorage.setItem('http://back.tap-table.ru/api/menu/preference/${data?.id}', action.payload.token)
-      state.error = ''
-      state.message = ''
-      state.isAuth = true
+      state.preferences = action.payload;
     },
     [Feedback.fulfilled]: (state, action) => {
-      state.load = false
-      state.user = action.payload
-      AsyncStorage.setItem('http://back.tap-table.ru/api/feedback', action.payload.token)
-      state.error = ''
-      state.message = ''
-      state.isAuth = true
+      state.feedback = action.payload;
     },
-
+    [Restaurant.rejected]: (state, {payload}) => {
+      state.error = payload;
+    },
+    [Restaurants.rejected]: (state, {payload}) => {
+      state.error = payload;
+    },
+    [Menu.rejected]: (state, {payload}) => {
+      state.error = payload;
+    },
+    [Menus.rejected]: (state, {payload}) => {
+      state.error = payload;
+    },
+    [MenusByMenuID.rejected]: (state, {payload}) => {
+      state.error = payload;
+    },
+    [Kitchen.rejected]: (state, {payload}) => {
+      state.error = payload;
+    },
+    [Orders.rejected]: (state, {payload}) => {
+      state.error = payload;
+    },
+    [orderStore.rejected]: (state, {payload}) => {
+      state.error = payload;
+    },
+    [Favorite.rejected]: (state, {payload}) => {
+      state.error = payload;
+    },
+    [Favorites.rejected]: (state, {payload}) => {
+      state.error = payload;
+    },
+    [Preference.rejected]: (state, {payload}) => {
+      state.error = payload;
+    },
+    [Preferences.rejected]: (state, {payload}) => {
+      state.error = payload;
+    },
+    [Feedback.rejected]: (state, {payload}) => {
+      state.error = payload;
+    },
   },
 });
 
 export default slice.reducer;
-const { signOut } = slice.actions;
-export { signOut };
+const {signOut} = slice.actions;
+export {signOut};

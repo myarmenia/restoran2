@@ -1,215 +1,239 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosInstance } from "../../../request";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {createAsyncThunk} from '@reduxjs/toolkit';
+import {axiosInstance} from '../../../request';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Restaurant = createAsyncThunk(
-  "restaurant/Restaurant",
+  'restaurant/Restaurant',
   async (data, thunkAPI) => {
     console.log(data);
     try {
-      const response = await axiosInstance.get(`restaurant`);
-      console.log('aaa',response.data);
+      const response = await axiosInstance.get('restaurant');
+      console.log('aaa', response.data);
       return response.data.data;
     } catch (e) {
       console.log(e);
-      return thunkAPI.rejectWithValue("inch vor arjeq");
+      return thunkAPI.rejectWithValue(e.message);
     }
-
-  }
+  },
 );
 
-
-
 export const Restaurants = createAsyncThunk(
-  "restaurant/Restaurants",
+  'restaurant/Restaurants',
   async (data, thunkAPI) => {
     console.log(data);
     try {
       const response = await axiosInstance.get(`restaurant/${data?.id}`);
       console.log(response.data);
       return response.data;
-    } catch {
-      return thunkAPI.rejectWithValue("inch vor arjeq");
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
-  }
+  },
 );
 
 export const Menu = createAsyncThunk(
-  "restaurant/Menu",
+  'restaurant/Menu',
   async (data, thunkAPI) => {
     console.log(data);
     try {
-      console.log("mta1");
+      console.log('mta1');
       const response = await axiosInstance.get(`restaurant/menu/${data?.id}`);
       console.log(response.data);
       return response.data;
-    } catch {
-      console.log("mta2");
-      return thunkAPI.rejectWithValue("inch vor arjeq");
+    } catch (e) {
+      console.log('mta2');
+      return thunkAPI.rejectWithValue(e.message);
     }
-  }
+  },
 );
 
 export const Menus = createAsyncThunk(
-  "restaurant/Menus",
-  async (data, thunkAPI) => {
-    console.log(data);
-    try {
-      const response = await axiosInstance.get("restaurant/menu/categories/${data?.id}");
-      console.log(response.data);
-      return response.data;
-    } catch {
-      return thunkAPI.rejectWithValue("voreve arjeq");
-    }
-  }
-);
-
-export const MenusByMenuID = createAsyncThunk(
-  "restaurant/MenusByMenuID",
+  'restaurant/Menus',
   async (data, thunkAPI) => {
     console.log(data);
     try {
       const response = await axiosInstance.get(
-        `restaurant/menu/single/${data?.id}`
+        `restaurant/menu/categories/${data?.id}`,
       );
       console.log(response.data);
       return response.data;
-    } catch {
-      return thunkAPI.rejectWithValue("voreve arjeq");
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
-  }
+  },
+);
+
+export const MenusByMenuID = createAsyncThunk(
+  'restaurant/MenusByMenuID',
+  async (data, thunkAPI) => {
+    console.log(data);
+    try {
+      const response = await axiosInstance.get(
+        `restaurant/menu/single/${data?.id}`,
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  },
 );
 
 export const Kitchen = createAsyncThunk(
-  "restaurant/Kitchen",
+  'restaurant/Kitchen',
   async (data, thunkAPI) => {
     console.log(data);
     try {
-      const response = await axiosInstance.get("restaurant/kitchen");
+      const response = await axiosInstance.get('restaurant/kitchen');
       console.log(response.data);
       return response.data;
-    } catch {
-      return thunkAPI.rejectWithValue("voreve arjeq");
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
-  }
+  },
 );
 
 export const Orders = createAsyncThunk(
-  "restaurant/Orders",
+  'restaurant/Orders',
   async (data, thunkAPI) => {
     console.log(data);
+    const bearer = await AsyncStorage.getItem('bearer');
+    const token = await AsyncStorage.getItem('token');
     try {
-      const response = await axiosInstance.get("order", {
-        headers: { Authorization: `Bearer: ${AsyncStorage.getItem("token")}` },
+      const response = await axiosInstance.get('order', {
+        headers: {Authorization: `${bearer} ${token}`},
       });
       console.log(response.data);
       return response.data;
-    } catch {
-      return thunkAPI.rejectWithValue("voreve arjeq");
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
-  }
+  },
 );
-
 
 export const orderStore = createAsyncThunk(
-  "restaurant/orderStore",
+  'restaurant/orderStore',
   async (data, thunkAPI) => {
     console.log(data);
+    const bearer = await AsyncStorage.getItem('bearer');
+    const token = await AsyncStorage.getItem('token');
     try {
-      const response = await axiosInstance.post("order/store", {
-        headers: { Authorization: `Bearer: ${AsyncStorage.getItem("token")}` },
-      });
+      const response = await axiosInstance.post(
+        'order/store',
+        {...data},
+        {
+          headers: {Authorization: `${bearer} ${token}`},
+        },
+      );
       console.log(response.data);
       return response.data;
-    } catch {
-      return thunkAPI.rejectWithValue("voreve arjeq");
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
-  }
+  },
 );
 
-
 export const Favorite = createAsyncThunk(
-  "restaurant/Favorite",
+  'restaurant/Favorite',
   async (data, thunkAPI) => {
     console.log(data);
+    const bearer = await AsyncStorage.getItem('bearer');
+    const token = await AsyncStorage.getItem('token');
     try {
-      const response = await axiosInstance.get("restaurant/favorites", {
-        headers: { Authorization: `Bearer: ${AsyncStorage.getItem("token")}` },
+      const response = await axiosInstance.get('restaurant/favorites', {
+        headers: {Authorization: `${bearer} ${token}`},
       });
-      console.log(response.data);
+      console.log('favorite: ', response.data);
       return response.data;
-    } catch {
-      return thunkAPI.rejectWithValue("voreve arjeq");
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
-  }
+  },
 );
 
 export const Favorites = createAsyncThunk(
-  "restaurant/Favorites",
+  'restaurant/Favorites',
   async (data, thunkAPI) => {
     console.log(data);
+    const bearer = await AsyncStorage.getItem('bearer');
+    const token = await AsyncStorage.getItem('token');
     try {
-      const response = await axiosInstance.patch("restaurant/favorites/${data?.id}", {
-        headers: { Authorization: `Bearer: ${AsyncStorage.getItem("token")}` },
-      });
+      const response = await axiosInstance.patch(
+        `restaurant/favorites/${data?.id}`,
+        data,
+        {
+          headers: {Authorization: `${bearer} ${token}`},
+        },
+      );
       console.log(response.data);
       return response.data;
-    } catch {
-      return thunkAPI.rejectWithValue("voreve arjeq");
+    } catch (e) {
+      console.log(e);
+      return thunkAPI.rejectWithValue(e.message);
     }
-  }
+  },
 );
-
 
 export const Preference = createAsyncThunk(
-  "restaurant/Preference",
+  'restaurant/Preference',
   async (data, thunkAPI) => {
+    const bearer = await AsyncStorage.getItem('bearer');
+    const token = await AsyncStorage.getItem('token');
     console.log(data);
     try {
-      const response = await axiosInstance.get("menu/preference", {
-        headers: { Authorization: `Bearer: ${AsyncStorage.getItem("token")}` },
+      const response = await axiosInstance.get('menu/preference', {
+        headers: {Authorization: `${bearer} ${token}`},
       });
       console.log(response.data);
       return response.data;
-    } catch {
-      return thunkAPI.rejectWithValue("voreve arjeq");
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
-  }
+  },
 );
-
 
 export const Preferences = createAsyncThunk(
-  "restaurant/Preferences",
+  'restaurant/Preferences',
   async (data, thunkAPI) => {
     console.log(data);
+    const bearer = await AsyncStorage.getItem('bearer');
+    const token = await AsyncStorage.getItem('token');
     try {
-      const response = await axiosInstance.patch("menu/preference/${data?.id}", {
-        headers: { Authorization: `Bearer: ${AsyncStorage.getItem("token")}` },
-      });
+      const response = await axiosInstance.patch(
+        'menu/preference',
+        {
+          ...data,
+        },
+        {
+          headers: {Authorization: `${bearer} ${token}`},
+        },
+      );
       console.log(response.data);
       return response.data;
-    } catch {
-      return thunkAPI.rejectWithValue("voreve arjeq");
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
-  }
+  },
 );
-
-
 
 export const Feedback = createAsyncThunk(
-  "restaurant/Feedback",
+  'restaurant/Feedback',
   async (data, thunkAPI) => {
     console.log(data);
+    const bearer = await AsyncStorage.getItem('bearer');
+    const token = await AsyncStorage.getItem('token');
     try {
-      const response = await axiosInstance.post("feedback", {
-        headers: { Authorization: `Bearer: ${AsyncStorage.getItem("token")}` },
-      });
+      const response = await axiosInstance.post(
+        'feedback',
+        {...data},
+        {
+          headers: {Authorization: `${bearer} ${token}`},
+        },
+      );
       console.log(response.data);
       return response.data;
-    } catch {
-      return thunkAPI.rejectWithValue("voreve arjeq");
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
-  }
+  },
 );
-
-

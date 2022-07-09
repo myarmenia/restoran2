@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, StyleSheet, Image} from 'react-native';
+import {Text, View, StyleSheet, Image, Dimensions} from 'react-native';
 import MainButton from '../../components/UI/buttons/MainButton';
 import logoImg from '../../assets/png/logo.png';
 
@@ -12,7 +12,12 @@ const WelcomeScreen = ({navigation}) => {
     navigation.navigate('register');
   };
   return (
-    <View style={{backgroundColor: '#000000', paddingHorizontal: 40}}>
+    <View
+      style={{
+        backgroundColor: '#000000',
+        paddingHorizontal: 40,
+        minHeight: Dimensions.get('window').height,
+      }}>
       <View style={styles.logo}>
         <Image source={logoImg} />
       </View>

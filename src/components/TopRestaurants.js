@@ -8,8 +8,11 @@ import {
   Text,
 } from 'react-native';
 import MarkSvg from '../assets/svg/homeScreen/MarkSvg';
+import {useDispatch} from 'react-redux';
+import {Favorites} from '../store/reducers/restaurant/action';
 
 const TopRestaurants = ({state}) => {
+  const dispatch = useDispatch();
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
@@ -21,7 +24,7 @@ const TopRestaurants = ({state}) => {
         <View style={styles.container}>
           <TouchableOpacity
             style={styles.mark}
-            onPress={() => console.log('press')}>
+            onPress={() => dispatch(Favorites({id: item?.id}))}>
             <MarkSvg choosed={false} />
           </TouchableOpacity>
           <TouchableOpacity
