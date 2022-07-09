@@ -16,7 +16,7 @@ export const screenOptionStyle = (title, right) => ({
     backgroundColor: '#01B0F1',
     height: 100,
   },
-  header: props => <SimpleHeader title right />,
+  header: props => <SimpleHeader title={title} right={right} />,
   headerTintColor: '#FFFFFF',
   headerTitleStyle: {
     fontWeight: '100',
