@@ -1,7 +1,5 @@
 import React from 'react';
-import {Text, StyleSheet, View} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-// import VirtualizedView from "../../utils/VirtualizedView";
+import {StyleSheet, View, Dimensions} from 'react-native';
 import SimpleHeader from '../../components/headers/SimpleHeader';
 import BookingRestaurants from '../../components/BookingRestaurants';
 import {useSelector} from 'react-redux';
@@ -10,18 +8,19 @@ const SelectMenuScreen = () => {
   const {restaurants} = useSelector(state => state.home);
 
   return (
-    <View>
-      <LinearGradient colors={['black', 'black']}>
-        {/*<VirtualizedView>*/}
-        <SimpleHeader title={'Актуальные брони'} />
-        <BookingRestaurants state={restaurants} />
-        {/*</VirtualizedView>*/}
-      </LinearGradient>
+    <View style={styles.container}>
+      <SimpleHeader title={'Актуальные брони'} />
+      <BookingRestaurants state={restaurants} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#000000',
+    minHeight: Dimensions.get('window').height - 100,
+    height: '100%',
+  },
   text: {
     marginTop: 30,
     fontSize: 16,

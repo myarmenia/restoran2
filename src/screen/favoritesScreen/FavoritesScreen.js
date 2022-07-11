@@ -1,6 +1,5 @@
 import React from 'react';
 import {Text, StyleSheet, View, Dimensions} from 'react-native';
-// import VirtualizedView from "../../utils/VirtualizedView";
 import SimpleHeader from '../../components/headers/SimpleHeader';
 import Favorites from '../../components/Favorites';
 import {useSelector} from 'react-redux';
@@ -10,10 +9,8 @@ const FavoritesScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/*<VirtualizedView>*/}
       <SimpleHeader title={'Актуальные брони'} />
       <Favorites state={restaurants} />
-      {/*</VirtualizedView>*/}
     </View>
   );
 };
@@ -22,7 +19,8 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 30,
     backgroundColor: '#000000',
-    minHeight: Dimensions.get('window').height,
+    minHeight: Dimensions.get('window').height - 100,
+    height: '100%',
   },
   text: {
     marginTop: 30,

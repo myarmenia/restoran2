@@ -1,39 +1,38 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-} from "react-native";
-import EyeOffSvg from "../../../assets/svg/EyeOffSvg";
-import EyeOnSvg from "../../../assets/svg/EyeOnSvg";
+} from 'react-native';
+import EyeOffSvg from '../../../assets/svg/EyeOffSvg';
+import EyeOnSvg from '../../../assets/svg/EyeOnSvg';
 
 const UselessTextInput = ({
   horizontal,
   placeholder,
   value,
   onChangeText,
-  textType = "default",
+  textType = 'default',
   secureTextEntry = false,
 }) => {
   const [passwordVisible, setPasswordVisible] = useState(true);
   return (
-    <SafeAreaView style={{ position: "relative" }}>
+    <SafeAreaView style={{position: 'relative'}}>
       <TextInput
         style={styles.input}
         onChangeText={onChangeText}
         value={value}
         keyboardType={textType}
         marginHorizontal={horizontal ? horizontal : 40}
-        placeholder={placeholder ? placeholder : "Email"}
+        placeholder={placeholder ? placeholder : 'Email'}
         placeholderTextColor="#5F6368"
         secureTextEntry={secureTextEntry ? passwordVisible : false}
       />
       {secureTextEntry && (
         <TouchableOpacity
           style={styles.eye}
-          onPress={() => setPasswordVisible((prev) => !prev)}
-        >
+          onPress={() => setPasswordVisible(prev => !prev)}>
           {passwordVisible ? <EyeOnSvg /> : <EyeOffSvg />}
         </TouchableOpacity>
       )}
@@ -49,12 +48,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 30,
     fontSize: 18,
-    paddingLeft: 30,
-    backgroundColor: "#202124",
-    color: "white",
+    paddingHorizontal: 30,
+    backgroundColor: '#202124',
+    color: 'white',
   },
   eye: {
-    position: "absolute",
+    position: 'absolute',
     right: 52,
     top: 30,
   },

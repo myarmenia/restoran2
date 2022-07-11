@@ -1,18 +1,14 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-// import VirtualizedView from "../../utils/VirtualizedView";
 import SimpleHeader from '../../components/headers/SimpleHeader';
-import {useSelector} from 'react-redux';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
 import MainButton from '../../components/UI/buttons/MainButton';
 
 const ConsentToProcessing = () => {
-  const {restaurants} = useSelector(state => state.home);
   return (
     <View>
       <LinearGradient colors={['black', 'black']}>
-        {/*<VirtualizedView>*/}
         <SimpleHeader title={'Согласие на обработку   '} />
         <Text style={styles.title}>
           Согласие на обработку персональных данных физических лиц
@@ -131,7 +127,6 @@ const ConsentToProcessing = () => {
         <View style={{marginTop: 30, marginHorizontal: 30, marginBottom: 80}}>
           <MainButton textBtn={'Подтвердить'} />
         </View>
-        {/*</VirtualizedView>*/}
       </LinearGradient>
     </View>
   );

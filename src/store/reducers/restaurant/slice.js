@@ -14,10 +14,22 @@ import {
   Restaurant,
   Restaurants,
 } from './action';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
   restaurants: [],
+  restaurant: [],
+  menu: '',
+  menus: '',
+  byId: '',
+  kitchen: '',
+  orders: '',
+  orderStore: '',
+  favorite: [],
+  favorites: '',
+  preference: '',
+  preferences: '',
+  feedback: '',
+  error: '',
 };
 
 const slice = createSlice({

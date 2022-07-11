@@ -44,7 +44,8 @@ const SendNumber = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#000000',
-    minHeight: Dimensions.get('window').height,
+    minHeight: Dimensions.get('window').height - 100,
+    height: '100%',
     paddingHorizontal: 46,
   },
   input: {
