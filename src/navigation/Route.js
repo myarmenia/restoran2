@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {AutoStack} from './AutoStack';
 import {SummaryNavigation} from './SummaryNavigation';
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { signIn } from "../store/reducers/auth/slice";
+import {signIn} from '../store/reducers/auth/slice';
 
 const Route = () => {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ const Route = () => {
 
   const getToken = async () => {
     const token = await AsyncStorage.getItem('token');
-    if(!!token) {
+    if (!!token) {
       dispatch(signIn());
     }
     setHasToken(!!token);

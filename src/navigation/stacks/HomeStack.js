@@ -44,7 +44,7 @@ export const HomeStackNavigation = () => (
     <Stack.Screen name="select" component={SelectMenuScreen} />
     <Stack.Screen name="Map" component={MapScreen} />
     {/*<Stack.Screen name="PrivacyPolicyScreen" component={PrivacyPolicyScreen} />*/}
-    <Stack.Screen name="ConsentToProcessing" component={ConsentToProcessing} />
+    {/*<Stack.Screen name="ConsentToProcessing" component={ConsentToProcessing} />
     <Stack.Screen name="TermsScreen" component={TermsScreen} />
   </Stack.Navigator>
 );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   StyleSheet,
@@ -15,12 +15,13 @@ const TopRestaurants = ({state}) => {
   const dispatch = useDispatch();
   return (
     <FlatList
+      style={{ marginHorizontal: 13 }}
       showsVerticalScrollIndicator={false}
       numColumns={2}
       data={state}
       keyExtractor={(item, index) => index.toString()}
-      columnWrapperStyle={{justifyContent: 'space-between'}}
-      renderItem={({item}) => (
+      columnWrapperStyle={{ justifyContent: "space-between" }}
+      renderItem={({ item }) => (
         <View style={styles.container}>
           <TouchableOpacity
             style={styles.mark}
@@ -30,12 +31,13 @@ const TopRestaurants = ({state}) => {
           <TouchableOpacity
             // onPress={goToTitleBlock}
             style={styles.subContainer}
-            activeOpacity={0.7}>
+            activeOpacity={0.7}
+          >
             <Image
               style={styles.img}
               resizeMode="cover"
               source={
-                item.img || require('../assets/img/home/restaurants/1.png')
+                item.img || require("../assets/img/home/restaurants/1.png")
               }
             />
             <Text style={styles.name}>{item.name}</Text>
@@ -49,20 +51,19 @@ const TopRestaurants = ({state}) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#202124',
-    paddingHorizontal: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#202124",
     paddingBottom: 20,
-    paddingTop: 10,
+    paddingTop: 20,
     borderRadius: 15,
-    marginHorizontal: 10,
-    marginVertical: 10,
+    marginHorizontal: 7,
+    marginVertical: 7,
     flex: 0.5,
   },
   subContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   img: {
     marginBottom: 10,
@@ -71,18 +72,18 @@ const styles = StyleSheet.create({
     height: 100,
   },
   mark: {
-    position: 'absolute',
+    position: "absolute",
     right: 15,
-    top: 10,
+    top: 15,
   },
   name: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
     marginBottom: 5,
   },
   categories: {
     fontSize: 14,
-    color: '#5F6368',
+    color: "#5F6368",
   },
 });
 
