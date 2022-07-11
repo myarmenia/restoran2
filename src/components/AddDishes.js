@@ -95,7 +95,7 @@ const AddDishes = ({state}) => {
           <CallSvg />
         </View>
       </View>
-      <View style={{marginTop: 20, marginHorizontal: 10}}>
+      <View style={{marginVertical: 20, marginHorizontal: 10}}>
         <MainButton textBtn={'Добавить меню к бронированию'} />
       </View>
     </View>

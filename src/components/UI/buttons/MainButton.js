@@ -11,19 +11,19 @@ const MainButton = ({
   goTo,
 }) => {
   return (
-    <LinearGradient
-      style={styles.btnContainer}
-      marginHorizontal={horizontal ? horizontal : 0}
-      paddingVertical={vertical ? vertical : 14}
-      backgroundColor={background ? background : '#648E00'}
-      width={width ? width : '100%'}
-      start={{x: 0, y: 0}}
-      end={{x: 1, y: 0}}
-      colors={['#648E00', '#005100']}>
-      <TouchableOpacity onPress={goTo}>
+    <TouchableOpacity onPress={goTo} activeOpacity={0.9}>
+      <LinearGradient
+        style={styles.btnContainer}
+        marginHorizontal={horizontal ? horizontal : 0}
+        paddingVertical={vertical ? vertical : 14}
+        backgroundColor={background ? background : '#648E00'}
+        width={width ? width : '100%'}
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 0}}
+        colors={['#648E00', '#005100']}>
         <Text style={styles.text}>{textBtn}</Text>
-      </TouchableOpacity>
-    </LinearGradient>
+      </LinearGradient>
+    </TouchableOpacity>
   );
 };
 

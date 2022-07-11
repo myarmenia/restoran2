@@ -115,7 +115,8 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 30,
     backgroundColor: '#000000',
-    minHeight: Dimensions.get('window').height,
+    minHeight: Dimensions.get('window').height - 100,
+    height: '100%',
   },
 });
 

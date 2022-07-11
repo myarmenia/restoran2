@@ -7,8 +7,7 @@ import {
   Image,
   Text,
 } from 'react-native';
-import MarkSvg from '../assets/svg/homeScreen/MarkSvg';
-import {initialState1} from '../components/UI/RestaurantsData';
+import {initialState1} from './UI/RestaurantsData';
 import MoreSvg from '../assets/svg/MoreSvg';
 
 const BookingRestaurants = ({state}) => {

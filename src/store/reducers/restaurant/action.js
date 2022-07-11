@@ -144,7 +144,7 @@ export const Favorite = createAsyncThunk(
         headers: {Authorization: `${bearer} ${token}`},
       });
       console.log('favorite: ', response.data);
-      return response.data;
+      return response.data.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
@@ -166,6 +166,7 @@ export const Favorites = createAsyncThunk(
         },
       );
       console.log(response.data);
+      thunkAPI.dispatch(Favorite());
       return response.data;
     } catch (e) {
       console.log(e);

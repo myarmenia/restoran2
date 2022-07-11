@@ -11,7 +11,6 @@ const TermsScreen = () => {
   return (
     <View>
       <LinearGradient colors={['black', 'black']}>
-        {/*<VirtualizedView>*/}
         <SimpleHeader title={'Условия использования'} />
         <Text style={styles.title}>
           Условия использования сервиса Яндекс.Карты
@@ -286,7 +285,6 @@ const TermsScreen = () => {
         <View style={{marginTop: 30, marginHorizontal: 30, marginBottom: 80}}>
           <MainButton textBtn={'Подтвердить'} />
         </View>
-        {/*</VirtualizedView>*/}
       </LinearGradient>
     </View>
   );

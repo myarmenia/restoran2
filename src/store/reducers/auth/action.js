@@ -9,6 +9,11 @@ export const Login = createAsyncThunk('auth/Login', async data => {
       ...data,
     });
     console.log('login: ', response.data);
+    if (response.data.access_token) {
+      await AsyncStorage.setItem('token', response.data.access_token);
+      await AsyncStorage.setItem('bearer', response.data.token_type);
+      await AsyncStorage.setItem('refreshToken', response.data.refresh_token);
+    }
     return response.data;
   } catch (e) {
     console.log(e.message);

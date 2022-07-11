@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, StyleSheet, View, Dimensions} from 'react-native';
+import {Text, StyleSheet, View, Dimensions, ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
 import AddSvg from '../../assets/svg/AddSvg';
 import AddDishes from '../../components/AddDishes';
@@ -9,16 +9,20 @@ const AddDishesScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.text}>Бронь в “Название рест.” в ДД.ММ, 17:30</Text>
-      </View>
-      <View style={styles.line} />
-      <View style={[styles.add, {justifyContent: 'flex-end'}]}>
-        <Text style={[styles.text, {marginRight: 20}]}>Добавить Блюда</Text>
-        <AddSvg />
-      </View>
-      <View style={styles.line} />
-      <AddDishes />
+      <ScrollView>
+        <View style={styles.header}>
+          <Text style={styles.text}>
+            Бронь в “Название рест.” в ДД.ММ, 17:30
+          </Text>
+        </View>
+        <View style={styles.line} />
+        <View style={[styles.add, {justifyContent: 'flex-end'}]}>
+          <Text style={[styles.text, {marginRight: 20}]}>Добавить Блюда</Text>
+          <AddSvg />
+        </View>
+        <View style={styles.line} />
+        <AddDishes />
+      </ScrollView>
     </View>
   );
 };
@@ -26,7 +30,8 @@ const AddDishesScreen = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#000000',
-    minHeight: Dimensions.get('window').height,
+    minHeight: Dimensions.get('window').height - 100,
+    height: '100%',
   },
   text: {
     color: '#FFFFFF',

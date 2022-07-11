@@ -5,9 +5,10 @@ import CustomInput from '../../components/UI/inputs/CustomInput';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import {Login} from '../../store/reducers/auth/action';
+import {clearError} from '../../store/reducers/auth/slice';
 
 const LoginScreen = ({navigation}) => {
-  const {user, auth, error} = useSelector(({auth}) => auth);
+  const {auth, error, user} = useSelector(({auth}) => auth);
   const passRegExpRef = useRef(
     new RegExp('^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})'),
   );
@@ -28,6 +29,8 @@ const LoginScreen = ({navigation}) => {
   const goTo = useCallback(async () => {
     setShowError(false);
     if (
+      email &&
+      password &&
       passRegExpRef.current.test(password) &&
       emailRegExpRef.current.test(email)
     ) {
@@ -35,25 +38,17 @@ const LoginScreen = ({navigation}) => {
     } else {
       setShowError(true);
     }
-    goToHomePage();
   }, [email, password, dispatch]);
 
-  const goToHomePage = () => {
-    if (
-      email &&
-      password &&
-      emailRegExpRef.current.test(email) &&
-      passRegExpRef.current.test(password)
-    ) {
-      if (error) {
-        setShowError(true);
-      } else if (!auth && !user?.phone_number) {
-        navigation.navigate('sendNumber');
-      } else {
-        setShowError(true);
-      }
+  useEffect(() => {
+    if (error) {
+      setShowError(true);
+    } else if (!auth && !user?.phone_number) {
+      navigation.navigate('sendNumber');
+    } else {
+      setShowError(true);
     }
-  };
+  }, [auth, user?.phone_number, error]);
 
   const goToRegistrationScreen = () => {
     navigation.navigate('register');
@@ -98,8 +93,8 @@ const LoginScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#000000',
-    minHeight: Dimensions.get('window').height,
-    //        paddingHorizontal: 46
+    minHeight: Dimensions.get('window').height - 100,
+    height: '100%',
   },
   titleText: {
     fontSize: 24,
