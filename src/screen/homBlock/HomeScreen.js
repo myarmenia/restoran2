@@ -1,10 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Text, StyleSheet, View, Dimensions, ScrollView } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
-import CategoriesBlock from "../../screen/homBlock/CategoriesBlock";
-import TopRestaurants from "../../components/TopRestaurants";
-import SearchHeader from "../../components/headers/SearchHeader";
-import { Restaurant } from "../../store/reducers/restaurant/action";
+import React, {useEffect} from 'react';
+import {Text, StyleSheet, View, Dimensions, ScrollView} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import CategoriesBlock from '../../screen/homBlock/CategoriesBlock';
+import TopRestaurants from '../../components/TopRestaurants';
+import SearchHeader from '../../components/headers/SearchHeader';
+import {
+  Favorite,
+  Favorites,
+  Kitchen,
+  Menu,
+  Orders,
+  Preference,
+  Restaurant,
+  Restaurants,
+} from '../../store/reducers/restaurant/action';
 
 const HomeScreen = ({ navigation }) => {
   const { restaurants } = useSelector((state) => state.restaurant);
@@ -20,6 +29,7 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(Restaurant());
+    dispatch(Favorite());
   }, []);
 
   return (

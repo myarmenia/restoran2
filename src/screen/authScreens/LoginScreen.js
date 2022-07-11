@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useState, useCallback, useRef, useEffect} from 'react';
 import {StyleSheet, View, Text, Dimensions} from 'react-native';
 import MainButton from '../../components/UI/buttons/MainButton';
 import CustomInput from '../../components/UI/inputs/CustomInput';
@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Login} from '../../store/reducers/auth/action';
 
 const LoginScreen = ({navigation}) => {
-  const {user, auth} = useSelector(({auth}) => auth);
+  const {user, auth, error} = useSelector(({auth}) => auth);
   const passRegExpRef = useRef(
     new RegExp('^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})'),
   );
@@ -19,6 +19,12 @@ const LoginScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [showError, setShowError] = useState(false);
 
+  useEffect(() => {
+    setEmail('');
+    setPassword('');
+    setShowError('');
+  }, []);
+
   const goTo = useCallback(async () => {
     setShowError(false);
     if (
@@ -29,18 +35,23 @@ const LoginScreen = ({navigation}) => {
     } else {
       setShowError(true);
     }
-    await goToHomePage();
+    goToHomePage();
   }, [email, password, dispatch]);
 
   const goToHomePage = () => {
-    if (email && password) {
-      if (!auth && !user?.phone_number) {
+    if (
+      email &&
+      password &&
+      emailRegExpRef.current.test(email) &&
+      passRegExpRef.current.test(password)
+    ) {
+      if (error) {
+        setShowError(true);
+      } else if (!auth && !user?.phone_number) {
         navigation.navigate('sendNumber');
       } else {
         setShowError(true);
       }
-    } else {
-      setShowError(true);
     }
   };
 
