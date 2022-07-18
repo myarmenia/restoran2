@@ -9,32 +9,61 @@ import {
 } from 'react-native';
 import {useState} from 'react';
 import {initialState2} from '../components/UI/DishData';
-import MoreSvg from '../assets/svg/MoreSvg';
 import MainButton from '../components/UI/buttons/MainButton';
 import CallSvg from '../assets/svg/callSvg/CallSvg';
+import DeleteSvg from '../assets/svg/DeleteSvg';
+import LikeComponent from '../components/UI/LikeComponent';
+import DeleteModal from '../components/UI/DeleteModal';
 
-const AddDishes = ({state}) => {
-  const [someState, setSomeState] = useState(initialState2);
+const AddDishes = () => {
+  const [openModal, setOpenModal] = useState(false);
+  const [index, setIndex] = useState(-1);
+  const [productsArray, setProductsArray] = useState(initialState2);
+
+  // const removeUser = (index) => {
+  //   console.log('hello ', index, productsArray);
+  //   setProductsArray(products => products.filter((_, ind) => ind !== index));
+  // };
+
   return (
     <View>
+      <View>
+        {openModal && (
+          <DeleteModal
+            setProductsArray={setProductsArray}
+            productsArray={productsArray}
+            index={index}
+            setOpenModal={setOpenModal}
+          />
+        )}
+      </View>
+
       <FlatList
-        data={initialState2}
+        data={productsArray}
+        // data={initialState2}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={styles.list}
-        renderItem={({item}) => (
+        renderItem={({item, index}) => (
           <View>
             <View style={styles.container}>
               <View style={styles.subContainer} activeOpacity={0.7}>
                 <View style={{flex: 2, marginRight: 15}}>
-                  <Image
-                    style={styles.img}
-                    resizeMode="cover"
-                    source={item.img}
-                  />
+                  <TouchableOpacity>
+                    <Image
+                      style={styles.img}
+                      resizeMode="cover"
+                      source={item.img}
+                    />
+                  </TouchableOpacity>
                 </View>
                 <View style={{flex: 7}}>
-                  <Text style={styles.name}>{item.title}</Text>
+                  <TouchableOpacity>
+                    <Text style={styles.name}>{item.title}</Text>
+                  </TouchableOpacity>
+                  <View style={{marginLeft: 234}}>
+                    <LikeComponent />
+                  </View>
                   <Text style={styles.categories}>{item.dishes}</Text>
                   {item.isMenuSelected ? null : (
                     <View
@@ -53,13 +82,17 @@ const AddDishes = ({state}) => {
                             alignItems: 'center',
                             marginTop: 4,
                             marginRight: 60,
-                          }}>
-                          <MoreSvg />
-                          <MoreSvg />
-                        </View>
+                          }}></View>
                       </TouchableOpacity>
-                      <TouchableOpacity>
-                        <MainButton textBtn={'+ 1000 руб.'} vertical={2} />
+
+                      {/* <TouchableOpacity onPress={() => removeUser(index)}> */}
+                      <TouchableOpacity
+                        style={{marginLeft: 100}}
+                        onPress={() => {
+                          setIndex(+index);
+                          setOpenModal(true);
+                        }}>
+                        <DeleteSvg />
                       </TouchableOpacity>
                     </View>
                   )}
@@ -70,17 +103,41 @@ const AddDishes = ({state}) => {
           </View>
         )}
       />
-      <Text
+      {/* <View style={[styles.line, {marginTop: 10}]} /> */}
+      <View
         style={{
-          color: '#5F6368',
-          fontSize: 18,
-          textAlign: 'center',
-          marginTop: 60,
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          paddingRight: 30,
+          marginTop: 15,
         }}>
-        К оплате 4 000 рублей. Оплатить на месте.
-      </Text>
+        <Text style={{color: '#5F6368', fontSize: 14, marginRight: 10}}>
+          Общее:
+        </Text>
+        <Text style={{color: '#5F6368', fontSize: 14}}>8 000 рублей</Text>
+      </View>
 
-      <View style={{flexDirection: 'row', marginTop: 25}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          paddingRight: 30,
+          marginTop: 10,
+        }}>
+        <Text style={{color: '#5F6368', fontSize: 14, marginRight: 10}}>
+          Оплата за обслуживание Х%:{' '}
+        </Text>
+        <Text style={{color: '#5F6368', fontSize: 14}}>800 рублей</Text>
+      </View>
+
+      <View style={[styles.line, {marginTop: 15}]} />
+      <View style={{flexDirection: 'row'}}>
+        <View style={{flex: 2}}></View>
+        <Text style={{color: '#FFFFFF', fontSize: 20, flex: 3}}>
+          К оплате 8 800 рублей
+        </Text>
+      </View>
+      <View style={{flexDirection: 'row', marginTop: 40}}>
         <View style={{flex: 1}} />
         <View
           style={{
@@ -95,7 +152,7 @@ const AddDishes = ({state}) => {
           <CallSvg />
         </View>
       </View>
-      <View style={{marginVertical: 20, marginHorizontal: 10}}>
+      <View style={{marginVertical: 20, marginHorizontal: 10, marginTop: 25}}>
         <MainButton textBtn={'Добавить меню к бронированию'} />
       </View>
     </View>
@@ -128,7 +185,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   categories: {
-    fontSize: 9,
+    fontSize: 11,
     color: '#5F6368',
   },
   opacity: {

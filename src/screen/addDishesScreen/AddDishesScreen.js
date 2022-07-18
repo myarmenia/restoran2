@@ -1,8 +1,9 @@
 import React from 'react';
-import {Text, StyleSheet, View, Dimensions, ScrollView} from 'react-native';
+import {Text, StyleSheet, View, Dimensions, ScrollView,TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import AddSvg from '../../assets/svg/AddSvg';
 import AddDishes from '../../components/AddDishes';
+
 
 const AddDishesScreen = () => {
   const {restaurants} = useSelector(state => state.restaurant);
@@ -17,10 +18,13 @@ const AddDishesScreen = () => {
         </View>
         <View style={styles.line} />
         <View style={[styles.add, {justifyContent: 'flex-end'}]}>
-          <Text style={[styles.text, {marginRight: 20}]}>Добавить Блюда</Text>
-          <AddSvg />
+          <Text style={[styles.text, {marginRight: 15}]}>Добавить Блюда</Text>
+          <TouchableOpacity>
+            <AddSvg />
+          </TouchableOpacity>
         </View>
         <View style={styles.line} />
+       
         <AddDishes />
       </ScrollView>
     </View>
@@ -45,7 +49,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    height: 70,
+    marginBottom:20,
     paddingHorizontal: 30,
     backgroundColor: '#000000',
     flexDirection: 'row',
@@ -54,7 +58,7 @@ const styles = StyleSheet.create({
   },
   add: {
     height: 50,
-    paddingHorizontal: 30,
+    paddingHorizontal: 15,
     backgroundColor: '#000000',
     flexDirection: 'row',
     alignItems: 'center',
