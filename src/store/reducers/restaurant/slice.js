@@ -2,7 +2,6 @@ import {createSlice} from '@reduxjs/toolkit';
 import {
   Favorite,
   Favorites,
-  Feedback,
   Kitchen,
   Menu,
   Menus,
@@ -28,7 +27,6 @@ const initialState = {
   favorites: '',
   preference: '',
   preferences: '',
-  feedback: '',
   error: '',
 };
 
@@ -41,6 +39,7 @@ const slice = createSlice({
       state.restaurants = payload;
     },
     [Restaurants.fulfilled]: (state, action) => {
+      console.log(action.payload);
       state.restaurant = action.payload;
     },
     [Menu.fulfilled]: (state, action) => {
@@ -72,9 +71,6 @@ const slice = createSlice({
     },
     [Preferences.fulfilled]: (state, action) => {
       state.preferences = action.payload;
-    },
-    [Feedback.fulfilled]: (state, action) => {
-      state.feedback = action.payload;
     },
     [Restaurant.rejected]: (state, {payload}) => {
       state.error = payload;
@@ -110,9 +106,6 @@ const slice = createSlice({
       state.error = payload;
     },
     [Preferences.rejected]: (state, {payload}) => {
-      state.error = payload;
-    },
-    [Feedback.rejected]: (state, {payload}) => {
       state.error = payload;
     },
   },

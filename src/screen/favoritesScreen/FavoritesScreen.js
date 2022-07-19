@@ -1,33 +1,28 @@
 import React from 'react';
 import {Text, StyleSheet, View, Dimensions} from 'react-native';
 import SimpleHeader from '../../components/headers/SimpleHeader';
-import Favorites from '../../components/Favorites';
+import FavoriteComp from '../../components/Favorites';
 import {useSelector} from 'react-redux';
+import SearchHeader from "../../components/headers/SearchHeader";
 
 const FavoritesScreen = () => {
-  const {restaurants} = useSelector(state => state.home);
+  const {favorite} = useSelector(state => state.restaurant);
 
   return (
     <View style={styles.container}>
-      <SimpleHeader title={'Актуальные брони'} />
-      <Favorites state={restaurants} />
+      {/*<SimpleHeader title={'Актуальные брони'} />*/}
+      <SearchHeader />
+      <FavoriteComp state={favorite} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30,
     backgroundColor: '#000000',
-    minHeight: Dimensions.get('window').height - 100,
+    minHeight: Dimensions.get('window').height,
     height: '100%',
-  },
-  text: {
-    marginTop: 30,
-    fontSize: 16,
-    color: '#FFFFFF',
-    marginBottom: 20,
-    marginLeft: 10,
+    padding: 20,
   },
 });
 

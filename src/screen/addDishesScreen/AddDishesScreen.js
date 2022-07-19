@@ -9,7 +9,6 @@ const AddDishesScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
         <View style={styles.header}>
           <Text style={styles.text}>
             Бронь в “Название рест.” в ДД.ММ, 17:30
@@ -22,7 +21,6 @@ const AddDishesScreen = () => {
         </View>
         <View style={styles.line} />
         <AddDishes />
-      </ScrollView>
     </View>
   );
 };

@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
 import React, {memo} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity, StyleSheet, View, Text} from 'react-native';
 import BackArrowSvg from '../../assets/svg/header/BackArrowSvg';
 
@@ -23,10 +23,9 @@ const SimpleHeader = ({title, right}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 90,
+    height: 70,
     paddingHorizontal: 30,
-    paddingTop: 40,
-    paddingBottom: 20,
+    paddingVertical: 20,
     backgroundColor: '#000000',
     flexDirection: 'row',
     borderBottomColor: '#17181B',

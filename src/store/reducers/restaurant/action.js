@@ -22,10 +22,11 @@ export const Restaurants = createAsyncThunk(
   async (data, thunkAPI) => {
     console.log(data);
     try {
-      const response = await axiosInstance.get(`restaurant/${data?.id}`);
-      console.log(response.data);
+      const response = await axiosInstance.get(`restaurant/${data}`);
+      console.log('secret ----. ', response.data);
       return response.data;
     } catch (e) {
+      console.log('reeallly', e);
       return thunkAPI.rejectWithValue(e.message);
     }
   },
@@ -205,28 +206,6 @@ export const Preferences = createAsyncThunk(
         {
           ...data,
         },
-        {
-          headers: {Authorization: `${bearer} ${token}`},
-        },
-      );
-      console.log(response.data);
-      return response.data;
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e.message);
-    }
-  },
-);
-
-export const Feedback = createAsyncThunk(
-  'restaurant/Feedback',
-  async (data, thunkAPI) => {
-    console.log(data);
-    const bearer = await AsyncStorage.getItem('bearer');
-    const token = await AsyncStorage.getItem('token');
-    try {
-      const response = await axiosInstance.post(
-        'feedback',
-        {...data},
         {
           headers: {Authorization: `${bearer} ${token}`},
         },

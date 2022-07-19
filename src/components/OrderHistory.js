@@ -8,7 +8,7 @@ import {
   Text,
 } from 'react-native';
 import MoreSvg from '../assets/svg/MoreSvg';
-import {initialState3} from '../components/UI/StoryData';
+import {initialState3} from "./UI/StoryData";
 
 const OrderHistory = ({state}) => {
   return (

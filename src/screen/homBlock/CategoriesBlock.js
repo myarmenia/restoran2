@@ -5,17 +5,26 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  LogBox,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 
-const CategoriesBlock = ({navigation, item, update}) => {
+const titleObj = {
+  '-1': 'Топ Ресторанов',
+  0: 'Бургерные',
+  1: 'Кондитерские',
+  2: 'Рестораны быстрого питания',
+  3: 'Пиццерии',
+  4: 'Суши Бары',
+  5: 'Другие...',
+};
+
+const CategoriesBlock = ({update, setTitle}) => {
   const {categories} = useSelector(state => state.home);
   const {restaurants} = useSelector(state => state.restaurant);
   const [filteredItem, setFilteredItem] = useState(-1);
 
   return (
-    <View style={{marginLeft: 10}}>
+    <View>
       <FlatList
         horizontal={true}
         showsHorizontalScrollIndicator={false}
@@ -29,9 +38,11 @@ const CategoriesBlock = ({navigation, item, update}) => {
                 update(() =>
                   restaurants.filter(el => el?.desc === item.category),
                 );
+                setTitle(titleObj[index]);
               } else {
                 setFilteredItem(-1);
                 update(() => restaurants);
+                setTitle(titleObj['-1']);
               }
             }}
             key={index}
@@ -52,7 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#202124',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 6,
+    marginRight: 10,
     width: 50,
     height: 50,
     borderRadius: 80,

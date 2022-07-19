@@ -1,31 +1,55 @@
-import React from 'react';
-import {Text, StyleSheet, View} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import React, {useState} from 'react';
+import {Text, StyleSheet, View, Dimensions} from 'react-native';
 import SimpleHeader from '../../components/headers/SimpleHeader';
-import {useSelector} from 'react-redux';
 import CustomInput from '../../components/UI/inputs/CustomInput';
 import TextArea from '../../components/UI/textArea/TextArea';
 import MainButton from '../../components/UI/buttons/MainButton';
+import {useDispatch, useSelector} from 'react-redux';
+import {Feedback} from '../../store/reducers/support/action';
 
-const FeedBackScreen = () => {
+const FeedBackScreen = ({navigation}) => {
+  const [theme, setTheme] = useState('');
+  const [message, setMessage] = useState('');
+  const {status} = useSelector(({support}) => support);
+  const dispatch = useDispatch();
+
+  const navigateToHome = () => {
+    if (+status === 200) {
+      navigation.navigate('Home');
+    }
+  };
   return (
-    <View>
-      <LinearGradient colors={['black', 'black']}>
-        <SimpleHeader title={'История заказов'} />
-        <Text style={styles.text}>Свяжитесь с нами, если есть проблема</Text>
-        <View style={{marginBottom: -12}}>
-          <CustomInput placeholder={'Тема'} />
-        </View>
-        <TextArea placeholder={'Сообщение'} />
-        <View style={{marginTop: 30, marginBottom: 150}}>
-          <MainButton textBtn={'Отправить'} />
-        </View>
-      </LinearGradient>
+    <View style={styles.container}>
+      <SimpleHeader title={'История заказов'} />
+      <Text style={styles.text}>Свяжитесь с нами, если есть проблема</Text>
+      <View style={{marginBottom: -12}}>
+        <CustomInput placeholder={'Тема'} onChangeText={setTheme} />
+      </View>
+      <TextArea placeholder={'Сообщение'} text={message} onChangeText={setMessage} />
+      <View style={{marginTop: 30, marginHorizontal: 40}}>
+        <MainButton
+          textBtn={'Отправить'}
+          goTo={async () => {
+            await dispatch(
+              Feedback({
+                theme,
+                message,
+              }),
+            );
+            await navigateToHome();
+          }}
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#000000',
+    minHeight: Dimensions.get('window').height,
+    height: '100%',
+  },
   text: {
     marginTop: 30,
     fontSize: 22,

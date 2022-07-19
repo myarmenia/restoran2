@@ -12,6 +12,8 @@ import Geolocation from 'react-native-geolocation-service';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faLocationCrosshairs} from '@fortawesome/free-solid-svg-icons';
 import SearchHeader from '../../components/headers/SearchHeader';
+import {useDispatch, useSelector} from 'react-redux';
+import {Restaurants} from '../../store/reducers/restaurant/action';
 
 const mapStyle = [
   {
@@ -186,10 +188,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const MapScreen = () => {
+const MapScreen = ({navigation}) => {
+  const {restaurants} = useSelector(({restaurant}) => restaurant);
   const [initCoords, setInitCoords] = useState({});
   const [geoAuth, setGeoAuth] = useState(false);
   const mapRef = useRef();
+  const dispatch = useDispatch();
   useEffect(() => {
     requestPermissions();
   }, []);
@@ -208,10 +212,8 @@ const MapScreen = () => {
   }
 
   const getCurrentPosition = () => {
-    console.log(mapRef.current);
     Geolocation.getCurrentPosition(
       position => {
-        console.log(position);
         setInitCoords({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -234,14 +236,17 @@ const MapScreen = () => {
 
   return (
     <View style={styles.container}>
-      <SearchHeader
+      <View
         style={{
+          position: 'absolute',
           top: 0,
           left: 0,
-          width: Dimensions.get('window').width,
-        }}
-        placeholder={'Поиск'}
-      />
+          width: 0.9 * Dimensions.get('window').width,
+          zIndex: 100,
+          margin: 0.05 * Dimensions.get('window').width,
+        }}>
+        <SearchHeader placeholder={'Поиск'} back={'inherit'} />
+      </View>
       {geoAuth ? (
         <TouchableOpacity
           onPress={() => {
@@ -252,14 +257,14 @@ const MapScreen = () => {
             zIndex: 1000,
             bottom: 10,
             right: 10,
-            borderColor: '#fff',
-            borderWidth: 2,
-            padding: 5,
+            borderRadius: 45,
+            backgroundColor: '#202124',
+            padding: 13,
           }}>
           <FontAwesomeIcon
             icon={faLocationCrosshairs}
-            color={'white'}
-            size={30}
+            color={'grey'}
+            size={25}
           />
         </TouchableOpacity>
       ) : (
@@ -279,26 +284,18 @@ const MapScreen = () => {
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}>
-        <Marker
-          title="Hello"
-          description="It's me"
-          coordinate={{latitude: 40.6791482, longitude: 44.5177428}}
-        />
-        <Marker
-          title="Hello"
-          description="It's me"
-          coordinate={{latitude: 40.1791482, longitude: 45.0177428}}
-        />
-        <Marker
-          title="Hello"
-          description="It's me"
-          coordinate={{latitude: 40.6791482, longitude: 45.0177428}}
-        />
-        <Marker
-          title="Hello"
-          description="It's me"
-          coordinate={{latitude: 40.1791482, longitude: 44.5177428}}
-        />
+        {restaurants?.map((el, ind) => (
+          <Marker
+            key={ind}
+            title={el?.name}
+            description={el?.address}
+            coordinate={{latitude: +el?.latit, longitude: +el?.longit}}
+            onCalloutPress={async () => {
+              await dispatch(Restaurants(el?.id));
+              navigation.navigate('RestTitle');
+            }}
+          />
+        ))}
       </MapView>
     </View>
   );

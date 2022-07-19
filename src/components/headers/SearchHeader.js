@@ -25,8 +25,7 @@ const SearchHeader = props => {
 const styles = StyleSheet.create({
   container: {
     height: 50,
-    paddingHorizontal: 20,
-    backgroundColor: '#000000',
+    // backgroundColor: '#000000',
   },
   inputContainer: {
     display: 'flex',

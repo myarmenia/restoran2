@@ -8,7 +8,7 @@ import {
   Text,
 } from 'react-native';
 import {useState} from 'react';
-import {initialState2} from '../components/UI/DishData';
+import {initialState2} from "./UI/DishData";
 import MoreSvg from '../assets/svg/MoreSvg';
 import MainButton from '../components/UI/buttons/MainButton';
 import CallSvg from '../assets/svg/callSvg/CallSvg';
