@@ -29,6 +29,8 @@ import FavoritesScreen from '../screen/favoritesScreen/FavoritesScreen';
 import FeedBackScreen from '../screen/feedBackScreen/FeedBackScreen';
 import AddDishesScreen from '../screen/addDishesScreen/AddDishesScreen';
 import SelectMenuScreen from '../screen/selectMenuScreen/SelectMenuScreen';
+import NameDishScreen from '../screen/nameDishScreen/NameDishScreen';
+import MainDishesScreen from '../screen/mainDishesScreen/MainDishesScreen'
 
 const ProfileComponent = () => {
   return (
@@ -50,7 +52,7 @@ const Drawer = createStackNavigator();
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName={'Главная'}
+      initialRouteName={'AddDishesScreen'}
       screenOptions={({route}) => ({
         tabBarStyle: {
           backgroundColor: 'rgba(32, 33, 36, 1)',
@@ -61,8 +63,8 @@ const BottomTabNavigator = () => {
         tabBarHideOnKeyboard: true,
       })}>
       <Tab.Screen
-        name="Главная"
-        component={HomeScreen}
+        name="AddDishesScreen"
+        component={AddDishesScreen}
         options={{
           tabBarLabel: ({focused}) =>
             focused ? <TextFocusHomeSvg /> : <HomeTabTextSvg />,

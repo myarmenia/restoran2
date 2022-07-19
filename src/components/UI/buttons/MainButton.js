@@ -9,6 +9,7 @@ const MainButton = ({
   width,
   background,
   goTo,
+  fontSize = 20,
 }) => {
   return (
     <TouchableOpacity onPress={goTo} activeOpacity={0.9}>
@@ -21,7 +22,9 @@ const MainButton = ({
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
         colors={['#648E00', '#005100']}>
-        <Text style={styles.text}>{textBtn}</Text>
+        <Text style={[styles.text, {fontSize: fontSize}]}>
+          {textBtn}
+        </Text>
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -37,7 +40,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#fff',
-    fontSize: 20,
   },
 });
 

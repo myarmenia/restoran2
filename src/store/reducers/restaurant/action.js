@@ -238,3 +238,23 @@ export const Feedback = createAsyncThunk(
     }
   },
 );
+
+
+
+// export const Restaurant = createAsyncThunk(
+//   'restaurant/Restaurant',
+//   async (data, thunkAPI) => {
+//     console.log(data);
+//     try {
+//       const response = await axiosInstance.get('restaurant');
+//       console.log('aaa', response.data);
+//       return response.data.data;
+//     } catch (e) {
+//       console.log(e);
+//       return thunkAPI.rejectWithValue(e.message);
+//     }
+//   },
+// );
+
+
+
