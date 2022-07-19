@@ -2,8 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import CloseSvg from '../../assets/svg/CloseSvg';
 import MainButton from './buttons/MainButton';
-import {useState} from 'react';
-import {initialState2} from '../UI/DishData';
+
 
 const DeleteModal = ({
   setOpenModal,
@@ -58,6 +57,10 @@ const styles = StyleSheet.create({
     width: '100%',
     elevation: 10,
     borderRadius: 10,
+    marginHorizontal: 40,
+    position: 'absolute',
+    zIndex: 100,
+    transform: [{translateY: 50}],
   },
   close: {
     marginTop: 15,

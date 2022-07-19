@@ -29,7 +29,8 @@ import FavoritesScreen from '../screen/favoritesScreen/FavoritesScreen';
 import FeedBackScreen from '../screen/feedBackScreen/FeedBackScreen';
 import AddDishesScreen from '../screen/addDishesScreen/AddDishesScreen';
 import SelectMenuScreen from '../screen/selectMenuScreen/SelectMenuScreen';
-import NameDishScreen from '../screen/nameDishScreen/NameDishScreen'
+import NameDishScreen from '../screen/nameDishScreen/NameDishScreen';
+import MainDishesScreen from '../screen/mainDishesScreen/MainDishesScreen'
 
 const ProfileComponent = () => {
   return (

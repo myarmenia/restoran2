@@ -6,6 +6,7 @@ import TextArea from '../../components/UI/textArea/TextArea';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Button} from 'react-native';
 import MainButton from '../../components/UI/buttons/MainButton';
+import AddedCartModal from '../../components/UI/AddedCartModal';
 
 const NameDishScreen = ({navigation}) => {
   const [count, setCount] = useState(0);
@@ -18,8 +19,13 @@ const NameDishScreen = ({navigation}) => {
   const Increase = () => {
     setCount(count + 1);
   };
+  const [openModal, setOpenModal] = useState(false);
+  const modalVisible = () => {
+    setOpenModal(true);
+  };
   return (
     <View style={styles.container}>
+      {openModal && <AddedCartModal setOpenModal={setOpenModal} />}
       <ScrollView>
         <View
           style={{
@@ -46,6 +52,7 @@ const NameDishScreen = ({navigation}) => {
         <View style={{alignItems: 'center', marginTop: 30}}>
           <Image source={logoImg} />
         </View>
+        {/* <AddedCartModal/> */}
         <Text
           style={{
             color: '#FFFFFF',
@@ -110,8 +117,8 @@ const NameDishScreen = ({navigation}) => {
           }}>
           4000 руб.
         </Text>
-        <View style={{marginHorizontal: 30, marginTop:15, marginBottom:40}}>
-          <MainButton textBtn={'Добавить в корзину'} />
+        <View style={{marginHorizontal: 30, marginTop: 15, marginBottom: 40}}>
+          <MainButton textBtn={'Добавить в корзину'} goTo={modalVisible} />
         </View>
       </ScrollView>
     </View>
