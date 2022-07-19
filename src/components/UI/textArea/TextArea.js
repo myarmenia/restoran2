@@ -14,7 +14,8 @@ const TextArea = ({placeholder, horizontal, onChangeText, text}) => {
         placeholderTextColor="#5F6368"
         keyboardType={'default'}
         numberOfLines={10}
-        marginHorizontal={horizontal ? horizontal : 20}
+        marginHorizontal={horizontal ? horizontal : 10}
+        height={height ? height : 130}
       />
     </View>
   );

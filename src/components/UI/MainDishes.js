@@ -8,33 +8,18 @@ import {
   Text,
 } from 'react-native';
 import {useState} from 'react';
-import {initialState2} from "./UI/DishData";
-import MoreSvg from '../assets/svg/MoreSvg';
-import MainButton from '../components/UI/buttons/MainButton';
-import CallSvg from '../assets/svg/callSvg/CallSvg';
-import DeleteSvg from '../assets/svg/DeleteSvg';
-import LikeComponent from '../components/UI/LikeComponent';
-import DeleteModal from '../components/UI/DeleteModal';
+import {initialState2} from '../../components/UI/DishData';
+import MainButton from '../../components/UI/buttons/MainButton';
+import DeleteSvg from '../../assets/svg/DeleteSvg';
+import LikeComponent from '../../components/UI/LikeComponent';
 
-const AddDishes = () => {
+const MainDishes = () => {
   const [openModal, setOpenModal] = useState(false);
   const [index, setIndex] = useState(-1);
   const [productsArray, setProductsArray] = useState(initialState2);
 
-
   return (
     <View>
-      <View>
-        {openModal && (
-          <DeleteModal
-          productsArray={productsArray}
-            setProductsArray={setProductsArray}
-            index={index}
-            setOpenModal={setOpenModal}
-          />
-        )}
-      </View>
-
       <FlatList
         data={productsArray}
         // data={initialState2}
@@ -55,17 +40,6 @@ const AddDishes = () => {
                   </TouchableOpacity>
                 </View>
                 <View style={{flex: 7}}>
-
-
-
-                  {/* <TouchableOpacity>
-                    <Text style={styles.name}>{item.title}</Text>
-                  </TouchableOpacity>
-                  <View style={{marginLeft: 234}}>
-                    <LikeComponent />
-                  </View> */}
-
-
                   <View
                     style={{
                       flexDirection: 'row',
@@ -79,8 +53,6 @@ const AddDishes = () => {
                       <LikeComponent />
                     </View>
                   </View>
-
-
 
                   <Text style={styles.categories}>{item.dishes}</Text>
                   {item.isMenuSelected ? null : (
@@ -105,12 +77,16 @@ const AddDishes = () => {
 
                       {/* <TouchableOpacity onPress={() => removeUser(index)}> */}
                       <TouchableOpacity
-                        style={{marginLeft: 100}}
+                        style={{}}
                         onPress={() => {
                           setIndex(+index);
                           setOpenModal(true);
                         }}>
-                        <DeleteSvg />
+                        <MainButton
+                          fontSize={17}
+                          textBtn={'+ 1000 руб.'}
+                          vertical={3}
+                        />
                       </TouchableOpacity>
                     </View>
                   )}
@@ -121,58 +97,6 @@ const AddDishes = () => {
           </View>
         )}
       />
-      {/* <View style={[styles.line, {marginTop: 10}]} /> */}
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          paddingRight: 30,
-          marginTop: 15,
-        }}>
-        <Text style={{color: '#5F6368', fontSize: 14, marginRight: 10}}>
-          Общее:
-        </Text>
-        <Text style={{color: '#5F6368', fontSize: 14}}>8 000 рублей</Text>
-      </View>
-
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          paddingRight: 30,
-          marginTop: 10,
-        }}>
-        <Text style={{color: '#5F6368', fontSize: 14, marginRight: 10}}>
-          Оплата за обслуживание Х%:{' '}
-        </Text>
-        <Text style={{color: '#5F6368', fontSize: 14}}>800 рублей</Text>
-      </View>
-
-      <View style={[styles.line, {marginTop: 15}]} />
-      <View style={{flexDirection: 'row'}}>
-        <View style={{flex: 2}}></View>
-        <Text style={{color: '#FFFFFF', fontSize: 20, flex: 3}}>
-          К оплате 8 800 рублей
-        </Text>
-      </View>
-      <View style={{flexDirection: 'row', marginTop: 40}}>
-        <View style={{flex: 1}} />
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-          }}>
-          <Text style={{fontSize: 12, color: '#5F6368', marginRight: 15}}>
-            Для обратной связи.
-          </Text>
-          <CallSvg />
-        </View>
-      </View>
-      <View style={{marginVertical: 20, marginHorizontal: 10, marginTop: 25}}>
-        <MainButton textBtn={'Добавить меню к бронированию'} />
-      </View>
     </View>
   );
 };
@@ -216,7 +140,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 1.5,
     marginBottom: 3,
+    marginTop:8
   },
 });
 
-export default AddDishes;
+export default MainDishes;
