@@ -5,14 +5,14 @@ import MainDishes from '../../components/UI/MainDishes';
 import SimpleHeader from '../../components/headers/SimpleHeader'
 
 
-const MainDishesScreen = () => {
+const MainDishesScreen = ({navigation}) => {
   const {restaurants} = useSelector(state => state.restaurant);
 
   return (
     <View style={styles.container}>
       <ScrollView>
       <SimpleHeader title={'Основные Блюда'} right={-40}/>
-        <MainDishes />
+        <MainDishes navigation={navigation} />
       </ScrollView>
     </View>
   );

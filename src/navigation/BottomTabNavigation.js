@@ -30,7 +30,8 @@ import FeedBackScreen from '../screen/feedBackScreen/FeedBackScreen';
 import AddDishesScreen from '../screen/addDishesScreen/AddDishesScreen';
 import SelectMenuScreen from '../screen/selectMenuScreen/SelectMenuScreen';
 import NameDishScreen from '../screen/nameDishScreen/NameDishScreen';
-import MainDishesScreen from '../screen/mainDishesScreen/MainDishesScreen'
+import MainDishesScreen from '../screen/mainDishesScreen/MainDishesScreen';
+import PreferencesScreen from '../screen/preferencesScreen/PreferencesScreen'
 
 const ProfileComponent = () => {
   return (
@@ -52,7 +53,7 @@ const Drawer = createStackNavigator();
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName={'AddDishesScreen'}
+      initialRouteName={'MainDishesScreen'}
       screenOptions={({route}) => ({
         tabBarStyle: {
           backgroundColor: 'rgba(32, 33, 36, 1)',
@@ -63,8 +64,8 @@ const BottomTabNavigator = () => {
         tabBarHideOnKeyboard: true,
       })}>
       <Tab.Screen
-        name="AddDishesScreen"
-        component={AddDishesScreen}
+        name="MainDishesScreen"
+        component={MainDishesScreen}
         options={{
           tabBarLabel: ({focused}) =>
             focused ? <TextFocusHomeSvg /> : <HomeTabTextSvg />,
@@ -93,8 +94,8 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="addDishes"
-        component={AddDishesScreen}
+        name="NameDishScreen"
+        component={NameDishScreen}
         options={{
           tabBarLabel: ({focused, color, size}) =>
             focused ? <TextFocusBasketSvg /> : <BasketTabTextSvg />,

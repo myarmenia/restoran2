@@ -13,10 +13,14 @@ import MainButton from '../../components/UI/buttons/MainButton';
 import DeleteSvg from '../../assets/svg/DeleteSvg';
 import LikeComponent from '../../components/UI/LikeComponent';
 
-const MainDishes = () => {
+const MainDishes = ({navigation}) => {
   const [openModal, setOpenModal] = useState(false);
   const [index, setIndex] = useState(-1);
   const [productsArray, setProductsArray] = useState(initialState2);
+
+  const goToNextPage = () => {
+    navigation.navigate('NameDishScreen')
+  }
 
   return (
     <View>
@@ -62,7 +66,7 @@ const MainDishes = () => {
                         alignItems: 'center',
                         marginBottom: 5,
                       }}>
-                      <TouchableOpacity style={styles.opacity}>
+                      <TouchableOpacity onPress ={goToNextPage} style={styles.opacity}>
                         <Text style={{color: '#FFFFFF', marginRight: 5}}>
                           Подробнее
                         </Text>

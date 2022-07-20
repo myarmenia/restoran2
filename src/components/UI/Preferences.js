@@ -3,33 +3,51 @@ import {
   View,
   StyleSheet,
   FlatList,
-  TouchableOpacity,
   Image,
   Text,
+  TouchableOpacity
 } from 'react-native';
-import MarkSvg from '../assets/svg/homeScreen/MarkSvg';
-import {PreferencesData} from '../components/UI/PreferencesData';
-import MoreSvg from '../assets/svg/MoreSvg';
+import LoveCheckComponent from './LoveCheckComponent';
+import {PreferencesData} from './PreferencesData';
+import { useState } from 'react'
 
-const Preferences = ({state}) => {
+
+const Preferences = (index) => {
+  const [productsArray, setProductsArray] = useState(PreferencesData); 
+
+  const clickMe = (index) => {
+     setProductsArray(products => products.filter((_, ind) => ind !== index));
+  };
+
+
+
   return (
+    <View>
     <FlatList
-      data={PreferencesData}
+      // data={PreferencesData}
+      data={productsArray}
       showsVerticalScrollIndicator={false}
       numColumns={2}
       keyExtractor={(item, index) => index.toString()}
       contentContainerStyle={styles.list}
       columnWrapperStyle={{justifyContent: 'space-between'}}
-      renderItem={({item}) => (
+      renderItem={({item, index}) => (
         <View style={styles.container}>
+        <TouchableOpacity style={{paddingLeft:115, marginTop:5}} onPress={() => clickMe(index)}> 
+            <LoveCheckComponent/>
+        </TouchableOpacity>
           <View style={styles.subContainer} activeOpacity={0.7}>
             <Image style={styles.img} resizeMode="cover" source={item.img} />
             <Text style={styles.name}>{item.title}</Text>
           </View>
           <Text style={styles.text1}>{item.text}</Text>
+          <Text style={{color:'#FFFFFF', fontSize:12}}>
+            Название рест.
+          </Text>
         </View>
       )}
     />
+    </View>
   );
 };
 
@@ -73,3 +91,6 @@ const styles = StyleSheet.create({
 });
 
 export default Preferences;
+
+
+
