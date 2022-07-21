@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {Login, Registration, SendCodeNum, SendPhone} from './action';
+import { Login, ProfileUpdate, Registration, SendCodeNum, SendPhone } from "./action";
 
 const initialState = {
   auth: false,
@@ -53,6 +53,9 @@ const slice = createSlice({
     },
     [SendPhone.fulfilled]: state => {
       state.name = {...state.name};
+    },
+    [ProfileUpdate.fulfilled]: (state, {payload}) => {
+      state.user = {...state.user, payload};
     },
   },
 });

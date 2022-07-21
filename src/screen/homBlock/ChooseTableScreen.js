@@ -2,12 +2,12 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import TitleBlock from './TitleBlock';
 
-const ChooseTableScreen = () => {
+const ChooseTableScreen = ({navigation}) => {
   // const {item} = route.params
 
   return (
     <View>
-      <TitleBlock />
+      <TitleBlock navigation={navigation} />
     </View>
   );
 };

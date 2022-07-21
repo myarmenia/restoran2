@@ -10,9 +10,10 @@ const MainButton = ({
   background,
   goTo,
   fontSize = 20,
+  disable = false,
 }) => {
   return (
-    <TouchableOpacity onPress={goTo} activeOpacity={0.9}>
+    <TouchableOpacity onPress={goTo} activeOpacity={0.9} disabled={disable}>
       <LinearGradient
         style={styles.btnContainer}
         marginHorizontal={horizontal ? horizontal : 0}
@@ -21,10 +22,8 @@ const MainButton = ({
         width={width ? width : '100%'}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
-        colors={['#648E00', '#005100']}>
-        <Text style={[styles.text, {fontSize: fontSize}]}>
-          {textBtn}
-        </Text>
+        colors={disable ? ['#444E40', '#404e40'] : ['#648E00', '#005100']}>
+        <Text style={[styles.text, {fontSize: fontSize}]}>{textBtn}</Text>
       </LinearGradient>
     </TouchableOpacity>
   );

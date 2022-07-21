@@ -1,4 +1,6 @@
 import React from 'react';
+import {useHeaderHeight} from '@react-navigation/elements';
+import {Platform} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from '../../screen/homBlock/HomeScreen';
 import ChooseTableScreen from '../../screen/homBlock/ChooseTableScreen';
@@ -17,8 +19,9 @@ import MapScreen from '../../screen/mapBlock/MapScreen';
 import PrivacyPolicyScreen from '../../screen/privacyPolicyScreen/PrivacyPolicyScreen';
 import ConsentToProcessing from '../../screen/consentToProcessing/ConsentToProcessing';
 import TermsScreen from '../../screen/termsScreen/TermsScreen';
-import {useHeaderHeight} from '@react-navigation/elements';
-import {Platform} from 'react-native';
+import MenuCategoriesScreen from '../../screen/menuCategories/MenuCategoriesScreen';
+import MainDishesScreen from '../../screen/mainDishesScreen/MainDishesScreen';
+import NameDishScreen from '../../screen/nameDishScreen/NameDishScreen';
 
 const Stack = createStackNavigator();
 
@@ -37,6 +40,7 @@ export const HomeStackNavigation = () => {
         headerStyle: {
           height: Platform.OS === 'ios' ? headerHeight : 0,
         },
+        headerShown: false,
       }}>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="ChooseTable" component={ChooseTableScreen} />
@@ -61,6 +65,12 @@ export const HomeStackNavigation = () => {
         component={ConsentToProcessing}
       />
       <Stack.Screen name="TermsScreen" component={TermsScreen} />
+      <Stack.Screen
+        name="MenuCategoriesScreen"
+        component={MenuCategoriesScreen}
+      />
+      <Stack.Screen name="MainDishesScreen" component={MainDishesScreen} />
+      <Stack.Screen name="NameDishScreen" component={NameDishScreen} />
     </Stack.Navigator>
   );
 };

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, StyleSheet, View, Dimensions} from 'react-native';
 import SimpleHeader from '../../components/headers/SimpleHeader';
 import CustomInput from '../../components/UI/inputs/CustomInput';
@@ -6,6 +6,7 @@ import TextArea from '../../components/UI/textArea/TextArea';
 import MainButton from '../../components/UI/buttons/MainButton';
 import {useDispatch, useSelector} from 'react-redux';
 import {Feedback} from '../../store/reducers/support/action';
+import {DismissKeyboard} from '../../components/UI/DismissKeyboard';
 
 const FeedBackScreen = ({navigation}) => {
   const [theme, setTheme] = useState('');
@@ -13,33 +14,39 @@ const FeedBackScreen = ({navigation}) => {
   const {status} = useSelector(({support}) => support);
   const dispatch = useDispatch();
 
-  const navigateToHome = () => {
+  useEffect(() => {
     if (+status === 200) {
       navigation.navigate('Home');
     }
-  };
+  }, [status]);
+
   return (
     <View style={styles.container}>
-      <SimpleHeader title={'История заказов'} />
-      <Text style={styles.text}>Свяжитесь с нами, если есть проблема</Text>
-      <View style={{marginBottom: -12}}>
-        <CustomInput placeholder={'Тема'} onChangeText={setTheme} />
-      </View>
-      <TextArea placeholder={'Сообщение'} text={message} onChangeText={setMessage} />
-      <View style={{marginTop: 30, marginHorizontal: 40}}>
-        <MainButton
-          textBtn={'Отправить'}
-          goTo={async () => {
-            await dispatch(
-              Feedback({
-                theme,
-                message,
-              }),
-            );
-            await navigateToHome();
-          }}
+      <DismissKeyboard>
+        <SimpleHeader title={'История заказов'} />
+        <Text style={styles.text}>Свяжитесь с нами, если есть проблема</Text>
+        <View style={{marginBottom: -12}}>
+          <CustomInput placeholder={'Тема'} onChangeText={setTheme} />
+        </View>
+        <TextArea
+          placeholder={'Сообщение'}
+          text={message}
+          onChangeText={setMessage}
         />
-      </View>
+        <View style={{marginTop: 30, marginHorizontal: 40}}>
+          <MainButton
+            textBtn={'Отправить'}
+            goTo={async () => {
+              await dispatch(
+                Feedback({
+                  theme,
+                  message,
+                }),
+              );
+            }}
+          />
+        </View>
+      </DismissKeyboard>
     </View>
   );
 };

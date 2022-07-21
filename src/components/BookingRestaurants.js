@@ -6,12 +6,13 @@ import {
   TouchableOpacity,
   Image,
   Text,
+  Dimensions,
 } from 'react-native';
 import {initialState1} from './UI/RestaurantsData';
 import MoreSvg from '../assets/svg/MoreSvg';
 
-const BookingRestaurants = ({state}) => {
-  return (
+const BookingRestaurants = ({orders}) => {
+  return orders?.length ? (
     <FlatList
       data={initialState1}
       showsVerticalScrollIndicator={false}
@@ -44,6 +45,15 @@ const BookingRestaurants = ({state}) => {
         </View>
       )}
     />
+  ) : (
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: Dimensions.get('window').height - 170,
+      }}>
+      <Text style={{color: '#fff'}}>У вас нет заказов</Text>
+    </View>
   );
 };
 

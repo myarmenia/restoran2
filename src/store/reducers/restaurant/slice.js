@@ -18,28 +18,59 @@ const initialState = {
   restaurants: [],
   restaurant: [],
   menu: '',
-  menus: '',
+  menus: [],
   byId: '',
   kitchen: '',
   orders: '',
   orderStore: '',
   favorite: [],
   favorites: '',
-  preference: '',
+  preference: [],
   preferences: '',
   error: '',
+  yourOrder: [],
+  reserveOrders: [],
 };
 
 const slice = createSlice({
   name: 'restaurant',
   initialState,
-  reducers: {},
+  reducers: {
+    addDish: (state, {payload}) => {
+      const restIndex = state.yourOrder[payload[0]].menus.findIndex(
+        el => el.id === payload[1],
+      );
+      if (restIndex !== -1) {
+        state.yourOrder[payload[0]].menus.push(payload[2]);
+        state.reserveOrders.push(payload[3]);
+      } else {
+        state.yourOrder[payload[0]].menus[restIndex].count +=
+          payload[2][payload[1]].count;
+        if (payload[2][payload[0]].menus.comment) {
+          state.yourOrder[payload[0]].menus[restIndex].comment +=
+            '\n' + payload[2][payload[0]].comment;
+        }
+      }
+      if (state.yourOrder[payload[0]].menus.length) {
+        state.yourOrder[payload[0]].menus.count += payload[2][payload[0]].count;
+        if (payload[1][payload[0]].menus.comment) {
+          state.yourOrder[payload[0]].menus.count +=
+            '\n' + payload[2][payload[0]].comment;
+        }
+      }
+    },
+    addRest: (state, {payload}) => {
+      state.yourOrder.push({[payload.restaurant_id]: payload});
+    },
+    changeMenu: (state, {payload}) => {
+      state.yourOrder.menus = payload;
+    },
+  },
   extraReducers: {
     [Restaurant.fulfilled]: (state, {payload}) => {
       state.restaurants = payload;
     },
     [Restaurants.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.restaurant = action.payload;
     },
     [Menu.fulfilled]: (state, action) => {
@@ -112,5 +143,5 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
-const {signOut} = slice.actions;
-export {signOut};
+const {addDish, addRest, changeMenu} = slice.actions;
+export {addDish, addRest, changeMenu};

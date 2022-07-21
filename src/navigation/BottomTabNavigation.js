@@ -30,7 +30,6 @@ import FeedBackScreen from '../screen/feedBackScreen/FeedBackScreen';
 import AddDishesScreen from '../screen/addDishesScreen/AddDishesScreen';
 import SelectMenuScreen from '../screen/selectMenuScreen/SelectMenuScreen';
 import NameDishScreen from '../screen/nameDishScreen/NameDishScreen';
-import MainDishesScreen from '../screen/mainDishesScreen/MainDishesScreen'
 import {HomeStackNavigation} from './stacks/HomeStack';
 
 const ProfileComponent = () => {

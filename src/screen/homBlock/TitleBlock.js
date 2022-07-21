@@ -9,62 +9,97 @@ import {
 } from 'react-native';
 import MapMarkerSvg from '../../assets/svg/homeScreen/MapMarkerSvg';
 import {useSelector} from 'react-redux';
-import SearchHeader from '../../components/headers/SearchHeader';
+import SearchComponent from '../../components/searchComponent';
+import {DismissKeyboard} from '../../components/UI/DismissKeyboard';
 
-const TitleBlock = () => {
-  const {restaurant} = useSelector(state => state.restaurant);
-  console.log(restaurant);
+const TitleBlock = ({navigation}) => {
+  const {restaurants, restaurant} = useSelector(state => state.restaurant);
   return (
     <View
       style={{
-        padding: 20,
         backgroundColor: '#000',
         minHeight: Dimensions.get('screen').height,
         height: '100%',
+        flex: 1,
       }}>
       <View
         style={{
           marginBottom: 20,
         }}>
-        <SearchHeader placeholder={'Поиск'} />
+        <SearchComponent data={restaurants} navigation={navigation} />
       </View>
-      <View style={{padding: 5}}>
-        <View style={{flexDirection: 'row'}}>
-          <Image
-            style={styles.img}
-            resizeMode="cover"
-            source={
-              restaurant[0]?.main_image ||
-              require('../../assets/img/home/restaurants/1.png')
-            }
-          />
-          <View style={{paddingLeft: 20}}>
-            <Text style={styles.name}>{restaurant[0]?.name}</Text>
-            <Text style={styles.categories}>{restaurant[0]?.desc}</Text>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-              }}>
-              <View
+      <DismissKeyboard>
+        <View style={{padding: 25, marginTop: 60}}>
+          <View style={{flexDirection: 'row'}}>
+            <Image
+              style={styles.img}
+              resizeMode="cover"
+              source={
+                restaurant?.images[0]?.path
+                  ? {
+                      uri: `https://back.tap-table.ru/get_file?path=/${restaurant?.images[0]?.path}`,
+                    }
+                  : require('../../assets/img/home/restaurants/1.png')
+              }
+            />
+            <View style={{paddingLeft: 20, flex: 3}}>
+              <Text style={styles.name}>{restaurant?.name}</Text>
+              <Text style={styles.categories}>{restaurant?.desc}</Text>
+              <TouchableOpacity
+                activeOpacity={0.7}
                 style={{
-                  paddingTop: 5,
                   flexDirection: 'row',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
                 }}>
-                <MapMarkerSvg />
-                <Text style={styles.address}>{restaurant[0]?.address}</Text>
-              </View>
-            </TouchableOpacity>
+                <View
+                  style={{
+                    paddingTop: 5,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <MapMarkerSvg />
+                  <Text style={styles.address}>{restaurant?.address}</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <Text style={{color: '#FFFFFF', fontSize: 16, marginTop: 20}}>
+            Выбрать посадочное место
+          </Text>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+            {restaurant?.floor_planes &&
+              restaurant?.floor_planes?.data_json &&
+              restaurant?.floor_planes?.data_json?.length &&
+              (typeof restaurant?.floor_planes?.data_json === 'string'
+                ? JSON.parse(restaurant?.floor_planes?.data_json)
+                : restaurant?.floor_planes?.data_json
+              )?.map((el, ind) => (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('OrderTypeScreen', {
+                      restId: restaurant?.id,
+                      tableId: ind,
+                    })
+                  }
+                  key={ind}>
+                  <Text
+                    style={{
+                      color: '#000',
+                      fontSize: 20,
+                      padding: 10,
+                      margin: 10,
+                      backgroundColor: '#ddd',
+                      borderRadius: 15,
+                    }}
+                    key={ind}>
+                    {ind + 1}
+                  </Text>
+                </TouchableOpacity>
+              ))}
           </View>
         </View>
-        <Text style={{color: '#FFFFFF', fontSize: 16, marginTop: 20}}>
-          Выбрать посадочное место
-        </Text>
-      </View>
+      </DismissKeyboard>
     </View>
   );
 };
@@ -83,12 +118,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#5F6368',
     paddingLeft: 3,
-    flexShrink: 1,
-    flexWrap: 'wrap',
   },
   name: {
     color: '#fff',
     fontSize: 20,
+  },
+  img: {
+    flex: 2,
   },
 });
 

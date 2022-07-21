@@ -23,10 +23,8 @@ export const Restaurants = createAsyncThunk(
     console.log(data);
     try {
       const response = await axiosInstance.get(`restaurant/${data}`);
-      console.log('secret ----. ', response.data);
-      return response.data;
+      return response.data.data;
     } catch (e) {
-      console.log('reeallly', e);
       return thunkAPI.rejectWithValue(e.message);
     }
   },
@@ -38,11 +36,13 @@ export const Menu = createAsyncThunk(
     console.log(data);
     try {
       console.log('mta1');
-      const response = await axiosInstance.get(`restaurant/menu/${data?.id}`);
+      const response = await axiosInstance.get(
+        `restaurant/menu/${data.id}?category=${data.catId}`,
+      );
       console.log(response.data);
-      return response.data;
+      return response.data.data;
     } catch (e) {
-      console.log('mta2');
+      console.log('oooops mta2', e);
       return thunkAPI.rejectWithValue(e.message);
     }
   },
@@ -54,10 +54,10 @@ export const Menus = createAsyncThunk(
     console.log(data);
     try {
       const response = await axiosInstance.get(
-        `restaurant/menu/categories/${data?.id}`,
+        `restaurant/menu/categories/${data}`,
       );
       console.log(response.data);
-      return response.data;
+      return response.data.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
@@ -70,10 +70,10 @@ export const MenusByMenuID = createAsyncThunk(
     console.log(data);
     try {
       const response = await axiosInstance.get(
-        `restaurant/menu/single/${data?.id}`,
+        `restaurant/menu/single/${data}`,
       );
       console.log(response.data);
-      return response.data;
+      return response.data.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
@@ -86,8 +86,8 @@ export const Kitchen = createAsyncThunk(
     console.log(data);
     try {
       const response = await axiosInstance.get('restaurant/kitchen');
-      console.log(response.data);
-      return response.data;
+      console.log('kitchen', response.data);
+      return response.data.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
@@ -104,7 +104,7 @@ export const Orders = createAsyncThunk(
       const response = await axiosInstance.get('order', {
         headers: {Authorization: `${bearer} ${token}`},
       });
-      console.log(response.data);
+      console.log('orders', response.data);
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -119,16 +119,16 @@ export const orderStore = createAsyncThunk(
     const bearer = await AsyncStorage.getItem('bearer');
     const token = await AsyncStorage.getItem('token');
     try {
-      const response = await axiosInstance.post(
-        'order/store',
-        {...data},
-        {
-          headers: {Authorization: `${bearer} ${token}`},
+      const response = await axiosInstance.post('order/store', data, {
+        headers: {
+          Authorization: `${bearer} ${token}`,
+          'Content-Type': 'application/json',
         },
-      );
+      });
       console.log(response.data);
       return response.data;
     } catch (e) {
+      console.log('safdjhfiahi', e);
       return thunkAPI.rejectWithValue(e.message);
     }
   },
@@ -186,8 +186,8 @@ export const Preference = createAsyncThunk(
       const response = await axiosInstance.get('menu/preference', {
         headers: {Authorization: `${bearer} ${token}`},
       });
-      console.log(response.data);
-      return response.data;
+      console.log('favorite dishes', response.data);
+      return response.data.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
@@ -202,17 +202,16 @@ export const Preferences = createAsyncThunk(
     const token = await AsyncStorage.getItem('token');
     try {
       const response = await axiosInstance.patch(
-        'menu/preference',
-        {
-          ...data,
-        },
+        `menu/preference/${data?.id}`,
+        data,
         {
           headers: {Authorization: `${bearer} ${token}`},
         },
       );
-      console.log(response.data);
+      console.log('preference', response.data);
       return response.data;
     } catch (e) {
+      console.log('error pref ', e);
       return thunkAPI.rejectWithValue(e.message);
     }
   },

@@ -1,30 +1,58 @@
 import React from 'react';
-import {Text, StyleSheet, View, Dimensions, ScrollView,TouchableOpacity} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {useSelector} from 'react-redux';
 import AddSvg from '../../assets/svg/AddSvg';
 import AddDishes from '../../components/AddDishes';
 
-
 const AddDishesScreen = () => {
-  const {restaurants} = useSelector(state => state.restaurant);
+  const {restaurants, yourOrder, reserveOrders} = useSelector(
+    state => state.restaurant,
+  );
+
+  console.log('your order', yourOrder);
 
   return (
     <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.text}>
-            Бронь в “Название рест.” в ДД.ММ, 17:30
-          </Text>
-        </View>
-        <View style={styles.line} />
-        <View style={[styles.add, {justifyContent: 'flex-end'}]}>
-          <Text style={[styles.text, {marginRight: 15}]}>Добавить Блюда</Text>
-          <TouchableOpacity>
-            <AddSvg />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.line} />
-       
-        <AddDishes />
+      <ScrollView>
+        {Object.values(yourOrder).length ? (
+          Object.values(yourOrder).map((elem) => (
+            <>
+              <View style={styles.header}>
+                <Text style={styles.text}>
+                  {elem?.restaurant_id} в {elem?.coming_date}
+                </Text>
+              </View>
+              <View style={styles.line} />
+              <View style={[styles.add, {justifyContent: 'flex-end'}]}>
+                <Text style={[styles.text, {marginRight: 15}]}>
+                  Добавить Блюда
+                </Text>
+                <TouchableOpacity>
+                  <AddSvg />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.line} />
+              <AddDishes menu={elem?.menus} menuDesc={reserveOrders} />
+            </>
+          ))
+        ) : (
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: Dimensions.get('window').height - 170,
+            }}>
+            <Text style={{color: '#fff'}}>Корзина пуста</Text>
+          </View>
+        )}
+      </ScrollView>
     </View>
   );
 };
@@ -47,7 +75,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    marginBottom:20,
+    marginBottom: 20,
     paddingHorizontal: 30,
     backgroundColor: '#000000',
     flexDirection: 'row',

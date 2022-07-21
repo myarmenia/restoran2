@@ -1,11 +1,13 @@
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {useState} from 'react';
-import LoveSvg from '../../assets/svg/LoveSvg';
 import LoveChecktedSvg from '../../assets/svg/LoveChecktedSvg';
 
-const LikeComponent = ({choosed}) => {
-  return <View>{choosed ? <LoveChecktedSvg /> : <LoveSvg />}</View>;
+const LoveCheckComponent = ({state}) => {
+  return (
+    <View>
+      <LoveChecktedSvg />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -17,4 +19,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LikeComponent;
+export default LoveCheckComponent;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -8,21 +8,42 @@ import {
   Text,
 } from 'react-native';
 import {useState} from 'react';
-import {initialState2} from '../../components/UI/DishData';
+import {initialState2} from './DishData';
 import MainButton from '../../components/UI/buttons/MainButton';
-import DeleteSvg from '../../assets/svg/DeleteSvg';
 import LikeComponent from '../../components/UI/LikeComponent';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  Favorites,
+  MenusByMenuID,
+  Preference,
+  Preferences,
+} from '../../store/reducers/restaurant/action';
+import MarkSvg from '../../assets/svg/homeScreen/MarkSvg';
+import {addDish} from '../../store/reducers/restaurant/slice';
 
-const MainDishes = () => {
+const MainDishes = ({navigation, restId}) => {
   const [openModal, setOpenModal] = useState(false);
   const [index, setIndex] = useState(-1);
-  const [productsArray, setProductsArray] = useState(initialState2);
+  const [choosed, setChoosed] = useState([]);
+  // const [productsArray, setProductsArray] = useState(initialState2);
+
+  const {menu, preference} = useSelector(({restaurant}) => restaurant);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const newVal = preference?.map(el => el?.id);
+    setChoosed(newVal);
+  }, [preference]);
+  const goToNextPage = async id => {
+    await dispatch(MenusByMenuID(id));
+    navigation.navigate('NameDishScreen', {
+      restId: restId,
+    });
+  };
 
   return (
     <View>
       <FlatList
-        data={productsArray}
-        // data={initialState2}
+        data={menu}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={styles.list}
@@ -35,7 +56,10 @@ const MainDishes = () => {
                     <Image
                       style={styles.img}
                       resizeMode="cover"
-                      source={item.img}
+                      source={
+                        item?.img ||
+                        require('../../assets/img/home/dishes/1.png')
+                      }
                     />
                   </TouchableOpacity>
                 </View>
@@ -47,14 +71,27 @@ const MainDishes = () => {
                       justifyContent: 'space-between',
                     }}>
                     <TouchableOpacity>
-                      <Text style={styles.name}>{item.title}</Text>
+                      <Text style={styles.name}>{item?.name}</Text>
                     </TouchableOpacity>
-                    <View>
-                      <LikeComponent />
-                    </View>
+                    <TouchableOpacity
+                      onPress={async () => {
+                        console.log('hhhhhnnnnn');
+                        setChoosed(prev => {
+                          const arr = prev;
+                          if (!arr.includes(item?.id)) {
+                            arr.push(item?.id);
+                          } else {
+                            return arr.filter(el => el !== item?.id);
+                          }
+                          return arr;
+                        });
+                        await dispatch(Preferences({id: item?.id}));
+                      }}>
+                      <LikeComponent choosed={choosed.includes(item?.id)} />
+                    </TouchableOpacity>
                   </View>
 
-                  <Text style={styles.categories}>{item.dishes}</Text>
+                  <Text style={styles.categories}>{item?.desc}</Text>
                   {item.isMenuSelected ? null : (
                     <View
                       style={{
@@ -62,7 +99,9 @@ const MainDishes = () => {
                         alignItems: 'center',
                         marginBottom: 5,
                       }}>
-                      <TouchableOpacity style={styles.opacity}>
+                      <TouchableOpacity
+                        onPress={() => goToNextPage(item?.id)}
+                        style={styles.opacity}>
                         <Text style={{color: '#FFFFFF', marginRight: 5}}>
                           Подробнее
                         </Text>
@@ -72,22 +111,36 @@ const MainDishes = () => {
                             alignItems: 'center',
                             marginTop: 4,
                             marginRight: 60,
-                          }}></View>
+                          }}
+                        />
                       </TouchableOpacity>
 
                       {/* <TouchableOpacity onPress={() => removeUser(index)}> */}
-                      <TouchableOpacity
-                        style={{}}
-                        onPress={() => {
-                          setIndex(+index);
-                          setOpenModal(true);
-                        }}>
-                        <MainButton
-                          fontSize={17}
-                          textBtn={'+ 1000 руб.'}
-                          vertical={3}
-                        />
-                      </TouchableOpacity>
+                      <MainButton
+                        fontSize={17}
+                        textBtn={`+ ${item?.price} руб`}
+                        vertical={3}
+                        goTo={() => {
+                          // setIndex(+index);
+                          // setOpenModal(true);
+                          dispatch(
+                            addDish([
+                              restId,
+                              item?.id,
+                              {
+                                id: item?.id,
+                                count: 1,
+                                comment: '',
+                              },
+                              {
+                                name: item?.name,
+                                desc: item?.desc,
+                                price: item?.price,
+                              }
+                            ]),
+                          );
+                        }}
+                      />
                     </View>
                   )}
                 </View>
@@ -140,7 +193,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 1.5,
     marginBottom: 3,
-    marginTop:8
+    marginTop: 8,
   },
 });
 

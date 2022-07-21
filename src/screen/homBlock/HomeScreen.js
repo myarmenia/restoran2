@@ -3,8 +3,14 @@ import {Text, StyleSheet, View, Dimensions} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import CategoriesBlock from '../../screen/homBlock/CategoriesBlock';
 import TopRestaurants from '../../components/TopRestaurants';
-import SearchHeader from '../../components/headers/SearchHeader';
-import {Restaurant, Restaurants} from '../../store/reducers/restaurant/action';
+import {
+  Favorite,
+  Kitchen,
+  Orders, Preference, Preferences,
+  Restaurant,
+} from "../../store/reducers/restaurant/action";
+import {DismissKeyboard} from '../../components/UI/DismissKeyboard';
+import SearchComponent from '../../components/searchComponent';
 
 const HomeScreen = ({navigation}) => {
   const {restaurants} = useSelector(state => state.restaurant);
@@ -19,16 +25,24 @@ const HomeScreen = ({navigation}) => {
 
   useEffect(() => {
     dispatch(Restaurant());
+    dispatch(Favorite());
+    dispatch(Kitchen());
+    dispatch(Orders());
+    dispatch(Preference());
   }, []);
 
   return (
-    <View style={styles.container}>
-      <SearchHeader />
-      <Text style={styles.text}>Категории</Text>
-      <CategoriesBlock setTitle={setTitle} update={setRest} />
-      <Text style={styles.text}>{title}</Text>
-      <TopRestaurants navigation={navigation} state={rest} />
-    </View>
+    <>
+      <SearchComponent data={restaurants} navigation={navigation} />
+      <DismissKeyboard>
+        <View style={styles.container}>
+          <Text style={[styles.text, {paddingTop: 50}]}>Категории</Text>
+          <CategoriesBlock setTitle={setTitle} update={setRest} />
+          <Text style={styles.text}>{title}</Text>
+          <TopRestaurants navigation={navigation} state={rest} />
+        </View>
+      </DismissKeyboard>
+    </>
   );
 };
 

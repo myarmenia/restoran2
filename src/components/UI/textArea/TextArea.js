@@ -13,9 +13,9 @@ const TextArea = ({placeholder, horizontal, onChangeText, text}) => {
         placeholder={placeholder ? placeholder : 'Email'}
         placeholderTextColor="#5F6368"
         keyboardType={'default'}
-        numberOfLines={10}
-        marginHorizontal={horizontal ? horizontal : 10}
-        height={height ? height : 130}
+        // numberOfLines={10}
+        marginHorizontal={horizontal ? horizontal : 20}
+        textAlignVertical={'top'}
       />
     </View>
   );
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   MainContainer: {
     paddingTop: Platform.OS === 'ios' ? 20 : 0,
     margin: 20,
+    height: 300,
   },
 
   TextInputStyleClass: {
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingHorizontal: 30,
     color: '#fff',
-    flexWrap: 'wrap',
+    height: '100%',
   },
 });
 

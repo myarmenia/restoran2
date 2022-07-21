@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -8,26 +8,35 @@ import {
   Text,
 } from 'react-native';
 import {useState} from 'react';
-import {initialState2} from "./UI/DishData";
-import MoreSvg from '../assets/svg/MoreSvg';
+import {initialState2} from './UI/DishData';
 import MainButton from '../components/UI/buttons/MainButton';
 import CallSvg from '../assets/svg/callSvg/CallSvg';
 import DeleteSvg from '../assets/svg/DeleteSvg';
 import LikeComponent from '../components/UI/LikeComponent';
 import DeleteModal from '../components/UI/DeleteModal';
+import {useDispatch} from 'react-redux';
+import {changeMenu} from '../store/reducers/restaurant/slice';
 
-const AddDishes = () => {
+const AddDishes = (menu, menuDesc) => {
+  const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const [index, setIndex] = useState(-1);
-  const [productsArray, setProductsArray] = useState(initialState2);
+  const [productsArray, setProductsArray] = useState(menu);
 
+  useEffect(() => {
+    setProductsArray(menu);
+  }, [menu]);
+
+  useEffect(() => {
+    dispatch(changeMenu(productsArray));
+  }, [productsArray]);
 
   return (
     <View>
       <View>
         {openModal && (
           <DeleteModal
-          productsArray={productsArray}
+            productsArray={productsArray}
             setProductsArray={setProductsArray}
             index={index}
             setOpenModal={setOpenModal}
@@ -37,7 +46,6 @@ const AddDishes = () => {
 
       <FlatList
         data={productsArray}
-        // data={initialState2}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={styles.list}
@@ -55,17 +63,6 @@ const AddDishes = () => {
                   </TouchableOpacity>
                 </View>
                 <View style={{flex: 7}}>
-
-
-
-                  {/* <TouchableOpacity>
-                    <Text style={styles.name}>{item.title}</Text>
-                  </TouchableOpacity>
-                  <View style={{marginLeft: 234}}>
-                    <LikeComponent />
-                  </View> */}
-
-
                   <View
                     style={{
                       flexDirection: 'row',
@@ -73,16 +70,14 @@ const AddDishes = () => {
                       justifyContent: 'space-between',
                     }}>
                     <TouchableOpacity>
-                      <Text style={styles.name}>{item.title}</Text>
+                      <Text style={styles.name}>{menuDesc[index]?.name}</Text>
                     </TouchableOpacity>
                     <View>
                       <LikeComponent />
                     </View>
                   </View>
 
-
-
-                  <Text style={styles.categories}>{item.dishes}</Text>
+                  <Text style={styles.categories}>{menuDesc[index]?.desc}</Text>
                   {item.isMenuSelected ? null : (
                     <View
                       style={{
@@ -100,7 +95,8 @@ const AddDishes = () => {
                             alignItems: 'center',
                             marginTop: 4,
                             marginRight: 60,
-                          }}></View>
+                          }}
+                        />
                       </TouchableOpacity>
 
                       {/* <TouchableOpacity onPress={() => removeUser(index)}> */}
@@ -150,7 +146,7 @@ const AddDishes = () => {
 
       <View style={[styles.line, {marginTop: 15}]} />
       <View style={{flexDirection: 'row'}}>
-        <View style={{flex: 2}}></View>
+        <View style={{flex: 2}} />
         <Text style={{color: '#FFFFFF', fontSize: 20, flex: 3}}>
           К оплате 8 800 рублей
         </Text>

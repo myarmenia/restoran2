@@ -1,19 +1,13 @@
 import React from 'react';
-import {Text, StyleSheet, View, Dimensions, ScrollView,TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux';
+import {StyleSheet, View, Dimensions, ScrollView} from 'react-native';
 import MainDishes from '../../components/UI/MainDishes';
-import SimpleHeader from '../../components/headers/SimpleHeader'
+import SimpleHeader from '../../components/headers/SimpleHeader';
 
-
-const MainDishesScreen = () => {
-  const {restaurants} = useSelector(state => state.restaurant);
-
+const MainDishesScreen = ({navigation, route}) => {
   return (
     <View style={styles.container}>
-      <ScrollView>
-      <SimpleHeader title={'Основные Блюда'} right={-40}/>
-        <MainDishes />
-      </ScrollView>
+      <SimpleHeader title={'Основные Блюда'} right={-40} />
+      <MainDishes restId={route.params.restId} navigation={navigation} />
     </View>
   );
 };

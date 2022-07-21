@@ -1,107 +1,87 @@
-
-import React, { useState } from "react";
-import { Button, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import React, {useState} from 'react';
+import {
+  Button,
+  Dimensions,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import CalendarSvg from '../../../assets/svg/calendar';
+import ClockSvg from '../../../assets/svg/Clock';
 
-
-
-
-
-const DatePicker = () =>{
-    const [datePicker, setDatePicker] = useState(false);
-    const [date, setDate] = useState(new Date());
-    const [timePicker, setTimePicker] = useState(false);
-    const [time, setTime] = useState(new Date(Date.now()));
-
-    function showDatePicker() {
-        setDatePicker(true);
-      };
-     
-      function showTimePicker() {
-        setTimePicker(true);
-      };
+const DatePicker = ({mode, setDate, date, openModal, setOpenModal}) => {
+  function showDatePicker() {
+    setOpenModal(true);
+  }
 
   function onDateSelected(event, value) {
     setDate(value);
-    setDatePicker(true);
-  };
- 
-  function onTimeSelected(event, value) {
-    setTime(value);
-    setTimePicker(true);
-  };
-    return(
-        <SafeAreaView style={{ flex: 1 }}>
-        <View style={styleSheet.MainContainer}>
-   
-          <Text style={styleSheet.text}>Date = {date.toDateString()}</Text>
-   
-          <Text style={styleSheet.text}>Time = {time.toLocaleTimeString('en-US')}</Text>
-   
-          {datePicker && (
-            <DateTimePicker
-              value={date}
-              mode={'date'}
-              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-              is24Hour={true}
-              onChange={onDateSelected}
-              style={styleSheet.datePicker}
-            />
-          )}
-   
-          {timePicker && (
-            <DateTimePicker
-              value={time}
-              mode={'time'}
-              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-              is24Hour={false}
-              onChange={onTimeSelected}
-              style={styleSheet.datePicker}
-            />
-          )}
-   
-          {!datePicker && (
-            <View style={{ margin: 10 }}>
-              <Button title="Show Date Picker" color="green" onPress={showDatePicker} />
-            </View>
-          )}
-   
-          {!timePicker && (
-            <View style={{ margin: 10 }}>
-              <Button title="Show Time Picker" color="green" onPress={showTimePicker} />
-            </View>
-          )}
-   
-        </View>
-      </SafeAreaView>
-    )
-}
+    setOpenModal(false);
+  }
+
+  return (
+    <View style={styleSheet.MainContainer}>
+      <TouchableOpacity onPress={showDatePicker} style={styleSheet.container}>
+        {mode === 'date' ? (
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <CalendarSvg />
+            <Text style={styleSheet.text}>
+              {`0${date.getDate()}`.slice(-2)}.
+              {`0${date.getMonth() + 1}`.slice(-2)}.{date.getFullYear()}
+            </Text>
+          </View>
+        ) : (
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <ClockSvg />
+            <Text style={styleSheet.text}>
+              {`0${date.getHours()}`.slice(-2)}:
+              {`0${date.getMinutes()}`.slice(-2)}
+            </Text>
+          </View>
+        )}
+      </TouchableOpacity>
+
+      {openModal && (
+        <DateTimePicker
+          value={date}
+          mode={mode}
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+          is24Hour={true}
+          onChange={onDateSelected}
+          style={styleSheet.datePicker}
+          themeVariant={'dark'}
+        />
+      )}
+    </View>
+  );
+};
 
 const styleSheet = StyleSheet.create({
+  MainContainer: {
+    paddingHorizontal: 20,
+    alignItems: 'flex-start',
+  },
+  container: {
+    padding: 15,
+    backgroundColor: '#202124',
+    borderRadius: 45,
+  },
 
-    MainContainer: {
-      flex: 1,
-      padding: 46,
-      alignItems: 'center',
-      backgroundColor: 'silver'
-    },
-  
-    text: {
-      fontSize: 25,
-      color: 'pink',
-      padding: 3,
-      marginBottom: 10,
-      textAlign: 'center'
-    },
-  
-    
-    datePicker: {
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-      width: 320,
-      height: 260,
-      display: 'flex',
-    },
-  
-  });
+  text: {
+    fontSize: 16,
+    color: '#5F6368',
+    textAlign: 'center',
+    marginLeft: 20,
+  },
+
+  datePicker: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    display: 'flex',
+  },
+});
 export default DatePicker;

@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import {
   Dimensions,
+  Keyboard,
   PermissionsAndroid,
   Platform,
   StyleSheet,
@@ -14,6 +15,8 @@ import {faLocationCrosshairs} from '@fortawesome/free-solid-svg-icons';
 import SearchHeader from '../../components/headers/SearchHeader';
 import {useDispatch, useSelector} from 'react-redux';
 import {Restaurants} from '../../store/reducers/restaurant/action';
+import SearchComponent from '../../components/searchComponent';
+import {DismissKeyboard} from '../../components/UI/DismissKeyboard';
 
 const mapStyle = [
   {
@@ -236,17 +239,6 @@ const MapScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: 0.9 * Dimensions.get('window').width,
-          zIndex: 100,
-          margin: 0.05 * Dimensions.get('window').width,
-        }}>
-        <SearchHeader placeholder={'Поиск'} back={'inherit'} />
-      </View>
       {geoAuth ? (
         <TouchableOpacity
           onPress={() => {
@@ -270,7 +262,6 @@ const MapScreen = ({navigation}) => {
       ) : (
         <></>
       )}
-
       <MapView
         ref={mapRef}
         provider={PROVIDER_GOOGLE}
@@ -297,6 +288,16 @@ const MapScreen = ({navigation}) => {
           />
         ))}
       </MapView>
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          zIndex: 100,
+          width: 0.9 * Dimensions.get('screen').width,
+        }}>
+        <SearchComponent data={restaurants} navigation={navigation} />
+      </View>
     </View>
   );
 };
