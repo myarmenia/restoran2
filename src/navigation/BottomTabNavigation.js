@@ -30,7 +30,7 @@ import FeedBackScreen from '../screen/feedBackScreen/FeedBackScreen';
 import AddDishesScreen from '../screen/addDishesScreen/AddDishesScreen';
 import SelectMenuScreen from '../screen/selectMenuScreen/SelectMenuScreen';
 import NameDishScreen from '../screen/nameDishScreen/NameDishScreen';
-import MainDishesScreen from '../screen/mainDishesScreen/MainDishesScreen'
+import {HomeStackNavigation} from './stacks/HomeStack';
 
 const ProfileComponent = () => {
   return (
@@ -52,19 +52,20 @@ const Drawer = createStackNavigator();
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName={'AddDishesScreen'}
+      initialRouteName={'Главная'}
       screenOptions={({route}) => ({
         tabBarStyle: {
           backgroundColor: 'rgba(32, 33, 36, 1)',
           height: 70,
           paddingBottom: 10,
+          borderTopWidth: 0,
         },
         headerShown: false,
         tabBarHideOnKeyboard: true,
       })}>
       <Tab.Screen
-        name="AddDishesScreen"
-        component={AddDishesScreen}
+        name="Главная"
+        component={HomeStackNavigation}
         options={{
           tabBarLabel: ({focused}) =>
             focused ? <TextFocusHomeSvg /> : <HomeTabTextSvg />,
@@ -76,7 +77,7 @@ const BottomTabNavigator = () => {
         name="MapScreen"
         component={MapScreen}
         options={{
-          tabBarLabel: ({focused, color, size}) =>
+          tabBarLabel: ({focused}) =>
             focused ? <TextFocusMapSvg /> : <MapTabTextSvg />,
           tabBarIcon: ({focused}) =>
             focused ? <FocusMapTabSvg /> : <MapTabSvg />,
@@ -86,7 +87,7 @@ const BottomTabNavigator = () => {
         name="select"
         component={SelectMenuScreen}
         options={{
-          tabBarLabel: ({focused, color, size}) =>
+          tabBarLabel: ({focused}) =>
             focused ? <TextFocusOrdersSvg /> : <OrdersTabTextSvg />,
           tabBarIcon: ({focused}) =>
             focused ? <FocusOrdersTabSvg /> : <OrdersTabSvg />,
@@ -96,7 +97,7 @@ const BottomTabNavigator = () => {
         name="addDishes"
         component={AddDishesScreen}
         options={{
-          tabBarLabel: ({focused, color, size}) =>
+          tabBarLabel: ({focused}) =>
             focused ? <TextFocusBasketSvg /> : <BasketTabTextSvg />,
           tabBarIcon: ({focused}) =>
             focused ? <FocusBasketTabSvg /> : <BasketTabSvg />,
@@ -106,7 +107,7 @@ const BottomTabNavigator = () => {
         name="ProfileComponent"
         component={ProfileComponent}
         options={{
-          tabBarLabel: ({focused, color, size}) =>
+          tabBarLabel: ({focused}) =>
             focused ? <TextFocusProfileSvg /> : <ProfileTabTextSvg />,
           tabBarIcon: ({focused}) =>
             focused ? <FocusProfileTabSvg /> : <ProfileTabSvg />,

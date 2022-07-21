@@ -1,8 +1,8 @@
 import React, {memo, useState} from 'react';
-import {View, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import SearchBtn from '../../assets/svg/header/SearchBtn';
 
-const SearchHeader = props => {
+const SearchHeader = ({setSearchTerm, searchTerm, setTextInputFocussed}) => {
   const [value, setValue] = useState('');
 
   return (
@@ -12,7 +12,15 @@ const SearchHeader = props => {
           style={styles.input}
           placeholder="Поиск"
           placeholderTextColor={'#5F6368'}
-          onChange={e => setValue(e.target.value)}
+          onFocus={() => {
+            setTextInputFocussed
+              ? setTextInputFocussed(true)
+              : console.log('no');
+          }}
+          onChangeText={e => {
+            setSearchTerm(e);
+          }}
+          value={searchTerm}
         />
         <TouchableOpacity style={styles.search}>
           <SearchBtn />
@@ -25,8 +33,7 @@ const SearchHeader = props => {
 const styles = StyleSheet.create({
   container: {
     height: 50,
-    paddingHorizontal: 20,
-    backgroundColor: '#000000',
+    // backgroundColor: '#000000',
   },
   inputContainer: {
     display: 'flex',
@@ -47,6 +54,7 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     justifyContent: 'flex-start',
     paddingVertical: 4,
+    width: 0.75 * Dimensions.get('screen').width,
   },
   search: {
     width: '10%',

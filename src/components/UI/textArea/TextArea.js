@@ -1,18 +1,21 @@
-import { Platform, StyleSheet, View, TextInput } from "react-native";
 import React from 'react';
+import {Platform, StyleSheet, View, TextInput} from 'react-native';
 
-export default TextArea = ({ placeholder, horizontal, height }) => {
+const TextArea = ({placeholder, horizontal, onChangeText, text}) => {
   return (
     <View style={styles.MainContainer}>
       <TextInput
+        multiline
         style={styles.TextInputStyleClass}
+        value={text}
+        onChangeText={onChangeText}
         underlineColorAndroid="transparent"
-        placeholder={placeholder ? placeholder : "Email"}
+        placeholder={placeholder ? placeholder : 'Email'}
         placeholderTextColor="#5F6368"
-        numberOfLines={10}
-        multiline={false}
-        marginHorizontal={horizontal ? horizontal : 10}
-        height={height ? height : 130}
+        keyboardType={'default'}
+        // numberOfLines={10}
+        marginHorizontal={horizontal ? horizontal : 20}
+        textAlignVertical={'top'}
       />
     </View>
   );
@@ -20,16 +23,20 @@ export default TextArea = ({ placeholder, horizontal, height }) => {
 
 const styles = StyleSheet.create({
   MainContainer: {
-    flex: 1,
-    paddingTop: Platform.OS === "ios" ? 20 : 0,
-    justifyContent: "center",
-    margin: 20,   
+    paddingTop: Platform.OS === 'ios' ? 20 : 0,
+    margin: 20,
+    height: 300,
   },
 
   TextInputStyleClass: {
-    borderColor: "#9E9E9E",
-    borderRadius: 10,
-    backgroundColor: "#202124",
+    borderColor: '#9E9E9E',
+    borderRadius: 20,
+    backgroundColor: '#202124',
     fontSize: 18,
+    paddingHorizontal: 30,
+    color: '#fff',
+    height: '100%',
   },
 });
+
+export default TextArea;

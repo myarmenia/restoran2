@@ -5,12 +5,12 @@ import BookingRestaurants from '../../components/BookingRestaurants';
 import {useSelector} from 'react-redux';
 
 const SelectMenuScreen = () => {
-  const {restaurants} = useSelector(state => state.home);
+  const {orders} = useSelector(state => state.restaurant);
 
   return (
     <View style={styles.container}>
-      <SimpleHeader title={'Актуальные брони'} />
-      <BookingRestaurants state={restaurants} />
+      <SimpleHeader title={'Заказы'} />
+      <BookingRestaurants orders={orders} />
     </View>
   );
 };

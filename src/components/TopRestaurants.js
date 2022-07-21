@@ -9,55 +9,65 @@ import {
 } from 'react-native';
 import MarkSvg from '../assets/svg/homeScreen/MarkSvg';
 import {useDispatch, useSelector} from 'react-redux';
-import {Favorites} from '../store/reducers/restaurant/action';
+import {Favorites, Restaurants} from '../store/reducers/restaurant/action';
 
-const TopRestaurants = ({state}) => {
+const TopRestaurants = ({navigation, state}) => {
   const {favorite} = useSelector(({restaurant}) => restaurant);
-  const [choosed, setChoosed] = useState(Array(state.length).fill(false));
+  const [choosed, setChoosed] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const newVal = favorite?.map((el, index) => el?.id === state[index]?.id);
+    const newVal = favorite?.map(el => el?.id);
     setChoosed(newVal);
-  }, []);
+  }, [favorite]);
 
   return (
     <FlatList
-      style={{marginHorizontal: 13}}
       showsVerticalScrollIndicator={false}
       numColumns={2}
       data={state}
       keyExtractor={(item, index) => index.toString()}
       columnWrapperStyle={{justifyContent: 'space-between'}}
-      renderItem={({item, index}) => (
-        <View style={styles.container}>
+      renderItem={({item}) => (
+        <TouchableOpacity
+          style={styles.container}
+          onPress={async () => {
+            await dispatch(Restaurants(item?.id));
+            navigation.navigate('RestTitle');
+          }}
+          activeOpacity={0.7}>
           <TouchableOpacity
             style={styles.mark}
-            onPress={() => {
+            onPress={async () => {
               setChoosed(prev => {
                 const arr = prev;
-                arr[index] = !prev[index];
+                if (!arr.includes(item?.id)) {
+                  arr.push(item?.id);
+                } else {
+                  return arr.filter(el => el !== item?.id);
+                }
                 return arr;
               });
-              dispatch(Favorites({id: item?.id}));
+              await dispatch(Favorites({id: item?.id}));
             }}>
-            <MarkSvg choosed={choosed[index]} />
+            <MarkSvg choosed={choosed.includes(item?.id)} />
           </TouchableOpacity>
-          <TouchableOpacity
-            // onPress={goToTitleBlock}
-            style={styles.subContainer}
-            activeOpacity={0.7}>
+          <View style={styles.subContainer}>
             <Image
               style={styles.img}
               resizeMode="cover"
               source={
-                item.img || require('../assets/img/home/restaurants/1.png')
+                item?.images[0]?.path
+                  ? {
+                      uri: `https://back.tap-table.ru/get_file?path=/${item?.images[0]?.path}`,
+                    }
+                  : require('../assets/img/home/restaurants/1.png')
               }
             />
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.categories}>{item.desc}</Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       )}
     />
   );

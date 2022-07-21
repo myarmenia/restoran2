@@ -6,14 +6,17 @@ import {
   TouchableOpacity,
   Image,
   Text,
+  Dimensions,
 } from 'react-native';
 import MoreSvg from '../assets/svg/MoreSvg';
-import {initialState3} from '../components/UI/StoryData';
+import {initialState3} from './UI/StoryData';
+import {useSelector} from 'react-redux';
 
 const OrderHistory = ({state}) => {
-  return (
+  const {orders} = useSelector(({restaurant}) => restaurant);
+  return orders?.length ? (
     <FlatList
-      data={initialState3}
+      data={orders}
       showsVerticalScrollIndicator={false}
       keyExtractor={(item, index) => index.toString()}
       contentContainerStyle={styles.list}
@@ -25,12 +28,14 @@ const OrderHistory = ({state}) => {
                 <Image
                   style={styles.img}
                   resizeMode="cover"
-                  source={item.img}
+                  source={
+                    item?.img || require('../assets/img/home/dishes/1.png')
+                  }
                 />
               </View>
               <View style={{flex: 7}}>
-                {/* <Text style={styles.name}>{item.title}</Text>
-                <Text style={styles.categories}>{item.dishes}</Text>              */}
+                <Text style={styles.name}>{item?.name}</Text>
+                <Text style={styles.categories}>{item.desc}</Text>
               </View>
             </View>
           </View>
@@ -38,12 +43,22 @@ const OrderHistory = ({state}) => {
         </View>
       )}
     />
+  ) : (
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: Dimensions.get('window').height - 80,
+      }}>
+      <Text style={{color: '#fff'}}>У вас нет избранных ресторанов</Text>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#000000',
+    minHeight: Dimensions.get('screen').height,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

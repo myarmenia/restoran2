@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,15 +6,22 @@ import {
   TouchableOpacity,
   Image,
   Text,
+  Dimensions,
 } from 'react-native';
 import MarkSvg from '../assets/svg/homeScreen/MarkSvg';
-import {FavoritesData} from '../components/UI/FavoritesData';
-import MoreSvg from '../assets/svg/MoreSvg';
+import {useDispatch} from 'react-redux';
+import {Favorites} from '../store/reducers/restaurant/action';
 
-const Favorites = ({state}) => {
-  return (
+const FavoriteComp = ({state}) => {
+  const [choosed, setChoosed] = useState([]);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const newVal = state?.map(el => el?.id);
+    setChoosed(newVal);
+  }, []);
+  return state.length ? (
     <FlatList
-      data={FavoritesData}
+      data={state}
       showsVerticalScrollIndicator={false}
       numColumns={2}
       keyExtractor={(item, index) => index.toString()}
@@ -22,19 +29,51 @@ const Favorites = ({state}) => {
       columnWrapperStyle={{justifyContent: 'space-between'}}
       renderItem={({item}) => (
         <View style={styles.container}>
-          <TouchableOpacity style={styles.mark}>
-            <MarkSvg />
+          <TouchableOpacity
+            style={styles.mark}
+            onPress={() => {
+              setChoosed(prev => {
+                const arr = prev;
+                if (!arr.includes(item?.id)) {
+                  arr.push(item?.id);
+                } else {
+                  return arr.filter(el => el !== item?.id);
+                }
+                return arr;
+              });
+              dispatch(Favorites({id: item?.id}));
+            }}>
+            <MarkSvg choosed={choosed.includes(item?.id)} />
           </TouchableOpacity>
 
           <View style={styles.subContainer} activeOpacity={0.7}>
-            <Image style={styles.img} resizeMode="cover" source={item.img} />
+            <Image
+              style={styles.img}
+              resizeMode="cover"
+              source={
+                item?.images[0]?.path
+                  ? {
+                      uri: `https://back.tap-table.ru/get_file?path=/${item?.images[0]?.path}`,
+                    }
+                  : require('../assets/img/home/restaurants/1.png')
+              }
+            />
             <Text style={styles.name}>{item.title}</Text>
-            <Text style={styles.categories}>{item.bookDate}</Text>
-            <Text style={styles.categories}>{item.isMenuSelected}</Text>
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.categories}>{item.desc}</Text>
           </View>
         </View>
       )}
     />
+  ) : (
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: Dimensions.get('window').height - 170,
+      }}>
+      <Text style={{color: '#fff'}}>У вас нет избранных ресторанов</Text>
+    </View>
   );
 };
 
@@ -77,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Favorites;
+export default FavoriteComp;

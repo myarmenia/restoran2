@@ -43,10 +43,15 @@ const LoginScreen = ({navigation}) => {
   useEffect(() => {
     if (error) {
       setShowError(true);
-    } else if (!auth && !user?.phone_number) {
+    } else if (
+      !auth &&
+      !user?.phone_number &&
+      email &&
+      password &&
+      passRegExpRef.current.test(password) &&
+      emailRegExpRef.current.test(email)
+    ) {
       navigation.navigate('sendNumber');
-    } else {
-      setShowError(true);
     }
   }, [auth, user?.phone_number, error]);
 

@@ -2,7 +2,6 @@ import {createSlice} from '@reduxjs/toolkit';
 import {
   Favorite,
   Favorites,
-  Feedback,
   Kitchen,
   Menu,
   Menus,
@@ -19,23 +18,54 @@ const initialState = {
   restaurants: [],
   restaurant: [],
   menu: '',
-  menus: '',
+  menus: [],
   byId: '',
   kitchen: '',
   orders: '',
   orderStore: '',
   favorite: [],
   favorites: '',
-  preference: '',
+  preference: [],
   preferences: '',
-  feedback: '',
   error: '',
+  yourOrder: [],
+  reserveOrders: [],
 };
 
 const slice = createSlice({
   name: 'restaurant',
   initialState,
-  reducers: {},
+  reducers: {
+    addDish: (state, {payload}) => {
+      const restIndex = state.yourOrder[payload[0]].menus.findIndex(
+        el => el.id === payload[1],
+      );
+      if (restIndex !== -1) {
+        state.yourOrder[payload[0]].menus.push(payload[2]);
+        state.reserveOrders.push(payload[3]);
+      } else {
+        state.yourOrder[payload[0]].menus[restIndex].count +=
+          payload[2][payload[1]].count;
+        if (payload[2][payload[0]].menus.comment) {
+          state.yourOrder[payload[0]].menus[restIndex].comment +=
+            '\n' + payload[2][payload[0]].comment;
+        }
+      }
+      if (state.yourOrder[payload[0]].menus.length) {
+        state.yourOrder[payload[0]].menus.count += payload[2][payload[0]].count;
+        if (payload[1][payload[0]].menus.comment) {
+          state.yourOrder[payload[0]].menus.count +=
+            '\n' + payload[2][payload[0]].comment;
+        }
+      }
+    },
+    addRest: (state, {payload}) => {
+      state.yourOrder.push({[payload.restaurant_id]: payload});
+    },
+    changeMenu: (state, {payload}) => {
+      state.yourOrder.menus = payload;
+    },
+  },
   extraReducers: {
     [Restaurant.fulfilled]: (state, {payload}) => {
       state.restaurants = payload;
@@ -73,9 +103,6 @@ const slice = createSlice({
     [Preferences.fulfilled]: (state, action) => {
       state.preferences = action.payload;
     },
-    [Feedback.fulfilled]: (state, action) => {
-      state.feedback = action.payload;
-    },
     [Restaurant.rejected]: (state, {payload}) => {
       state.error = payload;
     },
@@ -112,12 +139,9 @@ const slice = createSlice({
     [Preferences.rejected]: (state, {payload}) => {
       state.error = payload;
     },
-    [Feedback.rejected]: (state, {payload}) => {
-      state.error = payload;
-    },
   },
 });
 
 export default slice.reducer;
-const {signOut} = slice.actions;
-export {signOut};
+const {addDish, addRest, changeMenu} = slice.actions;
+export {addDish, addRest, changeMenu};

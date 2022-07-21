@@ -143,7 +143,7 @@ const RegisterScreen = ({navigation, route}) => {
         />
       </View>
       <View style={{marginTop: 20, marginHorizontal: 40}}>
-        <MainButton textBtn={'Зарегистрироватся'} goTo={goToLoginPage} />
+        <MainButton disable={!(name && pass && pass1 && email && checked)} textBtn={'Зарегистрироватся'} goTo={goToLoginPage} />
       </View>
       <View
         style={{

@@ -6,8 +6,8 @@ import {useSelector} from 'react-redux';
 const Route = () => {
   const {auth} = useSelector(({auth}) => auth);
 
-  // return auth ? <SummaryNavigation /> : <AutoStack />;
-  return <SummaryNavigation />;
+  return auth ? <SummaryNavigation /> : <AutoStack />;
+  // return <SummaryNavigation />;
 };
 
 export default Route;

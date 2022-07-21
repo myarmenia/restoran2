@@ -75,4 +75,23 @@ export const Registration = createAsyncThunk(
   },
 );
 
-
+export const ProfileUpdate = createAsyncThunk(
+  'auth/ProfileUpdate',
+  async data => {
+    const bearer = await AsyncStorage.getItem('bearer');
+    const token = await AsyncStorage.getItem('token');
+    try {
+      const response = await axiosInstance.post('user/update', data, {
+        headers: {
+          Authorization: `${bearer} ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log('reg ----> ', response.data);
+      return response.data;
+    } catch (e) {
+      console.log(e.message);
+      return e.message;
+    }
+  },
+);

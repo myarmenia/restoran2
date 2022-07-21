@@ -1,19 +1,16 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import {StyleSheet, View, Dimensions} from 'react-native';
 import SimpleHeader from '../../components/headers/SimpleHeader';
-import Preferences from '../../components/Preferences';
+import PreferencesComp from '../../components/UI/Preferences';
 import {useSelector} from 'react-redux';
 
 const PreferencesScreen = () => {
   const {restaurants} = useSelector(state => state.home);
 
   return (
-    <View>
-      <LinearGradient colors={['black', 'black']}>
-        <SimpleHeader title={'Предпочтения'} />
-        <Preferences />
-      </LinearGradient>
+    <View style={styles.container}>
+      <SimpleHeader title={'Предпочтения'} />
+      <PreferencesComp />
     </View>
   );
 };
@@ -25,6 +22,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginBottom: 20,
     marginLeft: 10,
+  },
+  container: {
+    backgroundColor: '#000000',
+    minHeight: Dimensions.get('window').height - 100,
+    height: '100%',
   },
 });
 

@@ -1,38 +1,56 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {axiosInstance} from '../../request';
 
 const initialState = {
   categories: [
     {
       id: Math.random(),
-      img: require('../../assets/img/home/categories/burger.png'),
-      navigate: 'ChooseTable',
-      category: 'hamburger',
+      img: 'Европейская',
+      category: 'Европейская',
     },
     {
       id: Math.random(),
-      img: require('../../assets/img/home/categories/cake.png'),
-      category: 'cake',
+      img: 'Русская',
+      category: 'Русская',
     },
     {
       id: Math.random(),
-      img: require('../../assets/img/home/categories/fri.png'),
-      category: 'fri',
+      img: 'Американская',
+      category: 'Американская',
     },
     {
       id: Math.random(),
-      img: require('../../assets/img/home/categories/pizza.png'),
-      category: 'pizza',
+      img: 'Грузинская',
+      category: 'Грузинская',
     },
     {
       id: Math.random(),
-      img: require('../../assets/img/home/categories/rols.png'),
-      category: 'rols',
+      img: 'Итальянская',
+      category: 'Итальянская',
     },
     {
       id: Math.random(),
-      img: require('../../assets/img/home/categories/spageti.png'),
-      category: 'spageti',
+      img: 'Японская',
+      category: 'Японская',
+    },
+    {
+      id: Math.random(),
+      img: 'Корейская',
+      category: 'Корейская',
+    },
+    {
+      id: Math.random(),
+      img: 'Азиатская',
+      category: 'Азиатская',
+    },
+    {
+      id: Math.random(),
+      img: 'Кавказская',
+      category: 'Кавказская',
+    },
+    {
+      id: Math.random(),
+      img: 'Армянская',
+      category: 'Армянская',
     },
   ],
   restaurants: [
