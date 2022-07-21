@@ -50,10 +50,10 @@ const ProfileScreen = ({navigation}) => {
             </View>
             <View style={{flex: 4, marginTop: 8}}>
               <Text style={{fontSize: 18, color: '#FFFFFF', marginBottom: 8}}>
-                {user?.name}
+                {name}
               </Text>
               <Text style={{fontSize: 12, color: '#FFFFFF'}}>
-                {user?.gender || 'Мужской'}, {user?.age || '18'}
+                {gender || 'Мужской'}, {age || '18'}
               </Text>
             </View>
             <TouchableOpacity
@@ -69,7 +69,7 @@ const ProfileScreen = ({navigation}) => {
               marginTop: 25,
               marginLeft: 40,
             }}>
-            +{user?.phone_number}
+            {number}
           </Text>
           <Text
             style={{
@@ -79,7 +79,7 @@ const ProfileScreen = ({navigation}) => {
               marginBottom: 30,
               marginLeft: 40,
             }}>
-            {user?.email}
+            {email}
           </Text>
         </View>
       ) : (
@@ -97,7 +97,7 @@ const ProfileScreen = ({navigation}) => {
             </TouchableOpacity>
             <View style={{flex: 4, marginTop: 8, marginRight: 30}}>
               <TextInput
-                defaultValue={user?.name}
+                defaultValue={name}
                 onChangeText={e => {
                   setName(e);
                 }}
@@ -118,7 +118,7 @@ const ProfileScreen = ({navigation}) => {
                   justifyContent: 'space-between',
                 }}>
                 <TextInput
-                  defaultValue={user?.gender || 'Мужской'}
+                  defaultValue={gender || 'Мужской'}
                   onChangeText={e => {
                     setGender(e);
                   }}
@@ -134,7 +134,7 @@ const ProfileScreen = ({navigation}) => {
                   }}
                 />
                 <TextInput
-                  defaultValue={user?.age || '18'}
+                  defaultValue={'' + age || '18'}
                   onChangeText={e => {
                     setAge(e);
                   }}
@@ -172,7 +172,7 @@ const ProfileScreen = ({navigation}) => {
             </TouchableOpacity>
           </View>
           <TextInput
-            defaultValue={'' + user?.phone_number}
+            defaultValue={'' + number}
             keyboardType={'numeric'}
             onChangeText={e => {
               setNumber(e);
@@ -191,7 +191,7 @@ const ProfileScreen = ({navigation}) => {
             }}
           />
           <TextInput
-            defaultValue={user?.email}
+            defaultValue={email}
             style={{
               color: '#FFFFFF',
               fontSize: 18,
