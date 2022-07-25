@@ -37,9 +37,6 @@ export const HomeStackNavigation = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: {
-          height: Platform.OS === 'ios' ? headerHeight : 0,
-        },
         headerShown: false,
       }}>
       <Stack.Screen name="Home" component={HomeScreen} />

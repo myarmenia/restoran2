@@ -28,8 +28,9 @@ const initialState = {
   preference: [],
   preferences: '',
   error: '',
-  yourOrder: [],
+  yourOrder: {},
   reserveOrders: [],
+  phoneNumbers: {}
 };
 
 const slice = createSlice({
@@ -60,10 +61,14 @@ const slice = createSlice({
       }
     },
     addRest: (state, {payload}) => {
-      state.yourOrder.push({[payload.restaurant_id]: payload});
+      state.yourOrder[payload[0].restaurant_id] = payload[0];
+      state.phoneNumbers[payload[0].restaurant_id] = payload[1];
     },
     changeMenu: (state, {payload}) => {
-      state.yourOrder.menus = payload;
+      console.log('lalala', payload);
+      state.yourOrder[payload[0]].menus = payload[1];
+      console.log('babba', state.yourOrder);
+      state.yourOrder[payload[0]].menus = payload[1];
     },
   },
   extraReducers: {

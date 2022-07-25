@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
+  ScrollView,
   Text,
   Dimensions,
   TouchableOpacity,
-  ScrollView,
 } from 'react-native';
 import DatePicker from '../../components/UI/datePicker/DatePicker';
 import MainButton from '../../components/UI/buttons/MainButton';
@@ -24,7 +24,7 @@ const OrderTypeScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const {restaurant} = useSelector(({restaurant}) => restaurant);
   return (
-    <View>
+    <ScrollView>
       <SimpleHeader title={'Назад'} />
       <View
         style={{
@@ -135,9 +135,17 @@ const OrderTypeScreen = ({navigation, route}) => {
           <TouchableOpacity
             onPress={async () => {
               await dispatch(
-                addRest({
+                addRest([{
                   restaurant_id: restaurant?.id,
-                  coming_date: date,
+                  coming_date:
+                    `${date.getFullYear()}-` +
+                    `0${date.getMonth() + 1}`.slice(-2) +
+                    '-' +
+                    `0${date.getDate()}`.slice(-2) +
+                    ' ' +
+                    `0${date.getHours()}`.slice(-2) +
+                    ':' +
+                    `0${date.getMinutes()}`.slice(-2),  
                   people_nums: count,
                   floors: [
                     {
@@ -153,7 +161,7 @@ const OrderTypeScreen = ({navigation, route}) => {
                     },
                   ],
                   menus: [],
-                }),
+                }, restaurant?.phoneNumber]),
               );
               await dispatch(Menus(route.params.restId));
               navigation.navigate('MenuCategoriesScreen');
@@ -168,7 +176,9 @@ const OrderTypeScreen = ({navigation, route}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text style={styles.buttonText}>Меню</Text>
+              <View style={styles.buttonContainer}>
+                <Text style={styles.buttonText}>Меню</Text>
+              </View>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -207,7 +217,7 @@ const OrderTypeScreen = ({navigation, route}) => {
           }}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -220,6 +230,8 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     color: '#fff',
+  },
+  buttonContainer: {
     padding: 20,
     backgroundColor: '#000000',
     borderRadius: 45,

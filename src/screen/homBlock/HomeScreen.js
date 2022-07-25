@@ -6,9 +6,11 @@ import TopRestaurants from '../../components/TopRestaurants';
 import {
   Favorite,
   Kitchen,
-  Orders, Preference, Preferences,
+  Orders,
+  Preference,
+  Preferences,
   Restaurant,
-} from "../../store/reducers/restaurant/action";
+} from '../../store/reducers/restaurant/action';
 import {DismissKeyboard} from '../../components/UI/DismissKeyboard';
 import SearchComponent from '../../components/searchComponent';
 

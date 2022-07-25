@@ -1,13 +1,13 @@
 import React, {memo} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {TouchableOpacity, StyleSheet, View, Text} from 'react-native';
+import {TouchableOpacity, StyleSheet, View, Text, Platform} from 'react-native';
 import BackArrowSvg from '../../assets/svg/header/BackArrowSvg';
 
 const SimpleHeader = ({title, right}) => {
   const navigation = useNavigation();
 
   return (
-    <View>
+    <View style={styles.back}>
       <View style={styles.container}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <View style={{marginRight: right ? right : -20}}>
@@ -29,6 +29,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     flexDirection: 'row',
     borderBottomColor: '#17181B',
+  },
+  back: {
+    backgroundColor: '#000000',
+    paddingTop: Platform.OS === 'ios' ? 30 : 0,
   },
 });
 

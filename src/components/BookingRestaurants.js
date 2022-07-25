@@ -3,11 +3,11 @@ import {
   View,
   StyleSheet,
   FlatList,
-  TouchableOpacity,
   Image,
   Text,
   Dimensions,
 } from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {initialState1} from './UI/RestaurantsData';
 import MoreSvg from '../assets/svg/MoreSvg';
 

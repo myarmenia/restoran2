@@ -5,13 +5,14 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Platform,
 } from 'react-native';
 import SearchHeader from '../headers/SearchHeader';
 import React, {useMemo, useState} from 'react';
 import {Restaurants} from '../../store/reducers/restaurant/action';
 import {useDispatch} from 'react-redux';
 
-const SearchComponent = ({data, navigation}) => {
+const SearchComponent = ({data, navigation, addAbsolute}) => {
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState('');
   const [textInputFocussed, setTextInputFocussed] = useState(false);
@@ -53,11 +54,14 @@ const SearchComponent = ({data, navigation}) => {
         position: 'absolute',
         top: 0,
         left: 0,
-        width: 0.9 * Dimensions.get('window').width,
+        width: addAbsolute
+          ? 0.9 * Dimensions.get('window').width
+          : Dimensions.get('window').width,
         zIndex: 100,
-        margin: 0.05 * Dimensions.get('window').width,
+        padding: 0,
       }}>
       <SearchHeader
+        addAbsolute={addAbsolute}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         setTextInputFocussed={setTextInputFocussed}
@@ -67,7 +71,7 @@ const SearchComponent = ({data, navigation}) => {
           style={{
             position: 'absolute',
             backgroundColor: '#000000',
-            top: 45,
+            top: Platform.OS === 'ios' ? 75 : 45,
             left: 0,
             zIndex: 100,
             width: 0.9 * Dimensions.get('window').width,

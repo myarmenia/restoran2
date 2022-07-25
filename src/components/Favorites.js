@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   FlatList,
-  TouchableOpacity,
   Image,
   Text,
   Dimensions,
@@ -11,6 +10,7 @@ import {
 import MarkSvg from '../assets/svg/homeScreen/MarkSvg';
 import {useDispatch} from 'react-redux';
 import {Favorites} from '../store/reducers/restaurant/action';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const FavoriteComp = ({state}) => {
   const [choosed, setChoosed] = useState([]);

@@ -1,19 +1,14 @@
 import React, {useRef} from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Text,
-  Dimensions,
-} from 'react-native';
+import {View, StyleSheet, Image, Text, Dimensions} from 'react-native';
 import MapMarkerSvg from '../../assets/svg/homeScreen/MapMarkerSvg';
 import {useSelector} from 'react-redux';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import SearchComponent from '../../components/searchComponent';
 import {DismissKeyboard} from '../../components/UI/DismissKeyboard';
 
 const TitleBlock = ({navigation}) => {
   const {restaurants, restaurant} = useSelector(state => state.restaurant);
+  console.log(restaurant);
   return (
     <View
       style={{
@@ -76,12 +71,13 @@ const TitleBlock = ({navigation}) => {
                 : restaurant?.floor_planes?.data_json
               )?.map((el, ind) => (
                 <TouchableOpacity
-                  onPress={() =>
+                  onPress={() => {
+                    console.log('Hiiiii');
                     navigation.navigate('OrderTypeScreen', {
                       restId: restaurant?.id,
                       tableId: ind,
-                    })
-                  }
+                    });
+                  }}
                   key={ind}>
                   <Text
                     style={{

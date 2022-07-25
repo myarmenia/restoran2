@@ -13,6 +13,7 @@ import {Menu, MenusByMenuID} from '../../store/reducers/restaurant/action';
 const MenuCategoriesScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const {menus, restaurant} = useSelector(({restaurant}) => restaurant);
+  console.log(Array.isArray(menus));
   return (
     <View
       style={{
@@ -21,8 +22,8 @@ const MenuCategoriesScreen = ({navigation}) => {
       }}>
       <SimpleHeader title={'Меню'} />
       <View style={{paddingHorizontal: 20}}>
-        {menus?.length ? (
-          menus?.map((elem, index) => (
+        {(Array.isArray(menus) ? menus : Object.values(menus))?.map(
+          (elem, index) => (
             <TouchableOpacity
               onPress={async () => {
                 await dispatch(Menu({id: restaurant?.id, catId: elem?.id}));
@@ -34,9 +35,7 @@ const MenuCategoriesScreen = ({navigation}) => {
               style={styles.searchListItem}>
               <Text style={styles.searchListItemText}>{elem?.name}</Text>
             </TouchableOpacity>
-          ))
-        ) : (
-          <></>
+          ),
         )}
       </View>
     </View>

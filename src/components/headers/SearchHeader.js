@@ -1,12 +1,26 @@
 import React, {memo, useState} from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import {View, TextInput, StyleSheet, Dimensions, Platform} from 'react-native';
 import SearchBtn from '../../assets/svg/header/SearchBtn';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const SearchHeader = ({setSearchTerm, searchTerm, setTextInputFocussed}) => {
+const SearchHeader = ({
+  setSearchTerm,
+  searchTerm,
+  setTextInputFocussed,
+  addAbsolute,
+}) => {
   const [value, setValue] = useState('');
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          marginHorizontal: !addAbsolute
+            ? 0.05 * Dimensions.get('window').width
+            : 0,
+        },
+      ]}>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -33,6 +47,7 @@ const SearchHeader = ({setSearchTerm, searchTerm, setTextInputFocussed}) => {
 const styles = StyleSheet.create({
   container: {
     height: 50,
+    marginTop: Platform.OS === 'ios' ? 30 : 0,
     // backgroundColor: '#000000',
   },
   inputContainer: {

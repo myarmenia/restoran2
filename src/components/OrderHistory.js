@@ -3,13 +3,10 @@ import {
   View,
   StyleSheet,
   FlatList,
-  TouchableOpacity,
   Image,
   Text,
   Dimensions,
 } from 'react-native';
-import MoreSvg from '../assets/svg/MoreSvg';
-import {initialState3} from './UI/StoryData';
 import {useSelector} from 'react-redux';
 
 const OrderHistory = ({state}) => {
