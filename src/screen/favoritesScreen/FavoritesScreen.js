@@ -1,9 +1,7 @@
 import React from 'react';
-import {Text, StyleSheet, View, Dimensions} from 'react-native';
-import SimpleHeader from '../../components/headers/SimpleHeader';
+import {StyleSheet, View, Dimensions} from 'react-native';
 import FavoriteComp from '../../components/Favorites';
 import {useSelector} from 'react-redux';
-import SearchHeader from '../../components/headers/SearchHeader';
 import SearchComponent from '../../components/searchComponent';
 
 const FavoritesScreen = ({navigation}) => {
@@ -11,8 +9,7 @@ const FavoritesScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {/*<SimpleHeader title={'Актуальные брони'} />*/}
-      <SearchComponent data={restaurants} navigation={navigation} />
+      <SearchComponent data={favorite} navigation={navigation} />
       <View style={{marginTop: 60}}>
         <FavoriteComp state={favorite} />
       </View>

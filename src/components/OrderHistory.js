@@ -47,7 +47,7 @@ const OrderHistory = ({state}) => {
         justifyContent: 'center',
         height: Dimensions.get('window').height - 80,
       }}>
-      <Text style={{color: '#fff'}}>У вас нет избранных ресторанов</Text>
+      <Text style={{color: '#fff'}}>История заказов пуста</Text>
     </View>
   );
 };

@@ -30,7 +30,7 @@ const initialState = {
   error: '',
   yourOrder: {},
   reserveOrders: [],
-  phoneNumbers: {}
+  phoneNumbers: {},
 };
 
 const slice = createSlice({

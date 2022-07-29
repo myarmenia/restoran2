@@ -8,7 +8,7 @@ import {Login} from '../../store/reducers/auth/action';
 import {clearError} from '../../store/reducers/auth/slice';
 
 const LoginScreen = ({navigation}) => {
-  const {auth, error, user} = useSelector(({auth}) => auth);
+  const {canAuth, error, user} = useSelector(({auth}) => auth);
   const passRegExpRef = useRef(
     new RegExp('^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})'),
   );
@@ -44,7 +44,7 @@ const LoginScreen = ({navigation}) => {
     if (error) {
       setShowError(true);
     } else if (
-      !auth &&
+      !canAuth &&
       !user?.phone_number &&
       email &&
       password &&
@@ -53,7 +53,7 @@ const LoginScreen = ({navigation}) => {
     ) {
       navigation.navigate('sendNumber');
     }
-  }, [auth, user?.phone_number, error]);
+  }, [canAuth, user?.phone_number, error]);
 
   const goToRegistrationScreen = () => {
     navigation.navigate('register');

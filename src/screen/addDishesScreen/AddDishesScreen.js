@@ -18,6 +18,10 @@ const AddDishesScreen = ({navigation}) => {
   );
   const dispatch = useDispatch();
 
+  const getRestName = id => {
+    return restaurants.filter(el => el.id === id)[0].name;
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -27,7 +31,8 @@ const AddDishesScreen = ({navigation}) => {
               <>
                 <View style={styles.header}>
                   <Text style={styles.text}>
-                    Бронь в {elem?.restaurant_id} в {elem?.coming_date}
+                    Бронь в {getRestName(elem?.restaurant_id)} в{' '}
+                    {elem?.coming_date}
                   </Text>
                 </View>
                 <View style={styles.line} />
@@ -74,7 +79,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height - 100,
     height: '100%',
-    paddingTop: Platform.OS === 'ios' ? 50 : 0,
+    paddingTop: Platform.OS === 'ios' ? 60 : 20,
   },
   text: {
     color: '#FFFFFF',

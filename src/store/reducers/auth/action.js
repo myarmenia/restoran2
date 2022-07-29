@@ -13,8 +13,23 @@ export const Login = createAsyncThunk('auth/Login', async data => {
       await AsyncStorage.setItem('token', response.data.access_token);
       await AsyncStorage.setItem('bearer', response.data.token_type);
       await AsyncStorage.setItem('refreshToken', response.data.refresh_token);
+      await AsyncStorage.setItem('user', JSON.stringify(response.data.user));
     }
     return response.data;
+  } catch (e) {
+    console.log(e.message);
+    return 'Error Here';
+  }
+});
+
+export const AutoSignIn = createAsyncThunk('auth/AutoSignIn', async data => {
+  try {
+    console.log(data);
+    const token = await AsyncStorage.getItem('token');
+    const bearer = await AsyncStorage.getItem('bearer');
+    const refreshToken = await AsyncStorage.getItem('refreshToken');
+    const user = await AsyncStorage.getItem('user');
+    return {token, bearer, refreshToken, user};
   } catch (e) {
     console.log(e.message);
     return 'Error Here';
@@ -84,7 +99,7 @@ export const ProfileUpdate = createAsyncThunk(
       const response = await axiosInstance.post('user/update', data, {
         headers: {
           Authorization: `${bearer} ${token}`,
-          'Content-Type': 'application/json',
+          // 'Content-Type': 'application/json',
         },
       });
       console.log('reg ----> ', response.data);

@@ -6,11 +6,11 @@ import {
   Image,
   Text,
   Dimensions,
+  TouchableOpacity
 } from 'react-native';
 import MarkSvg from '../assets/svg/homeScreen/MarkSvg';
 import {useDispatch} from 'react-redux';
 import {Favorites} from '../store/reducers/restaurant/action';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const FavoriteComp = ({state}) => {
   const [choosed, setChoosed] = useState([]);
@@ -19,6 +19,7 @@ const FavoriteComp = ({state}) => {
     const newVal = state?.map(el => el?.id);
     setChoosed(newVal);
   }, []);
+
   return state.length ? (
     <FlatList
       data={state}
@@ -58,7 +59,7 @@ const FavoriteComp = ({state}) => {
                   : require('../assets/img/home/restaurants/1.png')
               }
             />
-            <Text style={styles.name}>{item.title}</Text>
+            {/*<Text style={styles.name}>{item.title}</Text>*/}
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.categories}>{item.desc}</Text>
           </View>
@@ -109,10 +110,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     marginBottom: 5,
+    textAlign: 'center',
   },
   categories: {
     fontSize: 14,
     color: '#5F6368',
+    textAlign: 'center',
   },
 });
 

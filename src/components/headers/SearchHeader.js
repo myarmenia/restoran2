@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
     width: 0.75 * Dimensions.get('screen').width,
   },
   search: {
-    width: '10%',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',

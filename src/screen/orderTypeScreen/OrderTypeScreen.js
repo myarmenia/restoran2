@@ -135,33 +135,36 @@ const OrderTypeScreen = ({navigation, route}) => {
           <TouchableOpacity
             onPress={async () => {
               await dispatch(
-                addRest([{
-                  restaurant_id: restaurant?.id,
-                  coming_date:
-                    `${date.getFullYear()}-` +
-                    `0${date.getMonth() + 1}`.slice(-2) +
-                    '-' +
-                    `0${date.getDate()}`.slice(-2) +
-                    ' ' +
-                    `0${date.getHours()}`.slice(-2) +
-                    ':' +
-                    `0${date.getMinutes()}`.slice(-2),  
-                  people_nums: count,
-                  floors: [
-                    {
-                      id: restaurant?.floor_planes?.data_json[
-                        route.params.tableId
-                      ].id
-                        ? restaurant?.floor_planes?.data_json[
-                            route.params.tableId
-                          ].id
-                        : route.params.tableId + 1,
-                      x: 1,
-                      y: 1,
-                    },
-                  ],
-                  menus: [],
-                }, restaurant?.phoneNumber]),
+                addRest([
+                  {
+                    restaurant_id: route.params.restId,
+                    coming_date:
+                      `${date.getFullYear()}-` +
+                      `0${date.getMonth() + 1}`.slice(-2) +
+                      '-' +
+                      `0${date.getDate()}`.slice(-2) +
+                      ' ' +
+                      `0${date.getHours()}`.slice(-2) +
+                      ':' +
+                      `0${date.getMinutes()}`.slice(-2),
+                    people_nums: count,
+                    floors: [
+                      {
+                        id: restaurant?.floor_planes?.data_json[
+                          route.params.tableId
+                        ].id
+                          ? restaurant?.floor_planes?.data_json[
+                              route.params.tableId
+                            ].id
+                          : route.params.tableId + 1,
+                        x: route.params.restX,
+                        y: route.params.restY,
+                      },
+                    ],
+                    menus: [],
+                  },
+                  restaurant?.phoneNumber,
+                ]),
               );
               await dispatch(Menus(route.params.restId));
               navigation.navigate('MenuCategoriesScreen');

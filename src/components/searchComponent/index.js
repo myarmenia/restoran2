@@ -52,7 +52,7 @@ const SearchComponent = ({data, navigation, addAbsolute}) => {
     <View
       style={{
         position: 'absolute',
-        top: 0,
+        top: 10,
         left: 0,
         width: addAbsolute
           ? 0.9 * Dimensions.get('window').width
@@ -71,10 +71,10 @@ const SearchComponent = ({data, navigation, addAbsolute}) => {
           style={{
             position: 'absolute',
             backgroundColor: '#000000',
-            top: Platform.OS === 'ios' ? 75 : 45,
+            top: Platform.OS === 'ios' ? 75 : 50,
             left: 0,
             zIndex: 100,
-            width: 0.9 * Dimensions.get('window').width,
+            width: Dimensions.get('window').width,
             maxHeight: 300,
           }}>
           {searchTerm.length > 0 && renderSearchList()}

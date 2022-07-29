@@ -1,6 +1,4 @@
 import React from 'react';
-import {useHeaderHeight} from '@react-navigation/elements';
-import {Platform} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from '../../screen/homBlock/HomeScreen';
 import ChooseTableScreen from '../../screen/homBlock/ChooseTableScreen';
@@ -33,7 +31,6 @@ export const screenOptionStyle = {
 };
 
 export const HomeStackNavigation = () => {
-  const headerHeight = useHeaderHeight();
   return (
     <Stack.Navigator
       screenOptions={{
