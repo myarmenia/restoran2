@@ -2,14 +2,14 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import CloseSvg from '../../assets/svg/CloseSvg';
 
-const AddedCartModal = ({setOpenModal}) => {
+const AddedCartModal = ({setOpenModal, dishName}) => {
   return (
     <View
       style={{
         alignItems: 'center',
         marginHorizontal: 40,
         position: 'absolute',
-        top: '50%',
+        top: '40%',
         backgroundColor: '#17181B',
         zIndex: 100,
         transform: [{translateY: -50}],
@@ -23,7 +23,7 @@ const AddedCartModal = ({setOpenModal}) => {
           <CloseSvg />
         </TouchableOpacity>
         <Text style={styles.text}>
-          “Название Блюдa” успешно добавлено в корзину
+          "{dishName}" успешно добавлено в корзину
         </Text>
       </View>
     </View>

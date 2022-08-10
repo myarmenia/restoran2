@@ -35,7 +35,6 @@ export const Menu = createAsyncThunk(
   async (data, thunkAPI) => {
     console.log(data);
     try {
-      console.log('mta1');
       const response = await axiosInstance.get(
         `restaurant/menu/${data.id}?category=${data.catId}`,
       );
@@ -104,8 +103,8 @@ export const Orders = createAsyncThunk(
       const response = await axiosInstance.get('order', {
         headers: {Authorization: `${bearer} ${token}`},
       });
-      console.log('orders', response.data);
-      return response.data;
+      console.log('orders', response.data.data);
+      return response.data.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
@@ -115,7 +114,7 @@ export const Orders = createAsyncThunk(
 export const orderStore = createAsyncThunk(
   'restaurant/orderStore',
   async (data, thunkAPI) => {
-    console.log(data);
+    console.log('get', data);
     const bearer = await AsyncStorage.getItem('bearer');
     const token = await AsyncStorage.getItem('token');
     try {

@@ -1,11 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, ScrollView, Dimensions} from 'react-native';
-import {useSelector} from 'react-redux';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
 import MainButton from '../../components/UI/buttons/MainButton';
 
 const PrivacyPolicyScreen = ({navigation, route}) => {
-  const {restaurants} = useSelector(state => state.home);
   const [checked, setChecked] = useState(route?.params?.checked || false);
 
   useEffect(() => {

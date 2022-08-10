@@ -2,12 +2,11 @@ import React, {memo, useState} from 'react';
 import {Text, View, StyleSheet, TextInput, Dimensions} from 'react-native';
 import MainButton from '../UI/buttons/MainButton';
 import {SendCodeNum} from '../../store/reducers/auth/action';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 const SendCode = ({route}) => {
   const [value, setValue] = useState('');
   const dispatch = useDispatch();
-  const {message} = useSelector(({auth}) => auth);
 
   const goToLoginPage = async () => {
     await dispatch(
@@ -16,9 +15,8 @@ const SendCode = ({route}) => {
         code: value,
       }),
     );
-    if (message === 'Your Phone Number Saved Success') {
-    }
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Введите код подтверждения</Text>

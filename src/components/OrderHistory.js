@@ -11,34 +11,63 @@ import {useSelector} from 'react-redux';
 
 const OrderHistory = ({state}) => {
   const {orders} = useSelector(({restaurant}) => restaurant);
-  return orders?.length ? (
+  return orders?.length &&
+    orders.reduce((last, next) => {
+      if (
+        new Date(next.coming_date.split(' ')[0]).setUTCHours(
+          next.coming_date.split(' ')[1].split(':')[0],
+          next.coming_date.split(' ')[1].split(':')[1],
+        ) <= +Date.now()
+      ) {
+        return true;
+      } else {
+        return last;
+      }
+    }, false) ? (
     <FlatList
-      data={orders}
+      data={[...orders].reverse()}
       showsVerticalScrollIndicator={false}
       keyExtractor={(item, index) => index.toString()}
-      contentContainerStyle={styles.list}
-      renderItem={({item}) => (
-        <View>
-          <View style={styles.container}>
-            <View style={styles.subContainer} activeOpacity={0.7}>
-              <View style={{flex: 2, marginRight: 15}}>
-                <Image
-                  style={styles.img}
-                  resizeMode="cover"
-                  source={
-                    item?.img || require('../assets/img/home/dishes/1.png')
-                  }
-                />
-              </View>
-              <View style={{flex: 7}}>
-                <Text style={styles.name}>{item?.name}</Text>
-                <Text style={styles.categories}>{item.desc}</Text>
+      renderItem={({item}) => {
+        return new Date(item?.coming_date.split(' ')[0]).setUTCHours(
+          item?.coming_date.split(' ')[1].split(':')[0],
+          item?.coming_date.split(' ')[1].split(':')[1],
+        ) <= +Date.now() ? (
+          <View>
+            <View style={styles.container}>
+              <View style={styles.subContainer} activeOpacity={0.7}>
+                <View style={{flex: 2, marginRight: 15}}>
+                  <Image
+                    style={styles.img}
+                    resizeMode="cover"
+                    source={
+                      item?.rest?.images[0]?.path
+                        ? {
+                            uri: `https://back.tap-table.ru/get_file?path=/${item?.rest?.images[0]?.path}`,
+                          }
+                        : require('../assets/img/home/restaurants/1.png')
+                    }
+                  />
+                </View>
+                <View style={{flex: 7}}>
+                  <Text style={styles.name}>{item?.rest?.name}</Text>
+                  <Text style={styles.categories}>{item?.desc}</Text>
+                  <Text style={styles.categories}>
+                    Вы забронировали столик для {item?.people_nums}{' '}
+                    {item?.people_nums >= 1 && item?.people_nums <= 4
+                      ? 'человекa'
+                      : 'человек'}
+                  </Text>
+                  <Text style={styles.name}>{item?.coming_date}</Text>
+                </View>
               </View>
             </View>
+            <View style={styles.line} />
           </View>
-          <View style={styles.line} />
-        </View>
-      )}
+        ) : (
+          <></>
+        );
+      }}
     />
   ) : (
     <View
@@ -55,7 +84,6 @@ const OrderHistory = ({state}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#000000',
-    minHeight: Dimensions.get('screen').height,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

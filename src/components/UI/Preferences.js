@@ -12,21 +12,21 @@ import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import LikeComponent from './LikeComponent';
 import {Preference, Preferences} from '../../store/reducers/restaurant/action';
+import LoadingComponent from "../loadingComponent";
 
-const PreferencesComp = index => {
+const PreferencesComp = () => {
   const {preference} = useSelector(({restaurant}) => restaurant);
   const [choosed, setChoosed] = useState([]);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     const newVal = preference?.map(el => el?.id);
-    console.log(choosed);
     setChoosed(newVal);
   }, [preference]);
 
-  console.log(preference);
-
   return (
     <View>
+      {loading ? <LoadingComponent /> : <></>}
       {preference?.length ? (
         <FlatList
           data={preference}
@@ -35,11 +35,12 @@ const PreferencesComp = index => {
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={styles.list}
           columnWrapperStyle={{justifyContent: 'space-between'}}
-          renderItem={({item, index}) => (
+          renderItem={({item}) => (
             <View style={styles.container}>
               <TouchableOpacity
                 style={{position: 'absolute', right: 15, top: 15}}
                 onPress={async () => {
+                  setLoading(true);
                   setChoosed(prev => {
                     const arr = prev;
                     if (!arr.includes(item?.id)) {
@@ -51,6 +52,7 @@ const PreferencesComp = index => {
                   });
                   await dispatch(Preferences({id: item?.id}));
                   await dispatch(Preference());
+                  await setLoading(false);
                 }}>
                 <LikeComponent choosed={choosed.includes(item?.id)} />
               </TouchableOpacity>

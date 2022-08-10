@@ -1,18 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import FavoriteComp from '../../components/Favorites';
 import {useSelector} from 'react-redux';
-import SearchComponent from '../../components/searchComponent';
+import LoadingComponent from '../../components/loadingComponent';
+import SimpleHeader from '../../components/headers/SimpleHeader';
 
 const FavoritesScreen = ({navigation}) => {
   const {favorite, restaurants} = useSelector(state => state.restaurant);
-
+  const [loading, setLoading] = useState(false);
   return (
     <View style={styles.container}>
-      <SearchComponent data={favorite} navigation={navigation} />
-      <View style={{marginTop: 60}}>
-        <FavoriteComp state={favorite} />
-      </View>
+      {loading ? <LoadingComponent /> : <></>}
+      <SimpleHeader title={'Избранные рестораны'} />
+      <FavoriteComp state={favorite} setLoading={setLoading} />
     </View>
   );
 };

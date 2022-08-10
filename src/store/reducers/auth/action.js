@@ -2,111 +2,135 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {axiosInstance} from '../../../request';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const Login = createAsyncThunk('auth/Login', async data => {
+export const Login = createAsyncThunk('auth/Login', async (data, thunkAPI) => {
   try {
-    console.log(data);
+    console.log('data ----> ', data);
     const response = await axiosInstance.post('get_pass', {
       ...data,
     });
     console.log('login: ', response.data);
-    if (response.data.access_token) {
-      await AsyncStorage.setItem('token', response.data.access_token);
-      await AsyncStorage.setItem('bearer', response.data.token_type);
-      await AsyncStorage.setItem('refreshToken', response.data.refresh_token);
+    if (response.data?.access_token) {
+      await AsyncStorage.setItem('token', response.data?.access_token);
+      await AsyncStorage.setItem('bearer', response.data?.token_type);
+      await AsyncStorage.setItem('refreshToken', response.data?.refresh_token);
       await AsyncStorage.setItem('user', JSON.stringify(response.data.user));
     }
     return response.data;
   } catch (e) {
     console.log(e.message);
-    return 'Error Here';
+    return thunkAPI.rejectWithValue('Error Here');
   }
 });
 
-export const AutoSignIn = createAsyncThunk('auth/AutoSignIn', async data => {
-  try {
-    console.log(data);
-    const token = await AsyncStorage.getItem('token');
+export const AutoSignIn = createAsyncThunk(
+  'auth/AutoSignIn',
+  async (data, thunkAPI) => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const bearer = await AsyncStorage.getItem('bearer');
+      const refreshToken = await AsyncStorage.getItem('refreshToken');
+      const user = await AsyncStorage.getItem('user');
+      return {token, bearer, refreshToken, user};
+    } catch (e) {
+      console.log(e.message);
+      return thunkAPI.rejectWithValue('Error Here');
+    }
+  },
+);
+export const SendCodeNum = createAsyncThunk(
+  'auth/SendCode',
+  async (data, thunkAPI) => {
     const bearer = await AsyncStorage.getItem('bearer');
-    const refreshToken = await AsyncStorage.getItem('refreshToken');
-    const user = await AsyncStorage.getItem('user');
-    return {token, bearer, refreshToken, user};
-  } catch (e) {
-    console.log(e.message);
-    return 'Error Here';
-  }
-});
-export const SendCodeNum = createAsyncThunk('auth/SendCode', async data => {
-  const bearer = await AsyncStorage.getItem('bearer');
-  const token = await AsyncStorage.getItem('token');
-  console.log(data);
-  try {
-    const response = await axiosInstance.post(
-      'phone/check',
-      {
-        ...data,
-      },
-      {headers: {Authorization: `${bearer} ${token}`}},
-    );
-    console.log(response.data);
-    return response.data;
-  } catch (e) {
-    console.log(e.message);
-    return 'Error Here';
-  }
-});
+    const token = await AsyncStorage.getItem('token');
+    console.log(data);
+    try {
+      const response = await axiosInstance.post(
+        'phone/check',
+        {
+          ...data,
+        },
+        {headers: {Authorization: `${bearer} ${token}`}},
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (e) {
+      console.log(e.message);
+      return thunkAPI.rejectWithValue('Error Here');
+    }
+  },
+);
 
-export const SendPhone = createAsyncThunk('auth/SendPhone', async data => {
-  const bearer = await AsyncStorage.getItem('bearer');
-  const token = await AsyncStorage.getItem('token');
-  try {
-    const response = await axiosInstance.get(
-      `phone/reg?phone_number=${data.phone_number}`,
-      {
-        headers: {Authorization: `${bearer} ${token}`},
-      },
-    );
-    console.log(response.data);
-    return response.data;
-  } catch (e) {
-    console.log(e.message);
-    return 'Error Here';
-  }
-});
+export const SendPhone = createAsyncThunk(
+  'auth/SendPhone',
+  async (data, thunkAPI) => {
+    const bearer = await AsyncStorage.getItem('bearer');
+    const token = await AsyncStorage.getItem('token');
+    try {
+      const response = await axiosInstance.get(
+        `phone/reg?phone_number=${data.phone_number}`,
+        {
+          headers: {Authorization: `${bearer} ${token}`},
+        },
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (e) {
+      console.log(e.message);
+      return thunkAPI.rejectWithValue('Error Here');
+    }
+  },
+);
 
 export const Registration = createAsyncThunk(
   'auth/Registration',
-  async data => {
+  async (data, thunkAPI) => {
     console.log(data);
     try {
-      const response = await axiosInstance.post('register', {
+      const response = await axiosInstance.post('sign_up', {
         ...data,
       });
       console.log('reg ----> ', response.data);
       return response.data;
     } catch (e) {
-      console.log(e.message);
-      return e.message;
+      console.log(e);
+      return thunkAPI.rejectWithValue(e);
     }
   },
 );
 
 export const ProfileUpdate = createAsyncThunk(
   'auth/ProfileUpdate',
-  async data => {
+  async (data, thunkAPI) => {
+    console.log(data);
     const bearer = await AsyncStorage.getItem('bearer');
     const token = await AsyncStorage.getItem('token');
     try {
       const response = await axiosInstance.post('user/update', data, {
         headers: {
           Authorization: `${bearer} ${token}`,
-          // 'Content-Type': 'application/json',
         },
       });
+      const localUserData = await AsyncStorage.getItem('user');
+      const user = JSON.parse(localUserData);
+      user.email = data.email;
+      user.phone_number = data.phone_number;
+      user.gender = data.gender;
+      user.avatar = data.avatar;
+      user.age = data.age;
+      await AsyncStorage.setItem('user', JSON.stringify(user));
       console.log('reg ----> ', response.data);
-      return response.data;
+      return user;
     } catch (e) {
       console.log(e.message);
-      return e.message;
+      return thunkAPI.rejectWithValue(e);
     }
   },
 );
+
+export const SignOut = createAsyncThunk('auth/SignOut', async () => {
+  await AsyncStorage.setItem('token', '');
+  await AsyncStorage.setItem('bearer', '');
+  await AsyncStorage.setItem('refreshToken', '');
+  await AsyncStorage.setItem('user', JSON.stringify({}));
+  return true;
+});

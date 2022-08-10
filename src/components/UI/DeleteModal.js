@@ -2,17 +2,21 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import CloseSvg from '../../assets/svg/CloseSvg';
 import MainButton from './buttons/MainButton';
-
+import {useDispatch} from 'react-redux';
+import {changeMenu, deleteDish} from '../../store/reducers/restaurant/slice';
 
 const DeleteModal = ({
   setOpenModal,
   index,
   productsArray,
   setProductsArray,
+  restId,
 }) => {
-  const removeUser = () => {
-    console.log('hello ', index, productsArray);
-    setProductsArray(products => products.filter((_, ind) => ind !== index));
+  const dispatch = useDispatch();
+  const removeUser = async () => {
+    const reserveProduct = productsArray.filter((val, ind) => val.id !== index);
+    setProductsArray(reserveProduct);
+    await dispatch(deleteDish([restId, index]));
     setOpenModal(false);
   };
 

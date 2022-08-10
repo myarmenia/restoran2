@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -8,25 +8,35 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import SimpleHeader from '../../components/headers/SimpleHeader';
-import {Menu, MenusByMenuID} from '../../store/reducers/restaurant/action';
+import {Menu} from '../../store/reducers/restaurant/action';
+import LoadingComponent from '../../components/loadingComponent';
 
-const MenuCategoriesScreen = ({navigation}) => {
+const MenuCategoriesScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const {menus, restaurant} = useSelector(({restaurant}) => restaurant);
-  console.log(Array.isArray(menus));
+  const [loading, setLoading] = useState(false);
+
+  useState(() => {
+    setLoading(false);
+    return () => setLoading(false);
+  });
+
   return (
     <View
       style={{
         backgroundColor: '#000',
         minHeight: Dimensions.get('screen').height,
       }}>
+      {loading ? <LoadingComponent /> : <></>}
       <SimpleHeader title={'Меню'} />
       <View style={{paddingHorizontal: 20}}>
         {(Array.isArray(menus) ? menus : Object.values(menus))?.map(
           (elem, index) => (
             <TouchableOpacity
               onPress={async () => {
+                setLoading(true);
                 await dispatch(Menu({id: restaurant?.id, catId: elem?.id}));
+                await setLoading(false);
                 navigation.navigate('MainDishesScreen', {
                   restId: restaurant?.id,
                 });

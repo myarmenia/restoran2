@@ -29,7 +29,7 @@ const initialState = {
   preferences: '',
   error: '',
   yourOrder: {},
-  reserveOrders: [],
+  reserveOrders: {},
   phoneNumbers: {},
 };
 
@@ -41,34 +41,51 @@ const slice = createSlice({
       const restIndex = state.yourOrder[payload[0]].menus.findIndex(
         el => el.id === payload[1],
       );
-      if (restIndex !== -1) {
+
+      if (restIndex === -1) {
         state.yourOrder[payload[0]].menus.push(payload[2]);
-        state.reserveOrders.push(payload[3]);
+        state.reserveOrders[payload[0]].push(payload[3]);
       } else {
-        state.yourOrder[payload[0]].menus[restIndex].count +=
-          payload[2][payload[1]].count;
-        if (payload[2][payload[0]].menus.comment) {
+        state.yourOrder[payload[0]].menus[restIndex].count += payload[2].count;
+        if (payload[2].comment) {
           state.yourOrder[payload[0]].menus[restIndex].comment +=
-            '\n' + payload[2][payload[0]].comment;
-        }
-      }
-      if (state.yourOrder[payload[0]].menus.length) {
-        state.yourOrder[payload[0]].menus.count += payload[2][payload[0]].count;
-        if (payload[1][payload[0]].menus.comment) {
-          state.yourOrder[payload[0]].menus.count +=
-            '\n' + payload[2][payload[0]].comment;
+            '\n' + payload[2].comment;
         }
       }
     },
     addRest: (state, {payload}) => {
       state.yourOrder[payload[0].restaurant_id] = payload[0];
+      state.reserveOrders[payload[0].restaurant_id] = [];
       state.phoneNumbers[payload[0].restaurant_id] = payload[1];
     },
     changeMenu: (state, {payload}) => {
-      console.log('lalala', payload);
       state.yourOrder[payload[0]].menus = payload[1];
-      console.log('babba', state.yourOrder);
-      state.yourOrder[payload[0]].menus = payload[1];
+    },
+    deleteDish: (state, {payload}) => {
+      let index = 0;
+      state.yourOrder[payload[0]].menus = state.yourOrder[
+        payload[0]
+      ].menus.filter((val, ind) => {
+        if (val.id !== payload[1]) {
+          index = ind;
+        }
+        return val.id !== payload[1];
+      });
+      state.reserveOrders[payload[0]] = state.reserveOrders[payload[0]].filter(
+        (_, ind) => ind !== index,
+      );
+    },
+    broneRest: (state, {payload}) => {
+      const otherOrders = state.yourOrder;
+      const otherDesc = state.reserveOrders;
+      for (const k in otherOrders) {
+        if (+k === +payload[0]) {
+          delete otherOrders[k];
+          delete otherDesc[k];
+        }
+      }
+      state.yourOrder = otherOrders;
+      state.reserveOrders = otherDesc;
     },
   },
   extraReducers: {
@@ -148,5 +165,5 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
-const {addDish, addRest, changeMenu} = slice.actions;
-export {addDish, addRest, changeMenu};
+const {addDish, addRest, changeMenu, deleteDish, broneRest} = slice.actions;
+export {addDish, addRest, changeMenu, deleteDish, broneRest};

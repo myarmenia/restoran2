@@ -1,17 +1,8 @@
-import React, {useState} from 'react';
-import {
-  Button,
-  Dimensions,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React from 'react';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CalendarSvg from '../../../assets/svg/calendar';
 import ClockSvg from '../../../assets/svg/Clock';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const DatePicker = ({mode, setDate, date, openModal, setOpenModal}) => {
   function showDatePicker() {
@@ -19,8 +10,8 @@ const DatePicker = ({mode, setDate, date, openModal, setOpenModal}) => {
   }
 
   function onDateSelected(event, value) {
-    setDate(value);
     setOpenModal(false);
+    setDate(value);
   }
 
   return (
@@ -45,16 +36,24 @@ const DatePicker = ({mode, setDate, date, openModal, setOpenModal}) => {
         )}
       </TouchableOpacity>
 
-      {openModal && (
+      {openModal ? (
         <DateTimePicker
           value={date}
           mode={mode}
           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
           is24Hour={true}
           onChange={onDateSelected}
+          onCancel={() => setOpenModal(false)}
           style={styleSheet.datePicker}
           themeVariant={'dark'}
+          negativeButtonLabel={'Отменить'}
+          positiveButtonLabel={'Выбрать'}
+          locale="ru-RU"
+          minimumDate={new Date()}
+          animation={false}
         />
+      ) : (
+        <></>
       )}
     </View>
   );
@@ -78,10 +77,10 @@ const styleSheet = StyleSheet.create({
     marginLeft: 20,
   },
 
-  datePicker: {
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    display: 'flex',
-  },
+  // datePicker: {
+  //   justifyContent: 'center',
+  //   alignItems: 'flex-start',
+  //   display: 'flex',
+  // },
 });
 export default DatePicker;

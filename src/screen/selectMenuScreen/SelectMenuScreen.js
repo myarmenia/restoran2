@@ -1,16 +1,12 @@
 import React from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
+import {StyleSheet, View, Dimensions, Platform} from 'react-native';
 import SimpleHeader from '../../components/headers/SimpleHeader';
 import BookingRestaurants from '../../components/BookingRestaurants';
-import {useSelector} from 'react-redux';
 
-const SelectMenuScreen = () => {
-  const {orders} = useSelector(state => state.restaurant);
-
+const SelectMenuScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <SimpleHeader title={'Заказы'} />
-      <BookingRestaurants orders={orders} />
+      <BookingRestaurants navigation={navigation} />
     </View>
   );
 };
@@ -20,6 +16,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height - 100,
     height: '100%',
+    paddingTop: Platform.OS === 'ios' ? 50 : 20,
   },
   text: {
     marginTop: 30,

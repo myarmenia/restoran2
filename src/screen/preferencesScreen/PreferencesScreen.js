@@ -5,8 +5,6 @@ import PreferencesComp from '../../components/UI/Preferences';
 import {useSelector} from 'react-redux';
 
 const PreferencesScreen = () => {
-  const {restaurants} = useSelector(state => state.home);
-
   return (
     <View style={styles.container}>
       <SimpleHeader title={'Предпочтения'} />

@@ -3,12 +3,16 @@ import {StyleSheet, View, Text, Dimensions} from 'react-native';
 import MainButton from '../../components/UI/buttons/MainButton';
 import CustomInput from '../../components/UI/inputs/CustomInput';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Registration} from '../../store/reducers/auth/action';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
+import LoadingComponent from '../../components/loadingComponent';
+import {clearError} from '../../store/reducers/auth/slice';
 
 const RegisterScreen = ({navigation, route}) => {
+  const {emailError} = useSelector(({auth}) => auth);
   const [checked, setChecked] = useState(route?.params?.checked || false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const passRegExpRef = useRef(
     new RegExp('^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})'),
@@ -26,7 +30,26 @@ const RegisterScreen = ({navigation, route}) => {
     setChecked(route?.params?.checked);
   }, [route?.params?.checked]);
 
-  const goToLoginPage = () => {
+  useEffect(() => {
+    setError('');
+  }, []);
+
+  useEffect(() => {
+    if (!error && email && pass && pass1 && name) {
+      navigation.navigate('login');
+    } else if (email && pass && pass1 && name) {
+      setError('emailError');
+    }
+    return () => {
+      setEmail('');
+      setPass('');
+      setPass1('');
+      setName('');
+      setChecked(false);
+    };
+  }, [emailError]);
+
+  const goToLoginPage = async () => {
     setError('');
     const data = {
       name,
@@ -40,8 +63,10 @@ const RegisterScreen = ({navigation, route}) => {
       pass === pass1 &&
       name
     ) {
-      dispatch(Registration(data));
-      navigation.navigate('login');
+      setLoading(true);
+      await dispatch(Registration(data));
+      await setLoading(false);
+      await checkEmail();
     } else {
       if (!emailRegExpRef.current.test(email)) {
         setError('email');
@@ -55,8 +80,17 @@ const RegisterScreen = ({navigation, route}) => {
     }
   };
 
+  const checkEmail = () => {
+    if (!emailError) {
+      navigation.navigate('login');
+    } else {
+      setError('emailError');
+    }
+  };
+
   return (
     <View style={styles.container}>
+      {loading ? <LoadingComponent /> : <></>}
       <Text style={styles.titleText}>Регистрация</Text>
       <CustomInput placeholder={'Имя'} value={name} onChangeText={setName} />
       <CustomInput
@@ -73,6 +107,19 @@ const RegisterScreen = ({navigation, route}) => {
             marginHorizontal: 25,
           }}>
           Неверно введена электронная почта
+        </Text>
+      ) : (
+        <></>
+      )}
+      {error === 'emailError' ? (
+        <Text
+          style={{
+            color: 'red',
+            textAlign: 'center',
+            fontSize: 12,
+            marginHorizontal: 25,
+          }}>
+          Данная электронная почта уже существует
         </Text>
       ) : (
         <></>
@@ -143,7 +190,11 @@ const RegisterScreen = ({navigation, route}) => {
         />
       </View>
       <View style={{marginTop: 20, marginHorizontal: 40}}>
-        <MainButton disable={!(name && pass && pass1 && email && checked)} textBtn={'Зарегистрироватся'} goTo={goToLoginPage} />
+        <MainButton
+          disable={!(name && pass && pass1 && email && checked)}
+          textBtn={'Зарегистрироватся'}
+          goTo={goToLoginPage}
+        />
       </View>
       <View
         style={{

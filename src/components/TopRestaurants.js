@@ -37,7 +37,9 @@ const TopRestaurants = ({navigation, state}) => {
           <TouchableOpacity
             style={styles.container}
             onPress={async () => {
+              setLoading(true);
               await dispatch(Restaurants(item?.id));
+              await setLoading(false);
               navigation.navigate('RestTitle');
             }}
             activeOpacity={0.7}>
@@ -55,7 +57,7 @@ const TopRestaurants = ({navigation, state}) => {
                   return arr;
                 });
                 await dispatch(Favorites({id: item?.id}));
-                setLoading(false);
+                await setLoading(false);
               }}>
               <MarkSvg choosed={choosed.includes(item?.id)} />
             </TouchableOpacity>

@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Dimensions,
+} from 'react-native';
 import {useSelector} from 'react-redux';
 import SimpleHeader from '../../components/headers/SimpleHeader';
 import {useState} from 'react';
@@ -9,7 +15,6 @@ import ClockSvg from '../../assets/svg/Clock';
 import Counter from '../../components/UI/counter/Counter';
 
 const BookScreen = ({item}) => {
-  const {restaurants} = useSelector(state => state.home);
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [showDate, setShowDate] = useState(false);

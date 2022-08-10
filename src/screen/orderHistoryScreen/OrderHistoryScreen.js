@@ -1,26 +1,24 @@
 import React from 'react';
-import {Text, StyleSheet, View} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import {useSelector} from 'react-redux';
-import AddSvg from '../../assets/svg/AddSvg';
+import {StyleSheet, View, Dimensions} from 'react-native';
 import OrderHistory from '../../components/OrderHistory';
 import SimpleHeader from '../../components/headers/SimpleHeader';
 
 const OrderHistoryScreen = () => {
-  const {restaurants} = useSelector(state => state.home);
-
   return (
-    <View>
-      <LinearGradient colors={['black', 'black']}>
-        <SimpleHeader title={'История заказов'} />
-        <View style={styles.line} />
-        <OrderHistory />
-      </LinearGradient>
+    <View style={styles.container}>
+      <SimpleHeader title={'История заказов'} />
+      <View style={styles.line} />
+      <OrderHistory />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#000000',
+    minHeight: Dimensions.get('window').height - 100,
+    height: '100%',
+  },
   text: {
     color: '#FFFFFF',
     fontSize: 17,

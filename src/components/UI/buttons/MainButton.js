@@ -32,7 +32,7 @@ const MainButton = ({
 const styles = StyleSheet.create({
   btnContainer: {
     borderRadius: 30,
-    padding: 14,
+    // padding: 14,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'red',

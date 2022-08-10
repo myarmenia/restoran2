@@ -20,7 +20,17 @@ const CategoriesBlock = ({update, setTitle}) => {
             onPress={() => {
               if (index !== filteredItem) {
                 setFilteredItem(index);
-                update(() => restaurants.filter(el => el?.desc === item.name));
+                update(() =>
+                  restaurants.filter(el =>
+                    el?.kitchen_categories?.reduce((last, next) => {
+                      if (next?.name === item.name) {
+                        return true;
+                      } else {
+                        return last;
+                      }
+                    }, false),
+                  ),
+                );
                 setTitle(item.name);
               } else {
                 setFilteredItem(-1);

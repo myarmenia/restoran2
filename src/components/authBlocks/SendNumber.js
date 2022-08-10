@@ -7,14 +7,15 @@ import {SendPhone} from '../../store/reducers/auth/action';
 const SendNumber = ({navigation}) => {
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
-  const goToCodeInputPage = () => {
-    dispatch(
+  const goToCodeInputPage = async () => {
+    await dispatch(
       SendPhone({
         phone_number: number,
       }),
     );
     navigation.navigate('sendCode', {
       phone_number: number,
+      navigation: navigation
     });
   };
   return (

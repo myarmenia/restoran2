@@ -23,7 +23,7 @@ const TextArea = ({placeholder, horizontal, onChangeText, text}) => {
 
 const styles = StyleSheet.create({
   MainContainer: {
-    paddingTop: Platform.OS === 'ios' ? 20 : 0,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0,
     margin: 20,
     height: 300,
   },

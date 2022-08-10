@@ -3,11 +3,11 @@ import {AutoStack} from './AutoStack';
 import {SummaryNavigation} from './SummaryNavigation';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AutoSignIn } from "../store/reducers/auth/action";
+import {AutoSignIn} from '../store/reducers/auth/action';
 
 const Route = () => {
   const [localAuth, setLocalAuth] = useState(false);
-  const auth = useSelector((state) => state.auth);
+  const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,13 +23,12 @@ const Route = () => {
   };
 
   useEffect(() => {
-    console.log('auth', auth);
     if (auth.canAuth) {
       setLocalAuth(true);
     } else {
       setLocalAuth(false);
     }
-  }, [auth.canAuth]);
+  }, [auth.canAuth, auth]);
 
   return localAuth ? <SummaryNavigation /> : <AutoStack />;
   // return <SummaryNavigation />;

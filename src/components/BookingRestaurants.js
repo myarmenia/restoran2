@@ -6,44 +6,64 @@ import {
   Image,
   Text,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {initialState1} from './UI/RestaurantsData';
-import MoreSvg from '../assets/svg/MoreSvg';
+import {useSelector} from 'react-redux';
 
-const BookingRestaurants = ({orders}) => {
-  return orders?.length ? (
+const BookingRestaurants = ({navigation}) => {
+  const {orders} = useSelector(state => state.restaurant);
+
+  return orders?.length &&
+    orders.reduce((last, next) => {
+      return (
+        new Date(next.coming_date.split(' ')[0]).setUTCHours(
+          next.coming_date.split(' ')[1].split(':')[0],
+          next.coming_date.split(' ')[1].split(':')[1],
+        ) >= +Date.now() || last
+      );
+    }, false) ? (
     <FlatList
-      data={initialState1}
-      showsVerticalScrollIndicator={false}
+      data={[...orders].reverse()}
       numColumns={2}
       keyExtractor={(item, index) => index.toString()}
-      contentContainerStyle={styles.list}
-      columnWrapperStyle={{justifyContent: 'space-between'}}
-      renderItem={({item}) => (
-        <View style={styles.container}>
-          <TouchableOpacity style={styles.mark} />
-          <View style={styles.subContainer} activeOpacity={0.7}>
-            <Image style={styles.img} resizeMode="cover" source={item.img} />
-            <Text style={styles.name}>{item.title}</Text>
-            <Text style={styles.categories}>{item.bookDate}</Text>
-            <Text style={styles.categories}>{item.isMenuSelected}</Text>
-          </View>
+      columnWrapperStyle={{justifyContent: 'center'}}
+      renderItem={({item}) => {
+        return new Date(item.coming_date.split(' ')[0]).setUTCHours(
+          item.coming_date.split(' ')[1].split(':')[0],
+          item.coming_date.split(' ')[1].split(':')[1],
+        ) >= +Date.now() ? (
           <TouchableOpacity
-            style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-            <Text style={{color: '#FFFFFF', marginRight: 5}}>Подробнее</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: 4,
-              }}>
-              <MoreSvg />
-              <MoreSvg />
+            style={styles.container}
+            onPress={() => {
+              navigation.navigate('CurrentOrder', {
+                menu: item?.menus,
+                restId: item?.restaurant_id
+              });
+            }}
+            disabled={!item.menus.length}>
+            <View style={styles.subContainer} activeOpacity={0.7}>
+              <Image
+                style={styles.img}
+                resizeMode="cover"
+                source={
+                  item?.rest?.images[0]?.path
+                    ? {
+                        uri: `https://back.tap-table.ru/get_file?path=/${item.rest.images[0].path}`,
+                      }
+                    : require('../assets/img/home/restaurants/1.png')
+                }
+              />
+              <Text style={styles.name}>{item.rest.name}</Text>
+              <Text style={styles.categories}>Бронь в {item.coming_date}</Text>
+              <Text style={styles.categories}>
+                {item.menus.length ? 'Меню выбрана' : 'Меню не выбрана'}
+              </Text>
             </View>
           </TouchableOpacity>
-        </View>
-      )}
+        ) : (
+          <></>
+        );
+      }}
     />
   ) : (
     <View
@@ -93,6 +113,7 @@ const styles = StyleSheet.create({
   categories: {
     fontSize: 14,
     color: '#5F6368',
+    textAlign: 'center',
   },
 });
 

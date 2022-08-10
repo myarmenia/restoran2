@@ -6,19 +6,19 @@ import {
   Image,
   Text,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import MarkSvg from '../assets/svg/homeScreen/MarkSvg';
 import {useDispatch} from 'react-redux';
 import {Favorites} from '../store/reducers/restaurant/action';
 
-const FavoriteComp = ({state}) => {
+const FavoriteComp = ({state, setLoading}) => {
   const [choosed, setChoosed] = useState([]);
   const dispatch = useDispatch();
   useEffect(() => {
     const newVal = state?.map(el => el?.id);
     setChoosed(newVal);
-  }, []);
+  }, [state]);
 
   return state.length ? (
     <FlatList
@@ -32,7 +32,8 @@ const FavoriteComp = ({state}) => {
         <View style={styles.container}>
           <TouchableOpacity
             style={styles.mark}
-            onPress={() => {
+            onPress={async () => {
+              setLoading(true);
               setChoosed(prev => {
                 const arr = prev;
                 if (!arr.includes(item?.id)) {
@@ -42,7 +43,8 @@ const FavoriteComp = ({state}) => {
                 }
                 return arr;
               });
-              dispatch(Favorites({id: item?.id}));
+              await dispatch(Favorites({id: item?.id}));
+              await setLoading(false);
             }}>
             <MarkSvg choosed={choosed.includes(item?.id)} />
           </TouchableOpacity>

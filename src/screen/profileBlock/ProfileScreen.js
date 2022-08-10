@@ -6,22 +6,21 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  TextInput,
-} from 'react-native';
+  TextInput, Platform,
+} from "react-native";
 import EditSvg from '../../assets/svg/edit/EditSvg';
-import {signOut} from '../../store/reducers/auth/slice';
+import AddImageSvg from '../../assets/svg/AddImageSvg';
 import {useDispatch, useSelector} from 'react-redux';
-import {ProfileUpdate} from '../../store/reducers/auth/action';
-import * as ImagePicker from 'react-native-image-crop-picker';
+import {ProfileUpdate, SignOut} from '../../store/reducers/auth/action';
 import LoadingComponent from '../../components/loadingComponent';
 import RNPickerSelect from 'react-native-picker-select';
 import MainButton from '../../components/UI/buttons/MainButton';
+import * as DocumentPicker from 'react-native-document-picker';
 
 const ProfileScreen = ({navigation}) => {
   const {user} = useSelector(({auth}) => auth);
   const [changes, setChanges] = useState(false);
   const dispatch = useDispatch();
-  const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState(user?.name);
   const [avatar, setAvatar] = useState(user?.avatar);
   const [gender, setGender] = useState(user?.gender);
@@ -29,41 +28,36 @@ const ProfileScreen = ({navigation}) => {
   const [number, setNumber] = useState(user?.phone_number);
   const [email, setEmail] = useState(user?.email);
   const [loading, setLoading] = useState(false);
-
-  const takePhotoFromCamera = () => {
-    ImagePicker.openCamera({
-      compressImageMaxWidth: 300,
-      compressImageMaxHeight: 300,
-      cropping: true,
-      compressImageQuality: 0.7,
-      includeBase64: true,
-    }).then(image => {
-      setAvatar({mime: image.mime, data: image.data});
-      setShowModal(false);
-    });
-  };
-
-  const choosePhotoFromLibrary = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 300,
-      cropping: true,
-      compressImageQuality: 0.7,
-      includeBase64: true,
-    }).then(image => {
-      setAvatar({mime: image.mime, data: image.data});
-      setShowModal(false);
-    });
-  };
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    console.log(gender);
-  }, [gender]);
+    if (gender.toLowerCase() === 'female') {
+      setGender('Женский');
+    } else {
+      setGender('Мужской');
+    }
+  }, []);
+
+  const docPicker = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+      });
+      console.log(res[0]);
+      setAvatar(res[0]);
+    } catch (err) {
+      if (!DocumentPicker.isCancel(err)) {
+        setError(
+          'Увы, но добавить фото не удалось, попробуйте другую фотографию',
+        );
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
       {loading ? <LoadingComponent /> : <></>}
-      {showModal ? (
+      {error ? (
         <View
           style={{
             backgroundColor: 'rgba(0,0,0,0.5)',
@@ -86,32 +80,16 @@ const ProfileScreen = ({navigation}) => {
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
-                top: 0.3 * Dimensions.get('screen').height,
+                top: 0.4 * Dimensions.get('screen').height,
                 marginHorizontal: 30,
               }}>
               <View style={styles.panel}>
-                <Text style={styles.panelTitle}>
-                  Выберите фотографию для профиля
-                </Text>
+                <Text style={styles.panelTitle}>{error}</Text>
                 <View style={styles.panelButton}>
                   <MainButton
-                    goTo={takePhotoFromCamera}
+                    goTo={() => setError('')}
                     style={styles.panelButtonTitle}
-                    textBtn={'Сфотографироваться'}
-                  />
-                </View>
-                <View style={styles.panelButton}>
-                  <MainButton
-                    goTo={choosePhotoFromLibrary}
-                    style={styles.panelButtonTitle}
-                    textBtn={'Выбрать из галереи'}
-                  />
-                </View>
-                <View style={styles.panelButton}>
-                  <MainButton
-                    goTo={() => setShowModal(false)}
-                    style={styles.panelButtonTitle}
-                    textBtn={'Отменить'}
+                    textBtn={'Ладно'}
                   />
                 </View>
               </View>
@@ -127,8 +105,8 @@ const ProfileScreen = ({navigation}) => {
             <View style={{flex: 2}}>
               <Image
                 source={
-                  avatar
-                    ? {uri: `data:${avatar.mime};base64,${avatar.data}`}
+                  avatar?.uri
+                    ? {uri: avatar.uri}
                     : require('../../assets/png/profileImg.png')
                 }
                 style={{
@@ -143,8 +121,12 @@ const ProfileScreen = ({navigation}) => {
                 {name}
               </Text>
               <Text style={{fontSize: 12, color: '#FFFFFF'}}>
-                {gender?.label ? gender.label : gender ? gender : 'Мужской'},{' '}
-                {age || '18'}
+                {gender === 'male'
+                  ? 'Мужской'
+                  : gender === 'female'
+                  ? 'Женский'
+                  : gender}
+                , {age}
               </Text>
             </View>
             <TouchableOpacity
@@ -176,17 +158,34 @@ const ProfileScreen = ({navigation}) => {
       ) : (
         <View>
           <View style={{flexDirection: 'row', marginHorizontal: 40}}>
-            <TouchableOpacity
-              onPress={() => setShowModal(true)}
-              style={{flex: 2}}>
+            <TouchableOpacity onPress={() => docPicker(true)} style={{flex: 2}}>
               <Image
                 source={
                   avatar?.mime
-                    ? {uri: `data:${avatar.mime};base64,${avatar.data}`}
+                    ? {uri: avatar.uri}
                     : avatar
+                    ? avatar
+                    : require('../../assets/png/profileImg.png')
                 }
-                style={{width: 88, height: 88, borderRadius: 45}}
+                style={{
+                  width: 88,
+                  height: 88,
+                  borderRadius: 45,
+                  opacity: 0.7,
+                  marginTop: 15,
+                }}
               />
+              <View
+                style={{
+                  width: 33,
+                  height: 33,
+                  position: 'absolute',
+                  zIndex: 500,
+                  right: 10,
+                  bottom: 0,
+                }}>
+                <AddImageSvg />
+              </View>
             </TouchableOpacity>
             <View style={{flex: 4, marginTop: 8, marginRight: 30}}>
               <TextInput
@@ -212,7 +211,9 @@ const ProfileScreen = ({navigation}) => {
                 }}>
                 <RNPickerSelect
                   placeholder={{}}
-                  onValueChange={value => setGender(value)}
+                  onValueChange={value => {
+                    setGender(value);
+                  }}
                   value={gender}
                   fixAndroidTouchableBug={true}
                   useNativeAndroidPickerStyle={false}
@@ -223,7 +224,7 @@ const ProfileScreen = ({navigation}) => {
                   style={pickerSelectStyles}
                 />
                 <TextInput
-                  defaultValue={'' + age || '18'}
+                  defaultValue={age ? '' + age : ''}
                   onChangeText={e => {
                     setAge(e);
                   }}
@@ -250,14 +251,29 @@ const ProfileScreen = ({navigation}) => {
                     email: email,
                     name: name,
                     age: age,
-                    gender: gender,
+                    gender: gender.toString() === 'Мужской' ? 'male' : 'female',
                     phone_number: number,
-                    avatar: avatar.mime
-                      ? `data:${avatar.mime};base64,${avatar.data}`
-                      : avatar,
+                    avatar: avatar?.uri ? avatar?.uri : '',
                   }),
-                );
-                setLoading(false);
+                )
+                  .then(res => {
+                    console.log('profile res', res);
+                    if (res?.error) {
+                      setError(
+                        'Увы, но данные не обновились, попробуйте позже',
+                      );
+                      setGender(user?.gender);
+                      setEmail(user?.email);
+                      setName(user?.name);
+                      setNumber(user?.phone_number);
+                      setAvatar(user?.avatar);
+                      setAge(user?.age);
+                    }
+                  })
+                  .catch(err =>
+                    setError('Увы, но данные не обновились, попробуйте позже'),
+                  );
+                await setLoading(false);
               }}
               style={{flex: 0.5, marginTop: 8}}>
               <EditSvg />
@@ -348,10 +364,9 @@ const ProfileScreen = ({navigation}) => {
         Обратная связь
       </Text>
       <View style={{backgroundColor: '#17181B', height: 1.5, marginTop: 15}} />
-      <View style={{backgroundColor: '#17181B', height: 1.5, marginTop: 55}} />
       <TouchableOpacity
-        onPress={() => {
-          dispatch(signOut());
+        onPress={async () => {
+          await dispatch(SignOut());
         }}>
         <Text
           style={{
@@ -359,7 +374,6 @@ const ProfileScreen = ({navigation}) => {
             fontSize: 18,
             marginTop: 15,
             marginLeft: 40,
-            marginBottom: 80,
           }}>
           Выход
         </Text>
@@ -370,7 +384,7 @@ const ProfileScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30,
+    paddingTop: Platform.OS === 'ios' ? 50 : 20,
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height - 100,
     height: '100%',
@@ -397,38 +411,11 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     borderRadius: 20,
   },
-  header: {
-    backgroundColor: '#FFFFFF',
-    shadowColor: '#333333',
-    shadowOffset: {width: -1, height: -3},
-    shadowRadius: 2,
-    shadowOpacity: 0.4,
-    // elevation: 5,
-    paddingTop: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  panelHeader: {
-    alignItems: 'center',
-  },
-  panelHandle: {
-    width: 40,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#00000040',
-    marginBottom: 10,
-  },
   panelTitle: {
     fontSize: 18,
     textAlign: 'center',
     color: '#fff',
     marginBottom: 20,
-  },
-  panelSubtitle: {
-    fontSize: 14,
-    color: 'gray',
-    height: 30,
-    marginBottom: 10,
   },
   panelButton: {
     marginVertical: 7,
