@@ -4,7 +4,7 @@ import {ActivityIndicator, Dimensions, StyleSheet, View} from 'react-native';
 const SplashScreen = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('welcome');
+      navigation.navigate('welcome');
     }, 500);
   }, [navigation]);
 

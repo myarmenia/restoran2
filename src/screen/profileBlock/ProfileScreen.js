@@ -44,10 +44,11 @@ const ProfileScreen = ({navigation}) => {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
       });
-      console.log(res[0]);
+      console.log(res);
       setAvatar(res[0]);
     } catch (err) {
       if (!DocumentPicker.isCancel(err)) {
+        setAvatar(user?.avatar);
         setError(
           'Увы, но добавить фото не удалось, попробуйте другую фотографию',
         );
@@ -318,6 +319,7 @@ const ProfileScreen = ({navigation}) => {
               onPress={async () => {
                 setLoading(true);
                 setChanges(prev => !prev);
+                console.log();
                 await dispatch(
                   ProfileUpdate({
                     email: email,
@@ -325,7 +327,7 @@ const ProfileScreen = ({navigation}) => {
                     age: age,
                     gender: gender.toString() === 'Мужской' ? 'male' : 'female',
                     phone_number: number,
-                    avatar: avatar?.uri ? avatar?.uri : '',
+                    avatar: avatar,
                   }),
                 )
                   .then(res => {
@@ -361,25 +363,6 @@ const ProfileScreen = ({navigation}) => {
               color: '#FFFFFF',
               fontSize: 18,
               marginTop: 25,
-              marginLeft: 40,
-              borderWidth: 1,
-              borderColor: 'white',
-              borderRadius: 15,
-              padding: 5,
-              paddingLeft: 20,
-              marginRight: 30,
-            }}
-          />
-          <TextInput
-            defaultValue={email}
-            onChangeText={e => {
-              setEmail(e);
-            }}
-            style={{
-              color: '#FFFFFF',
-              fontSize: 18,
-              marginTop: 8,
-              marginBottom: 30,
               marginLeft: 40,
               borderWidth: 1,
               borderColor: 'white',

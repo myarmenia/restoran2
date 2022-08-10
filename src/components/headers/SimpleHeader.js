@@ -29,7 +29,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     flexDirection: 'row',
     borderBottomColor: '#17181B',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingLeft: 10
+
   },
   back: {
     backgroundColor: '#000000',

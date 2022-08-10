@@ -101,13 +101,21 @@ export const Registration = createAsyncThunk(
 export const ProfileUpdate = createAsyncThunk(
   'auth/ProfileUpdate',
   async (data, thunkAPI) => {
-    console.log(data);
+    const formData = new FormData();
+    formData.append('email', data.email);
+    formData.append('name', data.name);
+    formData.append('age', data.age);
+    formData.append('gender', data.gender);
+    formData.append('phone_number', data.phone_number);
+    formData.append('avatar', data.avatar);
+    console.log(data, formData);
     const bearer = await AsyncStorage.getItem('bearer');
     const token = await AsyncStorage.getItem('token');
     try {
-      const response = await axiosInstance.post('user/update', data, {
+      const response = await axiosInstance.post('user/update', formData, {
         headers: {
           Authorization: `${bearer} ${token}`,
+          'Content-Type': 'multipart/form-data; ',
         },
       });
       const localUserData = await AsyncStorage.getItem('user');

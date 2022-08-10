@@ -35,7 +35,7 @@ const NameDishScreen = ({navigation, route}) => {
         {
           id: byId?.id,
           count: count,
-          comment: comment,
+          comment: comment || 'Без изменений',
         },
         {
           name: byId?.name,

@@ -154,7 +154,6 @@ const TitleBlock = ({navigation}) => {
                 </Text>
                 <FlatList
                   numColumns={3}
-                  horizontal={false}
                   scrollEnabled={true}
                   showsVerticalScrollIndicator={true}
                   contentContainerStyle={{paddingBottom: 80}}
