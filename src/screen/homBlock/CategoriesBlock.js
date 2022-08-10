@@ -2,19 +2,7 @@ import React, {useState} from 'react';
 import {View, StyleSheet, FlatList, TouchableOpacity, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 
-const titleObj = {
-  '-1': 'Топ Ресторанов',
-  0: 'Европейская',
-  1: 'Русская',
-  2: 'Американская',
-  3: 'Грузинская',
-  4: 'Итальянская',
-  5: 'Японская',
-  6: 'Корейская',
-  7: 'Азиатская',
-  8: 'Кавказская',
-  9: 'Армянская',
-};
+const titleDef = 'Топ Ресторанов';
 
 const CategoriesBlock = ({update, setTitle}) => {
   const {restaurants, kitchen} = useSelector(state => state.restaurant);
@@ -32,12 +20,22 @@ const CategoriesBlock = ({update, setTitle}) => {
             onPress={() => {
               if (index !== filteredItem) {
                 setFilteredItem(index);
-                update(() => restaurants.filter(el => el?.desc === item.name));
-                setTitle(titleObj[index]);
+                update(() =>
+                  restaurants.filter(el =>
+                    el?.kitchen_categories?.reduce((last, next) => {
+                      if (next?.name === item.name) {
+                        return true;
+                      } else {
+                        return last;
+                      }
+                    }, false),
+                  ),
+                );
+                setTitle(item.name);
               } else {
                 setFilteredItem(-1);
                 update(() => restaurants);
-                setTitle(titleObj['-1']);
+                setTitle(titleDef);
               }
             }}
             key={index}

@@ -1,13 +1,20 @@
-import React from 'react';
-import {StyleSheet, View, Dimensions, ScrollView} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, View, Dimensions} from 'react-native';
 import MainDishes from '../../components/UI/MainDishes';
 import SimpleHeader from '../../components/headers/SimpleHeader';
+import LoadingComponent from '../../components/loadingComponent';
 
 const MainDishesScreen = ({navigation, route}) => {
+  const [loading, setLoading] = useState(false);
   return (
     <View style={styles.container}>
+      {loading ? <LoadingComponent /> : <></>}
       <SimpleHeader title={'Основные Блюда'} right={-40} />
-      <MainDishes restId={route.params.restId} navigation={navigation} />
+      <MainDishes
+        restId={route.params.restId}
+        navigation={navigation}
+        setLoading={setLoading}
+      />
     </View>
   );
 };

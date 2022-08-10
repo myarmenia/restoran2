@@ -10,12 +10,10 @@ export const SummaryNavigation = () => (
     screenOptions={({route}) => ({
       headerShown: false,
     })}>
-    <RootStack.Group>
-      <RootStack.Screen
-        options={{headerShown: false}}
-        name="BottomTabNavigator"
-        component={BottomTabNavigator}
-      />
-    </RootStack.Group>
+    <RootStack.Screen
+      options={{headerShown: false}}
+      name="BottomTabNavigator"
+      component={BottomTabNavigator}
+    />
   </RootStack.Navigator>
 );

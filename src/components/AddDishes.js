@@ -11,25 +11,49 @@ import {
 import MainButton from '../components/UI/buttons/MainButton';
 import CallSvg from '../assets/svg/callSvg/CallSvg';
 import DeleteSvg from '../assets/svg/DeleteSvg';
-import LikeComponent from '../components/UI/LikeComponent';
 import DeleteModal from '../components/UI/DeleteModal';
 import {useDispatch, useSelector} from 'react-redux';
-import {changeMenu} from '../store/reducers/restaurant/slice';
-import {orderStore} from '../store/reducers/restaurant/action';
+import {
+  MenusByMenuID,
+  Orders,
+  orderStore, Preference,
+  Preferences,
+} from "../store/reducers/restaurant/action";
+import {broneRest} from '../store/reducers/restaurant/slice';
+import LikeComponent from './UI/LikeComponent';
 
-const AddDishes = ({restId, menu, menuDesc, data, navigation}) => {
+const AddDishes = ({restId, setLoading, menu, menuDesc, data, navigation}) => {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const [index, setIndex] = useState(-1);
   const [productsArray, setProductsArray] = useState(menu);
   const {phoneNumbers} = useSelector(({restaurant}) => restaurant);
+  const [sum, setSum] = useState(0);
+  const {preference} = useSelector(({restaurant}) => restaurant);
+  const [choosed, setChoosed] = useState([]);
+  useEffect(() => {
+    const newVal = preference?.map(el => el?.id);
+    setChoosed(newVal);
+  }, [preference]);
 
   useEffect(() => {
     setProductsArray(menu);
-  }, [menu]);
+  }, [menu, productsArray]);
 
   useEffect(() => {
-    dispatch(changeMenu([restId, productsArray]));
+    setSum(
+      menuDesc.reduce(
+        (last, next, index) =>
+          last +
+          +next?.price *
+            +(
+              Array.isArray(productsArray)
+                ? productsArray
+                : Object.values(productsArray)
+            )[index]?.count,
+        0,
+      ),
+    );
   }, [productsArray]);
 
   return (
@@ -41,11 +65,12 @@ const AddDishes = ({restId, menu, menuDesc, data, navigation}) => {
             setProductsArray={setProductsArray}
             index={index}
             setOpenModal={setOpenModal}
+            restId={restId}
           />
         )}
       </View>
 
-      {productsArray.length ? (
+      {productsArray?.length ? (
         <>
           <FlatList
             data={
@@ -65,7 +90,10 @@ const AddDishes = ({restId, menu, menuDesc, data, navigation}) => {
                         <Image
                           style={styles.img}
                           resizeMode="cover"
-                          source={item?.img}
+                          source={
+                            item?.img ||
+                            require('../assets/img/home/dishes/1.png')
+                          }
                         />
                       </TouchableOpacity>
                     </View>
@@ -81,40 +109,64 @@ const AddDishes = ({restId, menu, menuDesc, data, navigation}) => {
                             {menuDesc[index]?.name}
                           </Text>
                         </TouchableOpacity>
-                        <View>
-                          <LikeComponent />
-                        </View>
+                        <TouchableOpacity
+                          onPress={async () => {
+                            setLoading(true);
+                            setChoosed(prev => {
+                              const arr = prev;
+                              if (!arr.includes(item?.id)) {
+                                arr.push(item?.id);
+                              } else {
+                                return arr.filter(el => el !== item?.id);
+                              }
+                              return arr;
+                            });
+                            await dispatch(Preferences({id: item?.id}));
+                            await dispatch(Preference());
+                            await setLoading(false);
+                          }}>
+                          <LikeComponent choosed={choosed.includes(item?.id)} />
+                        </TouchableOpacity>
                       </View>
 
                       <Text style={styles.categories}>
                         {menuDesc[index]?.desc}
+                      </Text>
+                      <Text style={styles.name}>
+                        {menuDesc[index]?.price} руб. х {item?.count} порции,{' '}
                       </Text>
                       {item.isMenuSelected ? null : (
                         <View
                           style={{
                             flexDirection: 'row',
                             alignItems: 'center',
+                            justifyContent: 'space-between',
                             marginBottom: 5,
                           }}>
-                          <TouchableOpacity style={styles.opacity}>
+                          <TouchableOpacity
+                            onPress={async () => {
+                              setLoading(true);
+                              await dispatch(MenusByMenuID(item?.id));
+                              await setLoading(false);
+                              navigation.navigate('NameDishScreen', {
+                                restId: restId,
+                              });
+                            }}
+                            style={styles.opacity}>
                             <Text style={{color: '#FFFFFF', marginRight: 5}}>
-                              Подробнее
+                              Подробнее >>
                             </Text>
                             <View
                               style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 marginTop: 4,
-                                marginRight: 60,
                               }}
                             />
                           </TouchableOpacity>
-
-                          {/* <TouchableOpacity onPress={() => removeUser(index)}> */}
                           <TouchableOpacity
-                            style={{marginLeft: 100}}
                             onPress={() => {
-                              setIndex(+index);
+                              setIndex(+item?.id);
                               setOpenModal(true);
                             }}>
                             <DeleteSvg />
@@ -140,7 +192,7 @@ const AddDishes = ({restId, menu, menuDesc, data, navigation}) => {
             <Text style={{color: '#5F6368', fontSize: 14, marginRight: 10}}>
               Общее:
             </Text>
-            <Text style={{color: '#5F6368', fontSize: 14}}>8 000 рублей</Text>
+            <Text style={{color: '#5F6368', fontSize: 14}}>{sum} рублей</Text>
           </View>
 
           <View
@@ -153,14 +205,16 @@ const AddDishes = ({restId, menu, menuDesc, data, navigation}) => {
             <Text style={{color: '#5F6368', fontSize: 14, marginRight: 10}}>
               Оплата за обслуживание Х%:{' '}
             </Text>
-            <Text style={{color: '#5F6368', fontSize: 14}}>800 рублей</Text>
+            <Text style={{color: '#5F6368', fontSize: 14}}>
+              {(0.1 * sum).toFixed(1)} рублей
+            </Text>
           </View>
 
           <View style={[styles.line, {marginTop: 15}]} />
           <View style={{flexDirection: 'row'}}>
             <View style={{flex: 2}} />
             <Text style={{color: '#FFFFFF', fontSize: 20, flex: 3}}>
-              К оплате 8 800 рублей
+              К оплате {(0.1 * sum + sum).toFixed(1)} рублей
             </Text>
           </View>
         </>
@@ -183,10 +237,23 @@ const AddDishes = ({restId, menu, menuDesc, data, navigation}) => {
           <CallSvg />
         </TouchableOpacity>
       </View>
-      <View style={{marginVertical: 20, marginHorizontal: 10, marginTop: 25}} z>
+      <View style={{marginVertical: 20, marginHorizontal: 10, marginTop: 25}}>
         <MainButton
           goTo={async () => {
-            await dispatch(orderStore(data));
+            setLoading(true);
+            await dispatch(
+              orderStore({
+                ...data,
+                menus: Array.isArray(productsArray)
+                  ? productsArray
+                  : Object.values(productsArray),
+              }),
+            )
+              .then(res => console.log('store order ----> ', res))
+              .catch(e => console.log(e));
+            await dispatch(Orders());
+            await dispatch(broneRest([restId]));
+            await setLoading(false);
             navigation.navigate('Home');
           }}
           textBtn={'Добавить меню к бронированию'}

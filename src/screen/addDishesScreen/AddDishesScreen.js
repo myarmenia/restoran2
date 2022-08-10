@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -12,14 +12,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import AddSvg from '../../assets/svg/AddSvg';
 import AddDishes from '../../components/AddDishes';
 import {Menus} from '../../store/reducers/restaurant/action';
+import LoadingComponent from '../../components/loadingComponent';
 const AddDishesScreen = ({navigation}) => {
-  const {restaurants, yourOrder, reserveOrders} = useSelector(
+  const {yourOrder, reserveOrders, restaurants} = useSelector(
     state => state.restaurant,
   );
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
+  const getRestName = id => {
+    return restaurants.filter(el => el.id === id)[0].name;
+  };
 
   return (
     <View style={styles.container}>
+      {loading ? <LoadingComponent /> : <></>}
       <ScrollView>
         {Object.values(yourOrder).length ? (
           Object.values(yourOrder).map(elem => {
@@ -27,7 +34,8 @@ const AddDishesScreen = ({navigation}) => {
               <>
                 <View style={styles.header}>
                   <Text style={styles.text}>
-                    Бронь в {elem?.restaurant_id} в {elem?.coming_date}
+                    Бронь в {getRestName(elem?.restaurant_id)} в{' '}
+                    {elem?.coming_date}
                   </Text>
                 </View>
                 <View style={styles.line} />
@@ -48,8 +56,9 @@ const AddDishesScreen = ({navigation}) => {
                   data={elem}
                   restId={elem?.restaurant_id}
                   menu={elem?.menus}
-                  menuDesc={reserveOrders}
+                  menuDesc={reserveOrders[elem?.restaurant_id]}
                   navigation={navigation}
+                  setLoading={setLoading}
                 />
               </>
             );
@@ -74,7 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height - 100,
     height: '100%',
-    paddingTop: Platform.OS === 'ios' ? 50 : 0,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0,
   },
   text: {
     color: '#FFFFFF',
@@ -107,5 +116,3 @@ const styles = StyleSheet.create({
 });
 
 export default AddDishesScreen;
-//  LOG  your order [{"2": {"coming_date": 2022-07-22T05:54:29.796Z,
-// "floors": [Array], "menus": [Array], "people_nums": 1, "restaurant_id": 2}}]

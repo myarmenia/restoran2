@@ -8,7 +8,7 @@ import {
   Text,
 } from 'react-native';
 import MarkSvg from '../assets/svg/homeScreen/MarkSvg';
-import {PreferencesData} from "./UI/PreferencesData";
+import {PreferencesData} from './UI/PreferencesData';
 import MoreSvg from '../assets/svg/MoreSvg';
 
 const Preferences = ({state}) => {

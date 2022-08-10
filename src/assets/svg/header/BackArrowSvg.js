@@ -1,21 +1,20 @@
-import * as React from "react"
-import Svg, { Path } from "react-native-svg"
+import * as React from 'react';
+import Svg, {Path} from 'react-native-svg';
 
-const BackArrowSvg = (props) => (
+const BackArrowSvg = props => (
   <Svg
-    width={70}
-    height={70}
-    viewBox="0 0 32 32"
+    width={14}
+    height={24}
+    viewBox="0 0 7 12"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+    {...props}>
     <Path
-      d="m6.401 1.328-4.81 4.811L6.4 10.95"
+      d="M5.57047 1.32812L0.759277 6.13932L5.57047 10.9505"
       stroke="#5F6368"
       strokeLinecap="round"
     />
   </Svg>
-)
+);
 
-export default BackArrowSvg
+export default BackArrowSvg;

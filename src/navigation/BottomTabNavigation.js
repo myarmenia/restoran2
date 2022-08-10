@@ -1,7 +1,6 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-import HomeScreen from '../screen/homBlock/HomeScreen';
 import HomeTabSvg from '../assets/svg/tabs/HomeTabSvg';
 import FocusHomeTabSvg from '../assets/svg/tabsFocus/FocusHomeTabSvg';
 import MapScreen from '../screen/mapBlock/MapScreen';
@@ -29,8 +28,12 @@ import FavoritesScreen from '../screen/favoritesScreen/FavoritesScreen';
 import FeedBackScreen from '../screen/feedBackScreen/FeedBackScreen';
 import AddDishesScreen from '../screen/addDishesScreen/AddDishesScreen';
 import SelectMenuScreen from '../screen/selectMenuScreen/SelectMenuScreen';
-import NameDishScreen from '../screen/nameDishScreen/NameDishScreen';
 import {HomeStackNavigation} from './stacks/HomeStack';
+import PreferencesScreen from '../screen/preferencesScreen/PreferencesScreen';
+import CurrentOrderScreen from '../screen/currentOrderScreen/CurrentOrderScreen';
+import MenuCategoriesScreen from '../screen/menuCategories/MenuCategoriesScreen';
+import MainDishesScreen from '../screen/mainDishesScreen/MainDishesScreen';
+import NameDishScreen from '../screen/nameDishScreen/NameDishScreen';
 
 const ProfileComponent = () => {
   return (
@@ -42,6 +45,36 @@ const ProfileComponent = () => {
       <Drawer.Screen name="OrderHistory" component={OrderHistoryScreen} />
       <Drawer.Screen name="Favorites" component={FavoritesScreen} />
       <Drawer.Screen name="FeedBack" component={FeedBackScreen} />
+      <Drawer.Screen name="PreferencesScreen" component={PreferencesScreen} />
+    </Drawer.Navigator>
+  );
+};
+
+const OrdersComponent = () => {
+  return (
+    <Drawer.Navigator
+      screenOptions={() => ({
+        headerShown: false,
+      })}>
+      <Drawer.Screen name="Orders" component={SelectMenuScreen} />
+      <Drawer.Screen name="CurrentOrder" component={CurrentOrderScreen} />
+    </Drawer.Navigator>
+  );
+};
+
+const AddDishesComponent = () => {
+  return (
+    <Drawer.Navigator
+      screenOptions={() => ({
+        headerShown: false,
+      })}>
+      <Drawer.Screen name="addDishes" component={AddDishesScreen} />
+      <Drawer.Screen
+        name="MenuCategoriesScreen"
+        component={MenuCategoriesScreen}
+      />
+      <Drawer.Screen name="MainDishesScreen" component={MainDishesScreen} />
+      <Drawer.Screen name="NameDishScreen" component={NameDishScreen} />
     </Drawer.Navigator>
   );
 };
@@ -84,8 +117,8 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="select"
-        component={SelectMenuScreen}
+        name="OrdersComp"
+        component={OrdersComponent}
         options={{
           tabBarLabel: ({focused}) =>
             focused ? <TextFocusOrdersSvg /> : <OrdersTabTextSvg />,
@@ -94,8 +127,8 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="addDishes"
-        component={AddDishesScreen}
+        name="AddDishesComp"
+        component={AddDishesComponent}
         options={{
           tabBarLabel: ({focused}) =>
             focused ? <TextFocusBasketSvg /> : <BasketTabTextSvg />,

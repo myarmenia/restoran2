@@ -1,0 +1,6 @@
+<resources>
+    <color name="background">#000000</color>
+    <color name="darkgrey">#000000</color>
+    <color name="foreground">#ffffff</color>
+    <color name="highlight">#cf468f</color>
+</resources>

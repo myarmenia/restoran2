@@ -28,7 +28,7 @@ const SearchComponent = ({data, navigation, addAbsolute}) => {
       <View style={styles.searchList}>
         {temporarySearchResults.length === 0 && (
           <View style={styles.searchListItem}>
-            <Text style={styles.searchListItemText}>No match found</Text>
+            <Text style={styles.searchListItemText}>Ничего не найдено</Text>
           </View>
         )}
         {temporarySearchResults.map((elem, index) => {
@@ -52,10 +52,9 @@ const SearchComponent = ({data, navigation, addAbsolute}) => {
     <View
       style={{
         position: 'absolute',
-        top: 0,
-        left: 0,
+        top: 10,
         width: addAbsolute
-          ? 0.9 * Dimensions.get('window').width
+          ? 0.95 * Dimensions.get('window').width
           : Dimensions.get('window').width,
         zIndex: 100,
         padding: 0,
@@ -65,14 +64,15 @@ const SearchComponent = ({data, navigation, addAbsolute}) => {
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         setTextInputFocussed={setTextInputFocussed}
+        navigation={navigation}
+        temporarySearchResults={temporarySearchResults}
       />
       {textInputFocussed && (
         <ScrollView
           style={{
-            position: 'absolute',
             backgroundColor: '#000000',
-            top: Platform.OS === 'ios' ? 75 : 45,
-            left: 0,
+            top: Platform.OS === 'ios' ? 25 : 0,
+            left: 0.05 * Dimensions.get('window').width,
             zIndex: 100,
             width: 0.9 * Dimensions.get('window').width,
             maxHeight: 300,
@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height - 100,
     height: '100%',
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0,
   },
   text: {
     marginTop: 20,

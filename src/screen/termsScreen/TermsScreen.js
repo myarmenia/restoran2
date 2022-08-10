@@ -2,12 +2,10 @@ import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SimpleHeader from '../../components/headers/SimpleHeader';
-import {useSelector} from 'react-redux';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
 import MainButton from '../../components/UI/buttons/MainButton';
 
 const TermsScreen = () => {
-  const {restaurants} = useSelector(state => state.home);
   return (
     <View>
       <LinearGradient colors={['black', 'black']}>

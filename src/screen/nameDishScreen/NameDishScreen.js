@@ -7,7 +7,6 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import FeedBackSvg from '../../assets/svg/FeedBackSvg';
 import logoImg from '../../assets/img/home/dishes/4.png';
 import TextArea from '../../components/UI/textArea/TextArea';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -16,6 +15,7 @@ import AddedCartModal from '../../components/UI/AddedCartModal';
 import {useDispatch, useSelector} from 'react-redux';
 import SimpleHeader from '../../components/headers/SimpleHeader';
 import {addDish} from '../../store/reducers/restaurant/slice';
+import LoadingComponent from '../../components/loadingComponent';
 
 const NameDishScreen = ({navigation, route}) => {
   const {byId} = useSelector(({restaurant}) => restaurant);
@@ -24,16 +24,18 @@ const NameDishScreen = ({navigation, route}) => {
   const [price, setPrice] = useState(0);
   const [comment, setComment] = useState('');
   const [openModal, setOpenModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const modalVisible = async () => {
-    dispatch(
+    setLoading(true);
+    await dispatch(
       addDish([
         route.params.restId,
         byId?.id,
         {
           id: byId?.id,
-          count: 1,
-          comment: comment,
+          count: count,
+          comment: comment || 'Без изменений',
         },
         {
           name: byId?.name,
@@ -42,6 +44,10 @@ const NameDishScreen = ({navigation, route}) => {
         },
       ]),
     );
+    setCount(1);
+    setPrice(+byId?.price);
+    setSum(+byId?.price);
+    await setLoading(false);
     setOpenModal(true);
   };
 
@@ -61,12 +67,17 @@ const NameDishScreen = ({navigation, route}) => {
 
   const Increase = () => {
     setCount(prev => prev + 1);
-    setSum(prev => (prev += price));
+    setSum(prev => prev + price);
   };
 
   return (
     <View style={styles.container}>
-      {openModal ? <AddedCartModal setOpenModal={setOpenModal} /> : <></>}
+      {loading ? <LoadingComponent /> : <></>}
+      {openModal ? (
+        <AddedCartModal dishName={byId?.name} setOpenModal={setOpenModal} />
+      ) : (
+        <></>
+      )}
       <ScrollView>
         <SimpleHeader title={'Основные Блюда'} right={-40} />
 

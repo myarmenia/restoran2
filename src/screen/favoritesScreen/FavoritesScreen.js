@@ -1,21 +1,18 @@
-import React from 'react';
-import {Text, StyleSheet, View, Dimensions} from 'react-native';
-import SimpleHeader from '../../components/headers/SimpleHeader';
+import React, {useState} from 'react';
+import { StyleSheet, View, Dimensions, Platform } from "react-native";
 import FavoriteComp from '../../components/Favorites';
 import {useSelector} from 'react-redux';
-import SearchHeader from '../../components/headers/SearchHeader';
-import SearchComponent from '../../components/searchComponent';
+import LoadingComponent from '../../components/loadingComponent';
+import SimpleHeader from '../../components/headers/SimpleHeader';
 
-const FavoritesScreen = ({navigation}) => {
-  const {favorite, restaurants} = useSelector(state => state.restaurant);
-
+const FavoritesScreen = () => {
+  const {favorite} = useSelector(state => state.restaurant);
+  const [loading, setLoading] = useState(false);
   return (
     <View style={styles.container}>
-      {/*<SimpleHeader title={'Актуальные брони'} />*/}
-      <SearchComponent data={restaurants} navigation={navigation} />
-      <View style={{marginTop: 60}}>
-        <FavoriteComp state={favorite} />
-      </View>
+      {loading ? <LoadingComponent /> : <></>}
+      <SimpleHeader title={'Избранные рестораны'} />
+      <FavoriteComp state={favorite} setLoading={setLoading} />
     </View>
   );
 };
@@ -25,7 +22,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height,
     height: '100%',
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0,
   },
 });
 

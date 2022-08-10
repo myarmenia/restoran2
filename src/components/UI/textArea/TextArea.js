@@ -14,7 +14,7 @@ const TextArea = ({placeholder, horizontal, onChangeText, text}) => {
         placeholderTextColor="#5F6368"
         keyboardType={'default'}
         // numberOfLines={10}
-        marginHorizontal={horizontal ? horizontal : 20}
+        marginHorizontal={horizontal ? horizontal : 0}
         textAlignVertical={'top'}
       />
     </View>
@@ -23,9 +23,9 @@ const TextArea = ({placeholder, horizontal, onChangeText, text}) => {
 
 const styles = StyleSheet.create({
   MainContainer: {
-    paddingTop: Platform.OS === 'ios' ? 20 : 0,
-    margin: 20,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0,
     height: 300,
+    marginVertical: 20,
   },
 
   TextInputStyleClass: {

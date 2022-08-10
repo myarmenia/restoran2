@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text, View, StyleSheet, Image, Dimensions} from 'react-native';
 import MainButton from '../../components/UI/buttons/MainButton';
 import logoImg from '../../assets/png/logo.png';
@@ -55,14 +55,19 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#FFFFFF',
-    fontSize: 22,
+    fontSize: 20,
     marginBottom: 20,
     marginTop: 35,
+    fontWeight: '600',
+    lineHeight: 26,
+    textAlign: 'center',
   },
   content: {
     color: '#646464',
-    fontSize: 18,
+    fontSize: 14,
+    lineHeight: 18,
     marginBottom: 40,
+    textAlign: 'center',
   },
 });
 

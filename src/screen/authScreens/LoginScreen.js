@@ -5,10 +5,11 @@ import CustomInput from '../../components/UI/inputs/CustomInput';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import {Login} from '../../store/reducers/auth/action';
-import {clearError} from '../../store/reducers/auth/slice';
+import LoadingComponent from '../../components/loadingComponent';
 
 const LoginScreen = ({navigation}) => {
-  const {auth, error, user} = useSelector(({auth}) => auth);
+  const {canAuth, error, user} = useSelector(({auth}) => auth);
+  const [loading, setLoading] = useState(false);
   const passRegExpRef = useRef(
     new RegExp('^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})'),
   );
@@ -34,26 +35,26 @@ const LoginScreen = ({navigation}) => {
       passRegExpRef.current.test(password) &&
       emailRegExpRef.current.test(email)
     ) {
-      await dispatch(Login({email, password}));
+      setLoading(true);
+      await dispatch(Login({email, password}))
+        .then(res => {
+          setLoading(false);
+          console.log(res?.payload);
+          if (!res?.payload?.user?.phone_number && res?.payload !== false) {
+            navigation.navigate('sendNumber');
+          } else if (res?.payload?.user?.phone_number) {
+            console.log('login accepted');
+          } else {
+            setShowError(true);
+          }
+        })
+        .catch(e => {
+          console.log('realllly', e);
+        });
     } else {
       setShowError(true);
     }
   }, [email, password, dispatch]);
-
-  useEffect(() => {
-    if (error) {
-      setShowError(true);
-    } else if (
-      !auth &&
-      !user?.phone_number &&
-      email &&
-      password &&
-      passRegExpRef.current.test(password) &&
-      emailRegExpRef.current.test(email)
-    ) {
-      navigation.navigate('sendNumber');
-    }
-  }, [auth, user?.phone_number, error]);
 
   const goToRegistrationScreen = () => {
     navigation.navigate('register');
@@ -61,6 +62,7 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      {loading ? <LoadingComponent /> : <></>}
       <Text style={styles.titleText}>Вход</Text>
       <View style={{marginBottom: -5}}>
         <CustomInput value={email} onChangeText={setEmail} />

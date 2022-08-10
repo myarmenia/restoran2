@@ -6,27 +6,22 @@ import {
   TouchableOpacity,
   Image,
   Text,
+  Dimensions,
 } from 'react-native';
 import {useState} from 'react';
-import {initialState2} from './DishData';
 import MainButton from '../../components/UI/buttons/MainButton';
 import LikeComponent from '../../components/UI/LikeComponent';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  Favorites,
   MenusByMenuID,
-  Preference,
   Preferences,
 } from '../../store/reducers/restaurant/action';
-import MarkSvg from '../../assets/svg/homeScreen/MarkSvg';
 import {addDish} from '../../store/reducers/restaurant/slice';
+import AddedCartModal from './AddedCartModal';
 
-const MainDishes = ({navigation, restId}) => {
-  const [openModal, setOpenModal] = useState(false);
-  const [index, setIndex] = useState(-1);
+const MainDishes = ({navigation, restId, setLoading}) => {
+  const [openModal, setOpenModal] = useState('');
   const [choosed, setChoosed] = useState([]);
-  // const [productsArray, setProductsArray] = useState(initialState2);
-
   const {menu, preference} = useSelector(({restaurant}) => restaurant);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -34,14 +29,21 @@ const MainDishes = ({navigation, restId}) => {
     setChoosed(newVal);
   }, [preference]);
   const goToNextPage = async id => {
+    setLoading(true);
     await dispatch(MenusByMenuID(id));
+    await setLoading(false);
     navigation.navigate('NameDishScreen', {
       restId: restId,
     });
   };
 
   return (
-    <View>
+    <View style={styles.container}>
+      {openModal ? (
+        <AddedCartModal dishName={openModal} setOpenModal={setOpenModal} />
+      ) : (
+        <></>
+      )}
       <FlatList
         data={menu}
         showsVerticalScrollIndicator={false}
@@ -75,7 +77,7 @@ const MainDishes = ({navigation, restId}) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={async () => {
-                        console.log('hhhhhnnnnn');
+                        setLoading(true);
                         setChoosed(prev => {
                           const arr = prev;
                           if (!arr.includes(item?.id)) {
@@ -86,6 +88,7 @@ const MainDishes = ({navigation, restId}) => {
                           return arr;
                         });
                         await dispatch(Preferences({id: item?.id}));
+                        await setLoading(false);
                       }}>
                       <LikeComponent choosed={choosed.includes(item?.id)} />
                     </TouchableOpacity>
@@ -114,31 +117,31 @@ const MainDishes = ({navigation, restId}) => {
                           }}
                         />
                       </TouchableOpacity>
-
-                      {/* <TouchableOpacity onPress={() => removeUser(index)}> */}
                       <MainButton
                         fontSize={17}
                         textBtn={`+ ${item?.price} руб`}
-                        vertical={3}
-                        goTo={() => {
-                          // setIndex(+index);
-                          // setOpenModal(true);
-                          dispatch(
+                        vertical={5}
+                        horizontal={10}
+                        goTo={async () => {
+                          setLoading(true);
+                          await dispatch(
                             addDish([
                               restId,
                               item?.id,
                               {
                                 id: item?.id,
                                 count: 1,
-                                comment: '',
+                                comment: 'Без изменений',
                               },
                               {
                                 name: item?.name,
                                 desc: item?.desc,
                                 price: item?.price,
-                              }
+                              },
                             ]),
                           );
+                          await setLoading(false);
+                          setOpenModal(item?.name);
                         }}
                       />
                     </View>
@@ -156,10 +159,12 @@ const MainDishes = ({navigation, restId}) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    // alignItems: 'center',
     backgroundColor: '#000000',
-    flexDirection: 'row',
+    // flexDirection: 'row',
     marginTop: 8,
+    minHeight: Dimensions.get('window').height - 100,
+    height: '100%',
   },
 
   subContainer: {

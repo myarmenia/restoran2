@@ -10,11 +10,11 @@ const SimpleHeader = ({title, right}) => {
     <View style={styles.back}>
       <View style={styles.container}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <View style={{marginRight: right ? right : -20}}>
             <BackArrowSvg />
-          </View>
         </TouchableOpacity>
-        <Text style={{fontSize: 16, color: '#646464'}}>{title}</Text>
+        <Text style={{fontSize: 16, color: '#646464', textAlign: 'center', marginLeft: 10}}>
+          {title}
+        </Text>
       </View>
       <View style={{backgroundColor: '#17181B', width: '100%', height: 1.5}} />
     </View>
@@ -24,11 +24,14 @@ const SimpleHeader = ({title, right}) => {
 const styles = StyleSheet.create({
   container: {
     height: 70,
-    paddingHorizontal: 30,
+    paddingHorizontal: 10,
     paddingVertical: 20,
     backgroundColor: '#000000',
     flexDirection: 'row',
     borderBottomColor: '#17181B',
+    alignItems: 'center',
+    paddingLeft: 10
+
   },
   back: {
     backgroundColor: '#000000',

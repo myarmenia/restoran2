@@ -6,19 +6,20 @@ import {
   Image,
   Text,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import MarkSvg from '../assets/svg/homeScreen/MarkSvg';
 import {useDispatch} from 'react-redux';
 import {Favorites} from '../store/reducers/restaurant/action';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const FavoriteComp = ({state}) => {
+const FavoriteComp = ({state, setLoading}) => {
   const [choosed, setChoosed] = useState([]);
   const dispatch = useDispatch();
   useEffect(() => {
     const newVal = state?.map(el => el?.id);
     setChoosed(newVal);
-  }, []);
+  }, [state]);
+
   return state.length ? (
     <FlatList
       data={state}
@@ -31,7 +32,8 @@ const FavoriteComp = ({state}) => {
         <View style={styles.container}>
           <TouchableOpacity
             style={styles.mark}
-            onPress={() => {
+            onPress={async () => {
+              setLoading(true);
               setChoosed(prev => {
                 const arr = prev;
                 if (!arr.includes(item?.id)) {
@@ -41,7 +43,8 @@ const FavoriteComp = ({state}) => {
                 }
                 return arr;
               });
-              dispatch(Favorites({id: item?.id}));
+              await dispatch(Favorites({id: item?.id}));
+              await setLoading(false);
             }}>
             <MarkSvg choosed={choosed.includes(item?.id)} />
           </TouchableOpacity>
@@ -58,7 +61,7 @@ const FavoriteComp = ({state}) => {
                   : require('../assets/img/home/restaurants/1.png')
               }
             />
-            <Text style={styles.name}>{item.title}</Text>
+            {/*<Text style={styles.name}>{item.title}</Text>*/}
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.categories}>{item.desc}</Text>
           </View>
@@ -109,10 +112,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     marginBottom: 5,
+    textAlign: 'center',
   },
   categories: {
     fontSize: 14,
     color: '#5F6368',
+    textAlign: 'center',
   },
 });
 
