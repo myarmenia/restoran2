@@ -185,7 +185,7 @@ export const Preference = createAsyncThunk(
       const response = await axiosInstance.get('menu/preference', {
         headers: {Authorization: `${bearer} ${token}`},
       });
-      console.log('favorite dishes', response.data);
+      console.log('favorite dishes', response.data.data);
       return response.data.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
