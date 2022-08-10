@@ -8,9 +8,9 @@ const SearchHeader = ({
   searchTerm,
   setTextInputFocussed,
   addAbsolute,
+  navigation,
+  temporarySearchResults = [],
 }) => {
-  const [value, setValue] = useState('');
-
   return (
     <View
       style={[
@@ -34,9 +34,25 @@ const SearchHeader = ({
           onChangeText={e => {
             setSearchTerm(e);
           }}
+          returnKeyType={'search'}
+          onSubmitEditing={function (e) {
+            navigation.navigate('SearchScreen', {
+              data: temporarySearchResults,
+              navigation: navigation,
+            });
+            setSearchTerm('');
+          }}
           value={searchTerm}
         />
-        <TouchableOpacity style={styles.search}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('SearchScreen', {
+              data: temporarySearchResults,
+              navigation: navigation,
+            });
+            setSearchTerm('');
+          }}
+          style={styles.search}>
           <SearchBtn />
         </TouchableOpacity>
       </View>
@@ -71,11 +87,11 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     width: 0.75 * Dimensions.get('screen').width,
   },
-  search: {
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  // search: {
+  //   height: '100%',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  // },
   clear: {
     alignItems: 'center',
     justifyContent: 'center',

@@ -36,12 +36,7 @@ export const HomeStackNavigation = () => {
       <Stack.Screen name="ChooseTable" component={ChooseTableScreen} />
       <Stack.Screen name="OrderTypeScreen" component={OrderTypeScreen} />
       <Stack.Screen name="RestTitle" component={TitleBlock} />
-      <Stack.Screen name="addDishes" component={AddDishesScreen} />
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
-      <Stack.Screen name="BookScreen" component={BookScreen} />
-      <Stack.Screen name="Profile" component={ProfileScreen} />
-      <Stack.Screen name="select" component={SelectMenuScreen} />
-      <Stack.Screen name="Map" component={MapScreen} />
       <Stack.Screen
         name="PrivacyPolicyScreen"
         component={PrivacyPolicyScreen}

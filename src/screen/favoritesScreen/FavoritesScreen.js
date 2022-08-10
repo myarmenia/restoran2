@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
+import { StyleSheet, View, Dimensions, Platform } from "react-native";
 import FavoriteComp from '../../components/Favorites';
 import {useSelector} from 'react-redux';
 import LoadingComponent from '../../components/loadingComponent';
 import SimpleHeader from '../../components/headers/SimpleHeader';
 
-const FavoritesScreen = ({navigation}) => {
-  const {favorite, restaurants} = useSelector(state => state.restaurant);
+const FavoritesScreen = () => {
+  const {favorite} = useSelector(state => state.restaurant);
   const [loading, setLoading] = useState(false);
   return (
     <View style={styles.container}>
@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height,
     height: '100%',
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0,
   },
 });
 

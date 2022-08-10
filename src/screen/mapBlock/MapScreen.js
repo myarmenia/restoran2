@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState} from 'react';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import {
   Dimensions,
-  Keyboard,
   PermissionsAndroid,
   Platform,
   StyleSheet,
@@ -12,11 +11,9 @@ import {
 import Geolocation from 'react-native-geolocation-service';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faLocationCrosshairs} from '@fortawesome/free-solid-svg-icons';
-import SearchHeader from '../../components/headers/SearchHeader';
 import {useDispatch, useSelector} from 'react-redux';
 import {Restaurants} from '../../store/reducers/restaurant/action';
 import SearchComponent from '../../components/searchComponent';
-import {DismissKeyboard} from '../../components/UI/DismissKeyboard';
 
 const mapStyle = [
   {
@@ -239,6 +236,7 @@ const MapScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <SearchComponent data={restaurants} navigation={navigation} />
       {geoAuth ? (
         <TouchableOpacity
           onPress={() => {
@@ -296,7 +294,6 @@ const MapScreen = ({navigation}) => {
           zIndex: 100,
           width: 0.9 * Dimensions.get('screen').width,
         }}>
-        <SearchComponent data={restaurants} navigation={navigation} />
       </View>
     </View>
   );

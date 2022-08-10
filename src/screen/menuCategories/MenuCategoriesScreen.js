@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {
-  Dimensions,
+  Dimensions, Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
+} from "react-native";
 import {useDispatch, useSelector} from 'react-redux';
 import SimpleHeader from '../../components/headers/SimpleHeader';
 import {Menu} from '../../store/reducers/restaurant/action';
@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height - 100,
     height: '100%',
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0,
   },
   text: {
     marginTop: 20,

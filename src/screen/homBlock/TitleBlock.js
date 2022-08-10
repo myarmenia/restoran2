@@ -24,7 +24,6 @@ const TitleBlock = ({navigation}) => {
   const [openModal, setOpenModal] = useState(false);
   const [hall, setHall] = useState(0);
 
-  console.log('restaurant', restaurant?.floor_planes[hall]);
 
   useEffect(() => {
     setHall(0);
@@ -54,10 +53,7 @@ const TitleBlock = ({navigation}) => {
             style={{
               alignItems: 'center',
               marginHorizontal: 40,
-              position: 'absolute',
-              top: 0.5 * Dimensions.get('screen').height,
               backgroundColor: '#17181B',
-              transform: [{translateY: -50}],
             }}>
             <View style={styles.modal}>
               <TouchableOpacity

@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  TextInput, Platform,
-} from "react-native";
+  TextInput,
+  Platform,
+} from 'react-native';
 import EditSvg from '../../assets/svg/edit/EditSvg';
 import AddImageSvg from '../../assets/svg/AddImageSvg';
 import {useDispatch, useSelector} from 'react-redux';
@@ -100,61 +101,132 @@ const ProfileScreen = ({navigation}) => {
         <></>
       )}
       {!changes ? (
-        <View>
-          <View style={{flexDirection: 'row', marginHorizontal: 40}}>
-            <View style={{flex: 2}}>
-              <Image
-                source={
-                  avatar?.uri
-                    ? {uri: avatar.uri}
-                    : require('../../assets/png/profileImg.png')
-                }
-                style={{
-                  width: 88,
-                  height: 88,
-                  borderRadius: 45,
-                }}
-              />
+        <>
+          <View>
+            <View style={{flexDirection: 'row', marginHorizontal: 40}}>
+              <View style={{flex: 2}}>
+                <Image
+                  source={
+                    avatar?.uri
+                      ? {uri: avatar.uri}
+                      : require('../../assets/png/profileImg.png')
+                  }
+                  style={{
+                    width: 88,
+                    height: 88,
+                    borderRadius: 45,
+                  }}
+                />
+              </View>
+              <View style={{flex: 4, marginTop: 8}}>
+                <Text style={{fontSize: 18, color: '#FFFFFF', marginBottom: 8}}>
+                  {name}
+                </Text>
+                <Text style={{fontSize: 12, color: '#FFFFFF'}}>
+                  {gender === 'male'
+                    ? 'Мужской'
+                    : gender === 'female'
+                    ? 'Женский'
+                    : gender}
+                  , {age}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => setChanges(prev => !prev)}
+                style={{flex: 0.5, marginTop: 8}}>
+                <EditSvg />
+              </TouchableOpacity>
             </View>
-            <View style={{flex: 4, marginTop: 8}}>
-              <Text style={{fontSize: 18, color: '#FFFFFF', marginBottom: 8}}>
-                {name}
-              </Text>
-              <Text style={{fontSize: 12, color: '#FFFFFF'}}>
-                {gender === 'male'
-                  ? 'Мужской'
-                  : gender === 'female'
-                  ? 'Женский'
-                  : gender}
-                , {age}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => setChanges(prev => !prev)}
-              style={{flex: 0.5, marginTop: 8}}>
-              <EditSvg />
-            </TouchableOpacity>
+            <Text
+              style={{
+                color: '#FFFFFF',
+                fontSize: 18,
+                marginTop: 25,
+                marginLeft: 40,
+              }}>
+              {number}
+            </Text>
+            <Text
+              style={{
+                color: '#FFFFFF',
+                fontSize: 18,
+                marginTop: 8,
+                marginBottom: 30,
+                marginLeft: 40,
+              }}>
+              {email}
+            </Text>
           </View>
+          <View
+            style={{backgroundColor: '#17181B', height: 1.5, marginTop: 40}}
+          />
           <Text
+            onPress={() => navigation.navigate('OrderHistory')}
             style={{
-              color: '#FFFFFF',
+              color: '#5F6368',
               fontSize: 18,
-              marginTop: 25,
+              marginTop: 15,
               marginLeft: 40,
             }}>
-            {number}
+            История заказов
           </Text>
+          <View
+            style={{backgroundColor: '#17181B', height: 1.5, marginTop: 15}}
+          />
           <Text
+            onPress={() => navigation.navigate('PreferencesScreen')}
             style={{
-              color: '#FFFFFF',
+              color: '#5F6368',
               fontSize: 18,
-              marginTop: 8,
-              marginBottom: 30,
+              marginTop: 15,
               marginLeft: 40,
             }}>
-            {email}
+            Предпочтения
           </Text>
-        </View>
+          <View
+            style={{backgroundColor: '#17181B', height: 1.5, marginTop: 15}}
+          />
+          <Text
+            onPress={() => navigation.navigate('Favorites')}
+            style={{
+              color: '#5F6368',
+              fontSize: 18,
+              marginTop: 15,
+              marginLeft: 40,
+            }}>
+            Избранные
+          </Text>
+          <View
+            style={{backgroundColor: '#17181B', height: 1.5, marginTop: 15}}
+          />
+          <Text
+            onPress={() => navigation.navigate('FeedBack')}
+            style={{
+              color: '#5F6368',
+              fontSize: 18,
+              marginTop: 15,
+              marginLeft: 40,
+            }}>
+            Обратная связь
+          </Text>
+          <View
+            style={{backgroundColor: '#17181B', height: 1.5, marginTop: 15}}
+          />
+          <TouchableOpacity
+            onPress={async () => {
+              await dispatch(SignOut());
+            }}>
+            <Text
+              style={{
+                color: '#5F6368',
+                fontSize: 18,
+                marginTop: 15,
+                marginLeft: 40,
+              }}>
+              Выход
+            </Text>
+          </TouchableOpacity>
+        </>
       ) : (
         <View>
           <View style={{flexDirection: 'row', marginHorizontal: 40}}>
@@ -319,65 +391,6 @@ const ProfileScreen = ({navigation}) => {
           />
         </View>
       )}
-      <View style={{backgroundColor: '#17181B', height: 1.5, marginTop: 40}} />
-      <Text
-        onPress={() => navigation.navigate('OrderHistory')}
-        style={{
-          color: '#5F6368',
-          fontSize: 18,
-          marginTop: 15,
-          marginLeft: 40,
-        }}>
-        История заказов
-      </Text>
-      <View style={{backgroundColor: '#17181B', height: 1.5, marginTop: 15}} />
-      <Text
-        onPress={() => navigation.navigate('PreferencesScreen')}
-        style={{
-          color: '#5F6368',
-          fontSize: 18,
-          marginTop: 15,
-          marginLeft: 40,
-        }}>
-        Предпочтения
-      </Text>
-      <View style={{backgroundColor: '#17181B', height: 1.5, marginTop: 15}} />
-      <Text
-        onPress={() => navigation.navigate('Favorites')}
-        style={{
-          color: '#5F6368',
-          fontSize: 18,
-          marginTop: 15,
-          marginLeft: 40,
-        }}>
-        Избранные
-      </Text>
-      <View style={{backgroundColor: '#17181B', height: 1.5, marginTop: 15}} />
-      <Text
-        onPress={() => navigation.navigate('FeedBack')}
-        style={{
-          color: '#5F6368',
-          fontSize: 18,
-          marginTop: 15,
-          marginLeft: 40,
-        }}>
-        Обратная связь
-      </Text>
-      <View style={{backgroundColor: '#17181B', height: 1.5, marginTop: 15}} />
-      <TouchableOpacity
-        onPress={async () => {
-          await dispatch(SignOut());
-        }}>
-        <Text
-          style={{
-            color: '#5F6368',
-            fontSize: 18,
-            marginTop: 15,
-            marginLeft: 40,
-          }}>
-          Выход
-        </Text>
-      </TouchableOpacity>
     </View>
   );
 };
