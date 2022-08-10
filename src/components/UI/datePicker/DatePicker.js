@@ -1,5 +1,12 @@
 import React from 'react';
-import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Dimensions,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import CalendarSvg from '../../../assets/svg/calendar';
 import ClockSvg from '../../../assets/svg/Clock';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -16,6 +23,49 @@ const DatePicker = ({mode, setDate, date, openModal, setOpenModal}) => {
 
   return (
     <View style={styleSheet.MainContainer}>
+      {openModal ? (
+        <View
+          style={{
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            zIndex: 200,
+          }}>
+          <View
+            style={{
+              margin: 30,
+              zIndex: 300,
+            }}>
+            <DateTimePicker
+              value={date}
+              mode={mode}
+              display={
+                Platform.OS === 'ios'
+                  ? mode === 'date'
+                    ? 'inline'
+                    : 'spinner'
+                  : 'default'
+              }
+              is24Hour={true}
+              onChange={onDateSelected}
+              onCancel={() => setOpenModal(false)}
+              themeVariant={'dark'}
+              textColor={'white'}
+              accentColor={'grey'}
+              negativeButtonLabel={'Отменить'}
+              positiveButtonLabel={'Выбрать'}
+              locale="ru-RU"
+              minimumDate={new Date()}
+              animation={true}
+            />
+          </View>
+        </View>
+      ) : (
+        <></>
+      )}
       <TouchableOpacity onPress={showDatePicker} style={styleSheet.container}>
         {mode === 'date' ? (
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -35,26 +85,6 @@ const DatePicker = ({mode, setDate, date, openModal, setOpenModal}) => {
           </View>
         )}
       </TouchableOpacity>
-
-      {openModal ? (
-        <DateTimePicker
-          value={date}
-          mode={mode}
-          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-          is24Hour={true}
-          onChange={onDateSelected}
-          onCancel={() => setOpenModal(false)}
-          style={styleSheet.datePicker}
-          themeVariant={'dark'}
-          negativeButtonLabel={'Отменить'}
-          positiveButtonLabel={'Выбрать'}
-          locale="ru-RU"
-          minimumDate={new Date()}
-          animation={false}
-        />
-      ) : (
-        <></>
-      )}
     </View>
   );
 };
@@ -77,10 +107,14 @@ const styleSheet = StyleSheet.create({
     marginLeft: 20,
   },
 
-  // datePicker: {
-  //   justifyContent: 'center',
-  //   alignItems: 'flex-start',
-  //   display: 'flex',
-  // },
+  datePicker: {
+    position: 'absolute',
+    width: '100%',
+    zIndex: 200,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
 });
 export default DatePicker;

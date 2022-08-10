@@ -325,9 +325,9 @@ const ProfileScreen = ({navigation}) => {
                     email: email,
                     name: name,
                     age: age,
-                    gender: gender.toString() === 'Мужской' ? 'male' : 'female',
+                    gender: gender === 'Мужской' ? 'male' : 'female',
                     phone_number: number,
-                    avatar: avatar,
+                    avatar: avatar || '',
                   }),
                 )
                   .then(res => {
@@ -430,6 +430,7 @@ const pickerSelectStyles = StyleSheet.create({
     color: '#fff',
     borderColor: '#fff',
     marginRight: 5,
+    padding: 10,
   },
   inputAndroid: {
     fontSize: 12,
