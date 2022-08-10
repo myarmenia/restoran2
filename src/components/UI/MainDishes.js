@@ -131,7 +131,7 @@ const MainDishes = ({navigation, restId, setLoading}) => {
                               {
                                 id: item?.id,
                                 count: 1,
-                                comment: '',
+                                comment: 'Без изменений',
                               },
                               {
                                 name: item?.name,
