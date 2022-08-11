@@ -34,21 +34,16 @@ const slice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(Login.fulfilled, (state, {payload}) => {
-        console.log('besame1', state.canAuth);
         if (payload === 'Error Here') {
-          console.log('besaem2');
           state.error = payload;
         } else {
-          console.log('besaem3');
           state.error = '';
           if (payload?.access_token) {
-            console.log('besaem4');
             state.token = payload?.access_token;
             state.tokenType = payload?.token_type;
             state.refreshToken = payload?.refresh_token;
           }
           if (payload?.user?.phone_number) {
-            console.log('besaem5');
             state.canAuth = true;
             state.user = payload?.user;
           }
@@ -85,7 +80,7 @@ const slice = createSlice({
         await AsyncStorage.setItem('user', JSON.stringify(reserveUser));
         state.auth = true;
         state.canAuth = true;
-        state.user = reserveUser
+        state.user = reserveUser;
       })
       .addCase(SendPhone.fulfilled, state => {
         state.name = {...state.name};

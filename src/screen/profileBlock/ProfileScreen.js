@@ -26,26 +26,42 @@ const ProfileScreen = ({navigation}) => {
   const [name, setName] = useState(user?.name);
   const [avatar, setAvatar] = useState(user?.avatar);
   const [gender, setGender] = useState(user?.gender);
-  const [date, setDate] = useState(user?.dob);
-  const [year, setYear] = useState(0);
+  const [date, setDate] = useState(user?.dob || new Date());
+  const [year, setYear] = useState(new Date());
   const [number, setNumber] = useState(user?.phone_number);
   const [email, setEmail] = useState(user?.email);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [datePickerDate, setDatePickerDate] = useState(new Date());
 
   useEffect(() => {
     const newDate = new Date();
-    const dateArr = date.split('-');
-    newDate.setMonth(dateArr[1] - 1);
-    newDate.setDate(dateArr[2]);
-    console.log(newDate.getFullYear());
-    setYear(newDate);
+    if (date?.toString().indexOf('-') !== -1 && date !== undefined) {
+      const dateArr = date.split('-');
+      newDate.setMonth(dateArr[1]);
+      newDate.setDate(dateArr[2]);
+      const datePicker = new Date(newDate);
+      datePicker.setFullYear(dateArr[0]);
+      setDatePickerDate(datePicker);
+      setYear(newDate);
+    }
   }, [date]);
+
+  function getAge(dateString) {
+    const today = new Date();
+    const birthDate = new Date(dateString);
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      return age - 1;
+    }
+    return age;
+  }
 
   function onDateSelected(value) {
     setOpenModal(false);
-    setDate(prev => {
+    setDatePickerDate(prev => {
       const next = new Date(prev);
       next.setFullYear(+value.getFullYear());
       next.setMonth(+value.getMonth());
@@ -67,7 +83,6 @@ const ProfileScreen = ({navigation}) => {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
       });
-      console.log(res);
       setAvatar(res[0]);
     } catch (err) {
       if (!DocumentPicker.isCancel(err)) {
@@ -84,11 +99,7 @@ const ProfileScreen = ({navigation}) => {
       {loading ? <LoadingComponent /> : <></>}
       <DateTimePickerModal
         isVisible={openModal}
-        value={
-          date && year
-            ? new Date(year.setFullYear(date.split('-')[0]))
-            : new Date()
-        }
+        value={datePickerDate}
         mode={'date'}
         display={Platform.OS === 'ios' ? 'inline' : 'default'}
         onConfirm={onDateSelected}
@@ -175,12 +186,7 @@ const ProfileScreen = ({navigation}) => {
                     : gender === 'female'
                     ? 'Женский'
                     : gender}
-                  ,{' '}
-                  {date
-                    ? +new Date(year) > +new Date()
-                      ? new Date(year).getFullYear() - date.split('-')[0] - 1
-                      : new Date(year).getFullYear() - date.split('-')[0]
-                    : 'Не обозначено'}
+                  , {datePickerDate ? getAge(datePickerDate) : 'Не обозначено'}
                 </Text>
               </View>
               <TouchableOpacity
@@ -352,12 +358,12 @@ const ProfileScreen = ({navigation}) => {
                   style={styles.dateContainer}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.text}>
-                      {date
-                        ? date.split('-')[2] +
-                          '.' +
-                          `0${date.split('-')[1]}`.slice(-2) +
-                          '.' +
-                          `0${date.split('-')[0]}`.slice(-2)
+                      {datePickerDate
+                        ? datePickerDate.getFullYear() +
+                          '-' +
+                          `0${datePickerDate.getMonth() + 1}`.slice(-2) +
+                          '-' +
+                          `0${datePickerDate.getDate()}`.slice(-2)
                         : `0${new Date().getDate()}`.slice(-2) +
                           '.' +
                           `0${new Date().getMonth() + 1}`.slice(-2) +
@@ -372,23 +378,21 @@ const ProfileScreen = ({navigation}) => {
               onPress={async () => {
                 setLoading(true);
                 setChanges(prev => !prev);
-                console.log();
                 await dispatch(
                   ProfileUpdate({
                     name: name,
                     dob:
-                      date.split('-')[0] +
+                      datePickerDate.getFullYear() +
                       '-' +
-                      `0${date.split('-')[1]}`.slice(-2) +
+                      `0${datePickerDate.getMonth() + 1}`.slice(-2) +
                       '-' +
-                      `0${date.split('-')[2]}`.slice(-2),
+                      `0${datePickerDate.getDate()}`.slice(-2),
                     gender: gender === 'Мужской' ? 'male' : 'female',
                     phone_number: number,
                     avatar: avatar || '',
                   }),
                 )
                   .then(res => {
-                    console.log('profile res', res);
                     if (res?.error) {
                       setError(
                         'Увы, но данные не обновились, попробуйте позже',
@@ -398,7 +402,22 @@ const ProfileScreen = ({navigation}) => {
                       setName(user?.name);
                       setNumber(user?.phone_number);
                       setAvatar(user?.avatar);
-                      setDate(user?.dot);
+                      setDate(user?.dob);
+                      const newDate = new Date();
+                      if (
+                        user?.dob?.toString().indexOf('-') !== -1 &&
+                        user?.dob !== undefined
+                      ) {
+                        const dateArr = user?.dob.split('-');
+                        newDate.setMonth(dateArr[1] - 1);
+                        newDate.setDate(dateArr[2]);
+                        const datePicker = new Date(newDate);
+                        datePicker.setFullYear(dateArr[0]);
+                        setDatePickerDate(datePicker);
+                        setYear(newDate);
+                      }
+                    } else {
+                      setDate(res.payload.dob);
                     }
                   })
                   .catch(err =>
@@ -443,15 +462,16 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   dateContainer: {
-    padding: 10,
     borderRadius: 45,
     borderColor: '#fff',
     borderWidth: 1,
+    justifyContent: 'center',
   },
   text: {
     fontSize: 12,
     color: '#fff',
-    textAlign: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 10,
   },
   button: {
     width: 250,

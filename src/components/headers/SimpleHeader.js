@@ -30,13 +30,12 @@ const SimpleHeader = ({title, right}) => {
 const styles = StyleSheet.create({
   container: {
     height: 70,
-    paddingHorizontal: 10,
     paddingVertical: 20,
     backgroundColor: '#000000',
     flexDirection: 'row',
     borderBottomColor: '#17181B',
     alignItems: 'center',
-    paddingLeft: 10,
+    paddingLeft: 30,
   },
   back: {
     backgroundColor: '#000000',
