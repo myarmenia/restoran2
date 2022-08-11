@@ -102,9 +102,8 @@ export const ProfileUpdate = createAsyncThunk(
   'auth/ProfileUpdate',
   async (data, thunkAPI) => {
     const formData = new FormData();
-    formData.append('email', data.email);
     formData.append('name', data.name);
-    formData.append('age', data.age);
+    formData.append('dob', data.dob);
     formData.append('gender', data.gender);
     formData.append('phone_number', data.phone_number);
     formData.append('avatar', data.avatar);
@@ -120,7 +119,6 @@ export const ProfileUpdate = createAsyncThunk(
       });
       const localUserData = await AsyncStorage.getItem('user');
       const user = JSON.parse(localUserData);
-      user.email = data.email;
       user.phone_number = data.phone_number;
       user.gender = data.gender;
       user.avatar = data.avatar;

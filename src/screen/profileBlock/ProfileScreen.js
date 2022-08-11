@@ -17,6 +17,7 @@ import LoadingComponent from '../../components/loadingComponent';
 import RNPickerSelect from 'react-native-picker-select';
 import MainButton from '../../components/UI/buttons/MainButton';
 import * as DocumentPicker from 'react-native-document-picker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const ProfileScreen = ({navigation}) => {
   const {user} = useSelector(({auth}) => auth);
@@ -25,11 +26,33 @@ const ProfileScreen = ({navigation}) => {
   const [name, setName] = useState(user?.name);
   const [avatar, setAvatar] = useState(user?.avatar);
   const [gender, setGender] = useState(user?.gender);
-  const [age, setAge] = useState(user?.age);
+  const [date, setDate] = useState(user?.dob);
+  const [year, setYear] = useState(0);
   const [number, setNumber] = useState(user?.phone_number);
   const [email, setEmail] = useState(user?.email);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    const newDate = new Date();
+    const dateArr = date.split('-');
+    newDate.setMonth(dateArr[1] - 1);
+    newDate.setDate(dateArr[2]);
+    console.log(newDate.getFullYear());
+    setYear(newDate);
+  }, [date]);
+
+  function onDateSelected(value) {
+    setOpenModal(false);
+    setDate(prev => {
+      const next = new Date(prev);
+      next.setFullYear(+value.getFullYear());
+      next.setMonth(+value.getMonth());
+      next.setDate(+value.getDate());
+      return next;
+    });
+  }
 
   useEffect(() => {
     if (gender.toLowerCase() === 'female') {
@@ -59,6 +82,29 @@ const ProfileScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       {loading ? <LoadingComponent /> : <></>}
+      <DateTimePickerModal
+        isVisible={openModal}
+        value={
+          date && year
+            ? new Date(year.setFullYear(date.split('-')[0]))
+            : new Date()
+        }
+        mode={'date'}
+        display={Platform.OS === 'ios' ? 'inline' : 'default'}
+        onConfirm={onDateSelected}
+        onCancel={() => setOpenModal(false)}
+        themeVariant={'dark'}
+        textColor={'white'}
+        accentColor={'grey'}
+        pickerContainerStyleIOS={{backgroundColor: 'black'}}
+        negativeButtonLabel={'Отменить'}
+        positiveButtonLabel={'Выбрать'}
+        cancelTextIOS={'Отменить'}
+        confirmTextIOS={'Выбрать'}
+        locale="ru-RU"
+        maximumDate={new Date()}
+        animation={true}
+      />
       {error ? (
         <View
           style={{
@@ -129,7 +175,12 @@ const ProfileScreen = ({navigation}) => {
                     : gender === 'female'
                     ? 'Женский'
                     : gender}
-                  , {age}
+                  ,{' '}
+                  {date
+                    ? +new Date(year) > +new Date()
+                      ? new Date(year).getFullYear() - date.split('-')[0] - 1
+                      : new Date(year).getFullYear() - date.split('-')[0]
+                    : 'Не обозначено'}
                 </Text>
               </View>
               <TouchableOpacity
@@ -296,23 +347,25 @@ const ProfileScreen = ({navigation}) => {
                   ]}
                   style={pickerSelectStyles}
                 />
-                <TextInput
-                  defaultValue={age ? '' + age : ''}
-                  onChangeText={e => {
-                    setAge(e);
-                  }}
-                  style={{
-                    fontSize: 12,
-                    color: '#FFFFFF',
-                    borderWidth: 1,
-                    borderColor: 'white',
-                    flex: 1,
-                    borderRadius: 15,
-                    padding: 5,
-                    paddingLeft: 20,
-                  }}
-                  keyboardType={'numeric'}
-                />
+                <TouchableOpacity
+                  onPress={setOpenModal}
+                  style={styles.dateContainer}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={styles.text}>
+                      {date
+                        ? date.split('-')[2] +
+                          '.' +
+                          `0${date.split('-')[1]}`.slice(-2) +
+                          '.' +
+                          `0${date.split('-')[0]}`.slice(-2)
+                        : `0${new Date().getDate()}`.slice(-2) +
+                          '.' +
+                          `0${new Date().getMonth() + 1}`.slice(-2) +
+                          '.' +
+                          new Date().getFullYear()}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
             <TouchableOpacity
@@ -322,9 +375,13 @@ const ProfileScreen = ({navigation}) => {
                 console.log();
                 await dispatch(
                   ProfileUpdate({
-                    email: email,
                     name: name,
-                    age: age,
+                    dob:
+                      date.split('-')[0] +
+                      '-' +
+                      `0${date.split('-')[1]}`.slice(-2) +
+                      '-' +
+                      `0${date.split('-')[2]}`.slice(-2),
                     gender: gender === 'Мужской' ? 'male' : 'female',
                     phone_number: number,
                     avatar: avatar || '',
@@ -341,7 +398,7 @@ const ProfileScreen = ({navigation}) => {
                       setName(user?.name);
                       setNumber(user?.phone_number);
                       setAvatar(user?.avatar);
-                      setAge(user?.age);
+                      setDate(user?.dot);
                     }
                   })
                   .catch(err =>
@@ -384,6 +441,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height - 100,
     height: '100%',
+  },
+  dateContainer: {
+    padding: 10,
+    borderRadius: 45,
+    borderColor: '#fff',
+    borderWidth: 1,
+  },
+  text: {
+    fontSize: 12,
+    color: '#fff',
+    textAlign: 'center',
   },
   button: {
     width: 250,
