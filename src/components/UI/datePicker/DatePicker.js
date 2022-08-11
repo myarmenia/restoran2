@@ -10,8 +10,6 @@ const DatePicker = ({mode, setDate, date, openModal, setOpenModal}) => {
   }
 
   function onDateSelected(value) {
-    console.log('kapkap', value);
-
     setOpenModal(false);
     setDate(prev => {
       const next = new Date(prev);

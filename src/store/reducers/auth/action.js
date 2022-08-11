@@ -122,7 +122,7 @@ export const ProfileUpdate = createAsyncThunk(
       user.phone_number = data.phone_number;
       user.gender = data.gender;
       user.avatar = data.avatar;
-      user.age = data.age;
+      user.dob = data.dob;
       await AsyncStorage.setItem('user', JSON.stringify(user));
       console.log('reg ----> ', response.data);
       return user;
