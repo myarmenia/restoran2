@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-  Dimensions, Platform,
+  Dimensions,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
+} from 'react-native';
 import {Restaurants} from '../../store/reducers/restaurant/action';
 import {useDispatch} from 'react-redux';
 import SimpleHeader from '../../components/headers/SimpleHeader';
@@ -20,19 +21,24 @@ const SearchScreen = ({route}) => {
           <Text style={styles.searchListItemText}>Ничего не найдено</Text>
         </View>
       )}
-      {route.params.data.map((elem, index) => {
-        return (
-          <TouchableOpacity
-            onPress={async () => {
-              await dispatch(Restaurants(elem?.id));
-              route.params.navigation.navigate('RestTitle');
-            }}
-            key={index}
-            style={styles.searchListItem}>
-            <Text style={styles.searchListItemText}>{elem?.name}</Text>
-          </TouchableOpacity>
-        );
-      })}
+      <View
+        style={{
+          paddingHorizontal: 20,
+        }}>
+        {route.params.data.map((elem, index) => {
+          return (
+            <TouchableOpacity
+              onPress={async () => {
+                await dispatch(Restaurants(elem?.id));
+                route.params.navigation.navigate('RestTitle');
+              }}
+              key={index}
+              style={styles.searchListItem}>
+              <Text style={styles.searchListItemText}>{elem?.name}</Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
     </View>
   );
 };
@@ -42,8 +48,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height - 100,
     height: '100%',
-    paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'ios' ? 30 : 0,
   },
   text: {
     marginTop: 20,

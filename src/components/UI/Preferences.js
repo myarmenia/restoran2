@@ -12,7 +12,7 @@ import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import LikeComponent from './LikeComponent';
 import {Preference, Preferences} from '../../store/reducers/restaurant/action';
-import LoadingComponent from "../loadingComponent";
+import LoadingComponent from '../loadingComponent';
 
 const PreferencesComp = () => {
   const {preference} = useSelector(({restaurant}) => restaurant);
@@ -25,7 +25,10 @@ const PreferencesComp = () => {
   }, [preference]);
 
   return (
-    <View>
+    <View
+      style={{
+        paddingHorizontal: 20,
+      }}>
       {loading ? <LoadingComponent /> : <></>}
       {preference?.length ? (
         <FlatList

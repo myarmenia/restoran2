@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height - 100,
     height: '100%',
-    paddingHorizontal: 20,
     paddingTop: Platform.OS === 'ios' ? 30 : 0,
   },
 });

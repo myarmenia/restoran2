@@ -252,6 +252,13 @@ const OrderTypeScreen = ({navigation, route}) => {
               setLoading(true);
               if (
                 !restaurant.days.reduce((last, next) => {
+                  console.log(
+                    weekday[date.getDay()].toLowerCase() ===
+                      next.day.toLowerCase(),
+                    weekday[date.getDay()].toLowerCase(),
+                    next.day.toLowerCase(),
+                    date,
+                  );
                   if (
                     weekday[date.getDay()].toLowerCase() ===
                     next.day.toLowerCase()

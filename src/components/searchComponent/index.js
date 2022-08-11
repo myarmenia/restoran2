@@ -71,7 +71,7 @@ const SearchComponent = ({data, navigation, addAbsolute}) => {
         <ScrollView
           style={{
             backgroundColor: '#000000',
-            top: Platform.OS === 'ios' ? 25 : 0,
+            top: 0,
             left: 0.05 * Dimensions.get('window').width,
             zIndex: 100,
             width: 0.9 * Dimensions.get('window').width,

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, View, Dimensions, Platform } from "react-native";
+import {StyleSheet, View, Dimensions, Platform} from 'react-native';
 import FavoriteComp from '../../components/Favorites';
 import {useSelector} from 'react-redux';
 import LoadingComponent from '../../components/loadingComponent';
@@ -12,7 +12,12 @@ const FavoritesScreen = () => {
     <View style={styles.container}>
       {loading ? <LoadingComponent /> : <></>}
       <SimpleHeader title={'Избранные рестораны'} />
-      <FavoriteComp state={favorite} setLoading={setLoading} />
+      <View
+        style={{
+          paddingHorizontal: 20,
+        }}>
+        <FavoriteComp state={favorite} setLoading={setLoading} />
+      </View>
     </View>
   );
 };
@@ -22,7 +27,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height,
     height: '100%',
-    paddingHorizontal: 20,
     paddingTop: Platform.OS === 'ios' ? 30 : 0,
   },
 });

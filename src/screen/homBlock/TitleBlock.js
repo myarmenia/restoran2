@@ -24,7 +24,6 @@ const TitleBlock = ({navigation}) => {
   const [openModal, setOpenModal] = useState(false);
   const [hall, setHall] = useState(0);
 
-
   useEffect(() => {
     setHall(0);
   }, [restaurant]);
@@ -83,7 +82,7 @@ const TitleBlock = ({navigation}) => {
           <View
             style={{
               padding: 25,
-              marginTop: 35,
+              marginTop: Platform.OS === 'ios' ? 65 : 35,
             }}>
             <View style={{flexDirection: 'row'}}>
               <Image

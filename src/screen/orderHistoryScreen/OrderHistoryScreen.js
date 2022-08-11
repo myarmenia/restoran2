@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height - 100,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0,
     height: '100%',
   },
   text: {
