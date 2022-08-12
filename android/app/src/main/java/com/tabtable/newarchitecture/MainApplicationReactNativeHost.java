@@ -1,4 +1,4 @@
-package com.tabtable.newarchitecture;
+package com.taptable.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.tabtable.BuildConfig;
-import com.tabtable.newarchitecture.components.MainComponentsRegistry;
-import com.tabtable.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.taptable.BuildConfig;
+import com.taptable.newarchitecture.components.MainComponentsRegistry;
+import com.taptable.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
