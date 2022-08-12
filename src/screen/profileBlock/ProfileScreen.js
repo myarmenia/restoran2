@@ -24,7 +24,13 @@ const ProfileScreen = ({navigation}) => {
   const [changes, setChanges] = useState(false);
   const dispatch = useDispatch();
   const [name, setName] = useState(user?.name);
-  const [avatar, setAvatar] = useState(user?.avatar);
+  const [avatar, setAvatar] = useState({
+    ...user?.avatar,
+    uri:
+      Platform.OS === 'ios'
+        ? user?.avatar?.uri.replace('content', 'file')
+        : user?.avatar?.uri.replace('file', 'content'),
+  });
   const [gender, setGender] = useState(user?.gender);
   const [date, setDate] = useState(user?.dob || new Date());
   const [year, setYear] = useState(new Date());

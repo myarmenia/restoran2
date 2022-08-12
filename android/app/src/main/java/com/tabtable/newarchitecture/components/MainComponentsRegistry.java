@@ -1,4 +1,4 @@
-package com.tabtable.newarchitecture.components;
+package com.taptable.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

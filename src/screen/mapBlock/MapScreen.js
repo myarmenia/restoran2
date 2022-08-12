@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
 import {
   Dimensions,
   PermissionsAndroid,
@@ -273,6 +273,7 @@ const MapScreen = ({navigation}) => {
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}>
+        <Circle radius={100000} center={{latitude: initCoords?.latitude, longitude: initCoords?.longitude}} />
         {restaurants?.map((el, ind) => (
           <Marker
             key={ind}
