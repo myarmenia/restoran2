@@ -13,7 +13,6 @@ const TextArea = ({placeholder, horizontal, onChangeText, text}) => {
         placeholder={placeholder ? placeholder : 'Email'}
         placeholderTextColor="#5F6368"
         keyboardType={'default'}
-        // numberOfLines={10}
         marginHorizontal={horizontal ? horizontal : 0}
         textAlignVertical={'top'}
       />
@@ -23,7 +22,6 @@ const TextArea = ({placeholder, horizontal, onChangeText, text}) => {
 
 const styles = StyleSheet.create({
   MainContainer: {
-    paddingTop: Platform.OS === 'ios' ? 30 : 0,
     height: 300,
     marginVertical: 20,
   },

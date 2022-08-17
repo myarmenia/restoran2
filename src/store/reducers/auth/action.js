@@ -24,7 +24,7 @@ export const Login = createAsyncThunk('auth/Login', async (data, thunkAPI) => {
 
 export const AutoSignIn = createAsyncThunk(
   'auth/AutoSignIn',
-  async (data, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
       const token = await AsyncStorage.getItem('token');
       const bearer = await AsyncStorage.getItem('bearer');
@@ -44,13 +44,9 @@ export const SendCodeNum = createAsyncThunk(
     const token = await AsyncStorage.getItem('token');
     console.log(data);
     try {
-      const response = await axiosInstance.post(
-        'phone/check',
-        {
-          ...data,
-        },
-        {headers: {Authorization: `${bearer} ${token}`}},
-      );
+      const response = await axiosInstance.post('phone/check', data, {
+        headers: {Authorization: `${bearer} ${token}`},
+      });
       console.log(response.data);
       return response.data;
     } catch (e) {
@@ -106,8 +102,9 @@ export const ProfileUpdate = createAsyncThunk(
     formData.append('dob', data.dob);
     formData.append('gender', data.gender);
     formData.append('phone_number', data.phone_number);
-    formData.append('avatar', data.avatar);
-    console.log(data, formData);
+    if (data?.avatar) {
+      formData.append('avatar', data.avatar);
+    }
     const bearer = await AsyncStorage.getItem('bearer');
     const token = await AsyncStorage.getItem('token');
     try {
@@ -117,15 +114,27 @@ export const ProfileUpdate = createAsyncThunk(
           'Content-Type': 'multipart/form-data; ',
         },
       });
-      const localUserData = await AsyncStorage.getItem('user');
-      const user = JSON.parse(localUserData);
-      user.phone_number = data.phone_number;
-      user.gender = data.gender;
-      user.avatar = data.avatar;
-      user.dob = data.dob;
-      await AsyncStorage.setItem('user', JSON.stringify(user));
+      console.log(response.data);
+    } catch (e) {
+      console.log(e.message);
+      return thunkAPI.rejectWithValue(e);
+    }
+  },
+);
+
+export const GetProfileData = createAsyncThunk(
+  'auth/GetProfileData',
+  async (_, thunkAPI) => {
+    const bearer = await AsyncStorage.getItem('bearer');
+    const token = await AsyncStorage.getItem('token');
+    try {
+      const response = await axiosInstance.get('user', {
+        headers: {
+          Authorization: `${bearer} ${token}`,
+        },
+      });
       console.log('reg ----> ', response.data);
-      return user;
+      return response.data;
     } catch (e) {
       console.log(e.message);
       return thunkAPI.rejectWithValue(e);

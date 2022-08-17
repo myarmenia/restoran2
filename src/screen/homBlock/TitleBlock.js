@@ -166,9 +166,9 @@ const TitleBlock = ({navigation}) => {
                     Platform.OS === 'ios' ? (
                       <GestureTouchableOpacity
                         style={{
-                          margin: 10,
+                          margin: 5,
                           backgroundColor: !el.item.free
-                            ? '#202124'
+                            ? '#008f02'
                             : '#8f0000',
                           borderRadius: 15,
                           justifyContent: 'center',
@@ -182,7 +182,7 @@ const TitleBlock = ({navigation}) => {
                                 if (
                                   new Date(
                                     elem.coming_date.split(' ')[0],
-                                  ).setUTCHours(
+                                  ).setHours(
                                     elem.coming_date
                                       .split(' ')[1]
                                       .split(':')[0],
@@ -222,7 +222,7 @@ const TitleBlock = ({navigation}) => {
                         style={{
                           margin: 10,
                           backgroundColor: !el.item.free
-                            ? '#202124'
+                            ? '#008f02'
                             : '#8f0000',
                           borderRadius: 10,
                           justifyContent: 'center',
@@ -236,7 +236,7 @@ const TitleBlock = ({navigation}) => {
                                 if (
                                   new Date(
                                     elem.coming_date.split(' ')[0],
-                                  ).setUTCHours(
+                                  ).setHours(
                                     elem.coming_date
                                       .split(' ')[1]
                                       .split(':')[0],
@@ -255,7 +255,7 @@ const TitleBlock = ({navigation}) => {
                               })
                             : [];
                           if (
-                            arr.length ? arr.every(item => item === true) : []
+                            arr.length ? arr.every(item => item === true) : true
                           ) {
                             navigation.navigate('OrderTypeScreen', {
                               restId: restaurant?.id,
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    color: '#8B868A',
+    color: '#000',
     fontSize: 14,
   },
   modal: {

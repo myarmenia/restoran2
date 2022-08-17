@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 40,
   },
 });
 export default MyComponent;

@@ -9,18 +9,20 @@ const SimpleHeader = ({title, right}) => {
   return (
     <View style={styles.back}>
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={{flexDirection: 'row', alignItems: 'center'}}
+          onPress={() => navigation.goBack()}>
           <BackArrowSvg />
+          <Text
+            style={{
+              fontSize: 16,
+              color: '#646464',
+              textAlign: 'center',
+              marginLeft: 10,
+            }}>
+            {title}
+          </Text>
         </TouchableOpacity>
-        <Text
-          style={{
-            fontSize: 16,
-            color: '#646464',
-            textAlign: 'center',
-            marginLeft: 10,
-          }}>
-          {title}
-        </Text>
       </View>
       <View style={{backgroundColor: '#17181B', width: '100%', height: 1.5}} />
     </View>
@@ -36,6 +38,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#17181B',
     alignItems: 'center',
     paddingLeft: 30,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0,
   },
   back: {
     backgroundColor: '#000000',

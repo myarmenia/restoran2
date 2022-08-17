@@ -7,7 +7,7 @@ import {AutoSignIn} from '../store/reducers/auth/action';
 
 const Route = () => {
   const [localAuth, setLocalAuth] = useState(false);
-  const auth = useSelector(state => state.auth);
+  const {canAuth} = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,15 +23,10 @@ const Route = () => {
   };
 
   useEffect(() => {
-    if (auth.canAuth) {
-      setLocalAuth(true);
-    } else {
-      setLocalAuth(false);
-    }
-  }, [auth.canAuth, auth]);
+      setLocalAuth(canAuth);
+  }, [canAuth]);
 
   return localAuth ? <SummaryNavigation /> : <AutoStack />;
-  // return <SummaryNavigation />;
 };
 
 export default Route;

@@ -30,12 +30,16 @@ const AddDishesScreen = ({navigation}) => {
       <ScrollView>
         {Object.values(yourOrder).length ? (
           Object.values(yourOrder).map(elem => {
+            console.log(elem);
             return (
               <>
                 <View style={styles.header}>
                   <Text style={styles.text}>
                     Бронь в {getRestName(elem?.restaurant_id)} в{' '}
-                    {elem?.coming_date}
+                    {elem?.coming_date} на {elem?.people_nums}{' '}
+                    {elem?.people_nums >= 1 && elem?.people_nums <= 4
+                      ? 'человекa'
+                      : 'человек'}
                   </Text>
                 </View>
                 <View style={styles.line} />

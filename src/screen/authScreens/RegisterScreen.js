@@ -189,7 +189,7 @@ const RegisterScreen = ({navigation, route}) => {
           setChecked={setChecked}
         />
       </View>
-      <View style={{marginTop: 20, marginHorizontal: 40}}>
+      <View style={{marginTop: 20}}>
         <MainButton
           disable={!(name && pass && pass1 && email && checked)}
           textBtn={'Зарегистрироватся'}
@@ -205,6 +205,11 @@ const RegisterScreen = ({navigation, route}) => {
         <Text style={[styles.text, {marginRight: 5}]}>Зарегистрированы?</Text>
         <TouchableOpacity
           onPress={() => {
+            setName('');
+            setEmail('');
+            setPass('');
+            setPass1('');
+            setError('');
             navigation.navigate('login');
           }}>
           <Text style={[styles.text, {color: '#648E00'}]}>Войти</Text>
@@ -219,7 +224,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height - 100,
     height: '100%',
-    //        paddingHorizontal: 46
+    paddingHorizontal: 40,
   },
   titleText: {
     fontSize: 24,

@@ -16,7 +16,7 @@ const BookingRestaurants = ({navigation}) => {
   return orders?.length &&
     orders.reduce((last, next) => {
       return (
-        new Date(next.coming_date.split(' ')[0]).setUTCHours(
+        new Date(next.coming_date.split(' ')[0]).setHours(
           next.coming_date.split(' ')[1].split(':')[0],
           next.coming_date.split(' ')[1].split(':')[1],
         ) >= +Date.now() || last
@@ -27,8 +27,8 @@ const BookingRestaurants = ({navigation}) => {
       numColumns={2}
       keyExtractor={(item, index) => index.toString()}
       columnWrapperStyle={{justifyContent: 'center'}}
-      renderItem={({item}) => {
-        return new Date(item.coming_date.split(' ')[0]).setUTCHours(
+      renderItem={({item}) => { 
+        return new Date(item.coming_date.split(' ')[0]).setHours(
           item.coming_date.split(' ')[1].split(':')[0],
           item.coming_date.split(' ')[1].split(':')[1],
         ) >= +Date.now() ? (
@@ -37,7 +37,7 @@ const BookingRestaurants = ({navigation}) => {
             onPress={() => {
               navigation.navigate('CurrentOrder', {
                 menu: item?.menus,
-                restId: item?.restaurant_id
+                restId: item?.restaurant_id,
               });
             }}
             disabled={!item.menus.length}>

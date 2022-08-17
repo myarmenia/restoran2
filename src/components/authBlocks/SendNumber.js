@@ -28,7 +28,7 @@ const SendNumber = ({navigation}) => {
         dataDetectorTypes="phoneNumber"
         keyboardType="phone-pad"
         autoCompleteType="cc-number"
-        placeholder="+7 XXX XXX XX XXX"
+        placeholder="7XXXXXXXXXXX"
         placeholderTextColor={'#5F6368'}
         onChangeText={text => {
           setNumber(text);

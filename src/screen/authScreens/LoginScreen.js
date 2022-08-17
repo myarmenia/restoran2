@@ -14,7 +14,7 @@ const LoginScreen = ({navigation}) => {
     new RegExp('^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})'),
   );
   const emailRegExpRef = useRef(
-    new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}'),
+    new RegExp('^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}'),
   );
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -40,7 +40,11 @@ const LoginScreen = ({navigation}) => {
         .then(res => {
           setLoading(false);
           console.log(res?.payload);
-          if (!res?.payload?.user?.phone_number && res?.payload !== false) {
+          if (
+            !res?.payload?.user?.phone_number &&
+            res?.payload !== false &&
+            res?.payload !== 'Error Here'
+          ) {
             navigation.navigate('sendNumber');
           } else if (res?.payload?.user?.phone_number) {
             console.log('login accepted');
@@ -57,6 +61,9 @@ const LoginScreen = ({navigation}) => {
   }, [email, password, dispatch]);
 
   const goToRegistrationScreen = () => {
+    setEmail('');
+    setPassword('');
+    setShowError('');
     navigation.navigate('register');
   };
 
@@ -79,19 +86,15 @@ const LoginScreen = ({navigation}) => {
           Неправильно введены электронная почта или пароль
         </Text>
       )}
-      <View style={{marginTop: 50, paddingHorizontal: 40}}>
+      <View style={{marginTop: 50}}>
         <MainButton textBtn={'Войти'} goTo={goTo} />
       </View>
 
       <View style={{marginTop: 10}}>
         <Text style={styles.text}>Еще нет аккаунта? Пройдите</Text>
       </View>
-      <TouchableOpacity
-        style={{marginBottom: 150}}
-        onPress={goToRegistrationScreen}>
-        <Text style={[styles.text, {color: '#648E00', marginBottom: 180}]}>
-          регистрацию
-        </Text>
+      <TouchableOpacity onPress={goToRegistrationScreen}>
+        <Text style={[styles.text, {color: '#648E00'}]}>регистрацию</Text>
       </TouchableOpacity>
     </View>
   );
@@ -102,6 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     minHeight: Dimensions.get('window').height - 100,
     height: '100%',
+    paddingHorizontal: 40,
   },
   titleText: {
     fontSize: 24,

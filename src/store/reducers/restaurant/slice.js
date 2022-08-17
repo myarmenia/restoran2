@@ -48,8 +48,13 @@ const slice = createSlice({
       } else {
         state.yourOrder[payload[0]].menus[restIndex].count += payload[2].count;
         if (payload[2].comment) {
-          state.yourOrder[payload[0]].menus[restIndex].comment +=
-            '\n' + payload[2].comment;
+          if (payload[2].comment !== 'Без изменений') {
+            state.yourOrder[payload[0]].menus[restIndex].comment +=
+              '\n' + payload[2].comment;
+          }
+        } else {
+          state.yourOrder[payload[0]].menus[restIndex].comment =
+            payload[2].comment;
         }
       }
     },

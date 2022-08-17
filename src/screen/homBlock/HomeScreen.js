@@ -8,9 +8,9 @@ import {
   Kitchen,
   Orders,
   Preference,
-  Preferences,
   Restaurant,
 } from '../../store/reducers/restaurant/action';
+import {GetProfileData} from '../../store/reducers/auth/action';
 import {DismissKeyboard} from '../../components/UI/DismissKeyboard';
 import SearchComponent from '../../components/searchComponent';
 
@@ -26,6 +26,7 @@ const HomeScreen = ({navigation}) => {
   }, [restaurants]);
 
   useEffect(() => {
+    dispatch(GetProfileData());
     dispatch(Restaurant());
     dispatch(Favorite());
     dispatch(Kitchen());

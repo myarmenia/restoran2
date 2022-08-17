@@ -8,6 +8,7 @@ import SendCode from '../components/authBlocks/SendCode';
 import SendNumber from '../components/authBlocks/SendNumber';
 import SimpleHeader from '../components/headers/SimpleHeader';
 import PrivacyPolicyScreen from '../screen/privacyPolicyScreen/PrivacyPolicyScreen';
+import {SummaryNavigation} from './SummaryNavigation';
 
 const Stack = createStackNavigator();
 

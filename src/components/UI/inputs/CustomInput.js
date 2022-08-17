@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   eye: {
     position: 'absolute',
-    right: 52,
+    right: 12,
     top: 30,
   },
 });

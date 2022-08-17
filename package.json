@@ -1,5 +1,5 @@
 {
-  "name": "TapTable",
+  "name": "taptable",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -29,6 +29,7 @@
     "react": "18.0.0",
     "react-intl": "^6.0.5",
     "react-native": "0.69.1",
+    "react-native-date-picker": "^4.2.5",
     "react-native-datepicker": "^1.7.2",
     "react-native-document-picker": "^8.1.1",
     "react-native-elements": "^3.4.2",

@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CalendarSvg from '../../../assets/svg/calendar';
 import ClockSvg from '../../../assets/svg/Clock';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import DatePicker from 'react-native-date-picker';
 
-const DatePicker = ({mode, setDate, date, openModal, setOpenModal}) => {
+const DatePickerComp = ({mode, setDate, date, openModal, setOpenModal}) => {
   function showDatePicker() {
     setOpenModal(true);
   }
@@ -25,33 +25,28 @@ const DatePicker = ({mode, setDate, date, openModal, setOpenModal}) => {
     });
   }
 
+  function onDateChanged(value) {
+    console.log('value', value);
+  }
+
   return (
     <View style={styleSheet.MainContainer}>
-      <DateTimePickerModal
-        isVisible={openModal}
-        value={date}
+      <DatePicker
+        modal
+        open={Boolean(openModal)}
+        date={date}
         mode={mode}
-        display={
-          Platform.OS === 'ios'
-            ? mode === 'date'
-              ? 'inline'
-              : 'spinner'
-            : 'default'
-        }
-        is24Hour={true}
         onConfirm={onDateSelected}
-        onCancel={() => setOpenModal(false)}
-        themeVariant={'dark'}
-        textColor={'white'}
-        accentColor={'grey'}
-        pickerContainerStyleIOS={{backgroundColor: 'black'}}
-        negativeButtonLabel={'Отменить'}
-        positiveButtonLabel={'Выбрать'}
-        cancelTextIOS={'Отменить'}
-        confirmTextIOS={'Выбрать'}
-        locale="ru-RU"
+        onCancel={() => {
+          setOpenModal(false);
+        }}
         minimumDate={new Date()}
-        animation={true}
+        locale="ru-RU"
+        textColor={'white'}
+        theme={'dark'}
+        cancelText={'Отменить'}
+        confirmText={'Выбрать'}
+        title={mode === 'date' ? 'Выберите Дату' : 'Выберите Время'}
       />
       <TouchableOpacity onPress={showDatePicker} style={styleSheet.container}>
         {mode === 'date' ? (
@@ -104,4 +99,4 @@ const styleSheet = StyleSheet.create({
     right: 0,
   },
 });
-export default DatePicker;
+export default DatePickerComp;

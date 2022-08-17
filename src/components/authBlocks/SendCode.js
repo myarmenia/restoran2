@@ -14,7 +14,9 @@ const SendCode = ({route}) => {
         phone_number: route.params.phone_number,
         code: value,
       }),
-    );
+    ).then(res => {
+      if (res?.meta?.arg?.requestStatus === 'fulfilled')
+    });
   };
 
   return (
@@ -70,6 +72,34 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 14,
     paddingBottom: 35,
+  },
+  panel: {
+    padding: 20,
+    backgroundColor: '#000',
+    paddingTop: 20,
+    borderRadius: 20,
+  },
+  panelTitle: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: '#fff',
+    marginBottom: 20,
+  },
+  panelButton: {
+    marginVertical: 7,
+  },
+  panelButtonTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  textModal: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    marginHorizontal: 80,
+    textAlign: 'center',
+    marginTop: 33,
+    marginBottom: 50,
   },
 });
 

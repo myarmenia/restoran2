@@ -14,7 +14,7 @@ const OrderHistory = ({state}) => {
   return orders?.length &&
     orders.reduce((last, next) => {
       if (
-        new Date(next.coming_date.split(' ')[0]).setUTCHours(
+        new Date(next.coming_date.split(' ')[0]).setHours(
           next.coming_date.split(' ')[1].split(':')[0],
           next.coming_date.split(' ')[1].split(':')[1],
         ) <= +Date.now()
@@ -29,7 +29,7 @@ const OrderHistory = ({state}) => {
       showsVerticalScrollIndicator={false}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({item}) => {
-        return new Date(item?.coming_date.split(' ')[0]).setUTCHours(
+        return new Date(item?.coming_date.split(' ')[0]).setHours(
           item?.coming_date.split(' ')[1].split(':')[0],
           item?.coming_date.split(' ')[1].split(':')[1],
         ) <= +Date.now() ? (

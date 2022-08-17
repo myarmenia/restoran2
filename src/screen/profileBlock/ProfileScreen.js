@@ -12,25 +12,23 @@ import {
 import EditSvg from '../../assets/svg/edit/EditSvg';
 import AddImageSvg from '../../assets/svg/AddImageSvg';
 import {useDispatch, useSelector} from 'react-redux';
-import {ProfileUpdate, SignOut} from '../../store/reducers/auth/action';
+import {
+  ProfileUpdate,
+  SignOut,
+  GetProfileData,
+} from '../../store/reducers/auth/action';
 import LoadingComponent from '../../components/loadingComponent';
 import RNPickerSelect from 'react-native-picker-select';
 import MainButton from '../../components/UI/buttons/MainButton';
+import DatePicker from 'react-native-date-picker';
 import * as DocumentPicker from 'react-native-document-picker';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const ProfileScreen = ({navigation}) => {
   const {user} = useSelector(({auth}) => auth);
   const [changes, setChanges] = useState(false);
   const dispatch = useDispatch();
   const [name, setName] = useState(user?.name);
-  const [avatar, setAvatar] = useState({
-    ...user?.avatar,
-    uri:
-      Platform.OS === 'ios'
-        ? user?.avatar?.uri.replace('content', 'file')
-        : user?.avatar?.uri.replace('file', 'content'),
-  });
+  const [avatar, setAvatar] = useState(user?.avatar);
   const [gender, setGender] = useState(user?.gender);
   const [date, setDate] = useState(user?.dob || new Date());
   const [year, setYear] = useState(new Date());
@@ -66,6 +64,7 @@ const ProfileScreen = ({navigation}) => {
   }
 
   function onDateSelected(value) {
+    console.log(value);
     setOpenModal(false);
     setDatePickerDate(prev => {
       const next = new Date(prev);
@@ -89,6 +88,7 @@ const ProfileScreen = ({navigation}) => {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
       });
+      console.log(res);
       setAvatar(res[0]);
     } catch (err) {
       if (!DocumentPicker.isCancel(err)) {
@@ -103,24 +103,22 @@ const ProfileScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       {loading ? <LoadingComponent /> : <></>}
-      <DateTimePickerModal
-        isVisible={openModal}
-        value={datePickerDate}
+      <DatePicker
+        modal
+        open={Boolean(openModal)}
+        date={datePickerDate}
         mode={'date'}
-        display={Platform.OS === 'ios' ? 'inline' : 'default'}
         onConfirm={onDateSelected}
-        onCancel={() => setOpenModal(false)}
-        themeVariant={'dark'}
-        textColor={'white'}
-        accentColor={'grey'}
-        pickerContainerStyleIOS={{backgroundColor: 'black'}}
-        negativeButtonLabel={'Отменить'}
-        positiveButtonLabel={'Выбрать'}
-        cancelTextIOS={'Отменить'}
-        confirmTextIOS={'Выбрать'}
-        locale="ru-RU"
+        onCancel={() => {
+          setOpenModal(false);
+        }}
         maximumDate={new Date()}
-        animation={true}
+        locale="ru-RU"
+        textColor={'white'}
+        theme={'dark'}
+        cancelText={'Отменить'}
+        confirmText={'Выбрать'}
+        title={'Выберите Дату'}
       />
       {error ? (
         <View
@@ -173,6 +171,10 @@ const ProfileScreen = ({navigation}) => {
                   source={
                     avatar?.uri
                       ? {uri: avatar.uri}
+                      : avatar
+                      ? {
+                          uri: `https://back.tap-table.ru/get_file?path=/${avatar}`,
+                        }
                       : require('../../assets/png/profileImg.png')
                   }
                   style={{
@@ -297,10 +299,12 @@ const ProfileScreen = ({navigation}) => {
             <TouchableOpacity onPress={() => docPicker(true)} style={{flex: 2}}>
               <Image
                 source={
-                  avatar?.mime
+                  avatar?.uri
                     ? {uri: avatar.uri}
                     : avatar
-                    ? avatar
+                    ? {
+                        uri: `https://back.tap-table.ru/get_file?path=/${avatar}`,
+                      }
                     : require('../../assets/png/profileImg.png')
                 }
                 style={{
@@ -364,6 +368,7 @@ const ProfileScreen = ({navigation}) => {
                   style={styles.dateContainer}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.text}>
+                      {console.log('ooooooooooo', datePickerDate)}
                       {datePickerDate
                         ? datePickerDate.getFullYear() +
                           '-' +
@@ -384,46 +389,55 @@ const ProfileScreen = ({navigation}) => {
               onPress={async () => {
                 setLoading(true);
                 setChanges(prev => !prev);
-                await dispatch(
-                  ProfileUpdate({
-                    name: name,
-                    dob:
-                      datePickerDate.getFullYear() +
-                      '-' +
-                      `0${datePickerDate.getMonth() + 1}`.slice(-2) +
-                      '-' +
-                      `0${datePickerDate.getDate()}`.slice(-2),
-                    gender: gender === 'Мужской' ? 'male' : 'female',
-                    phone_number: number,
-                    avatar: avatar || '',
-                  }),
-                )
-                  .then(res => {
-                    if (res?.error) {
+                const data = {
+                  name: name,
+                  dob:
+                    datePickerDate.getFullYear() +
+                    '-' +
+                    `0${datePickerDate.getMonth()}`.slice(-2) +
+                    '-' +
+                    `0${datePickerDate.getDate()}`.slice(-2),
+                  gender:
+                    gender === 'Мужской' || gender === 'male'
+                      ? 'male'
+                      : 'female',
+                  phone_number: number,
+                };
+                if (typeof avatar === 'object') {
+                  data.avatar = avatar;
+                } else if (avatar.length === 0) {
+                  data.avatar = '';
+                }
+                await dispatch(ProfileUpdate(data))
+                  .then(async res => {
+                    console.log('resFirst', res);
+                    if (res?.meta?.arg?.requestStatus === 'rejected') {
                       setError(
                         'Увы, но данные не обновились, попробуйте позже',
                       );
-                      setGender(user?.gender);
-                      setEmail(user?.email);
-                      setName(user?.name);
-                      setNumber(user?.phone_number);
-                      setAvatar(user?.avatar);
-                      setDate(user?.dob);
-                      const newDate = new Date();
-                      if (
-                        user?.dob?.toString().indexOf('-') !== -1 &&
-                        user?.dob !== undefined
-                      ) {
-                        const dateArr = user?.dob.split('-');
-                        newDate.setMonth(dateArr[1] - 1);
-                        newDate.setDate(dateArr[2]);
-                        const datePicker = new Date(newDate);
-                        datePicker.setFullYear(dateArr[0]);
-                        setDatePickerDate(datePicker);
-                        setYear(newDate);
-                      }
                     } else {
-                      setDate(res.payload.dob);
+                      await dispatch(GetProfileData()).then(res => {
+                        setGender(res.payload?.gender);
+                        setEmail(res.payload?.email);
+                        setName(res.payload?.name);
+                        setNumber(res.payload?.phone_number);
+                        setAvatar(res.payload?.avatar);
+                        setDate(res.payload?.dob);
+                        setError('');
+                        const newDate = new Date();
+                        if (
+                          user?.dob?.toString().indexOf('-') !== -1 &&
+                          user?.dob !== undefined
+                        ) {
+                          const dateArr = user?.dob.split('-');
+                          newDate.setMonth(dateArr[1] - 1);
+                          newDate.setDate(dateArr[2]);
+                          const datePicker = new Date(newDate);
+                          datePicker.setFullYear(dateArr[0]);
+                          setDatePickerDate(datePicker);
+                          setYear(newDate);
+                        }
+                      });
                     }
                   })
                   .catch(err =>

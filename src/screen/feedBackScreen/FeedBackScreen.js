@@ -14,6 +14,7 @@ const FeedBackScreen = ({navigation}) => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
+  const [viewHeight, setViewHeight] = useState(1);
   const {status} = useSelector(({support}) => support);
   const dispatch = useDispatch();
 
@@ -23,51 +24,79 @@ const FeedBackScreen = ({navigation}) => {
     }
   }, [status]);
 
-  return (
-    <ScrollView>
-      <View style={styles.container}>
-        {loading ? <LoadingComponent /> : <></>}
-        <DismissKeyboard>
-          <SimpleHeader title={'Обратная связь'} />
-          <Text style={styles.text}>Свяжитесь с нами, если есть проблема</Text>
-          <View style={{marginBottom: -12}}>
-            <CustomInput placeholder={'Тема'} onChangeText={setTheme} />
-            {error?.theme ? (
-              <Text style={styles.error}>{error.theme}</Text>
+  const componentData = () => {
+    return (
+      <>
+        <SimpleHeader title={'Обратная связь'} />
+        <View
+          style={styles.container}
+          onLayout={event => {
+            const {x, y, width, height} = event.nativeEvent.layout;
+            setViewHeight(height);
+          }}>
+          {loading ? <LoadingComponent /> : <></>}
+          <DismissKeyboard>
+            <Text style={styles.text}>
+              Свяжитесь с нами, если есть проблема
+            </Text>
+            <View style={{marginBottom: -12}}>
+              <CustomInput placeholder={'Тема'} onChangeText={setTheme} />
+              {error?.theme ? (
+                <Text style={styles.error}>{error.theme}</Text>
+              ) : (
+                <></>
+              )}
+            </View>
+            <TextArea
+              placeholder={'Сообщение'}
+              text={message}
+              onChangeText={setMessage}
+            />
+            {error?.message ? (
+              <Text style={styles.error}>{error.message}</Text>
             ) : (
               <></>
             )}
-          </View>
-          <TextArea
-            placeholder={'Сообщение'}
-            text={message}
-            onChangeText={setMessage}
-          />
-          {error?.message ? (
-            <Text style={styles.error}>{error.message}</Text>
-          ) : (
-            <></>
-          )}
-          <View style={{marginTop: 30}}>
-            <MainButton
-              textBtn={'Отправить'}
-              goTo={async () => {
-                setError({});
-                setLoading(true);
-                await dispatch(
-                  Feedback({
-                    theme,
-                    message,
-                  }),
-                ).then(res => {
-                  setError(res.payload);
-                });
-                await setLoading(false);
-              }}
-            />
-          </View>
-        </DismissKeyboard>
-      </View>
+            <View style={{marginTop: 30}}>
+              <MainButton
+                textBtn={'Отправить'}
+                goTo={async () => {
+                  setError({});
+                  setLoading(true);
+                  await dispatch(
+                    Feedback({
+                      theme,
+                      message,
+                    }),
+                  ).then(res => {
+                    setError(res.payload);
+                  });
+                  await setLoading(false);
+                }}
+              />
+            </View>
+          </DismissKeyboard>
+        </View>
+      </>
+    );
+  };
+  console.log(viewHeight, Dimensions.get('screen').height);
+  return viewHeight < Dimensions.get('screen').height ? (
+    <View
+      style={{
+        minHeight: 0.8 * Dimensions.get('screen').height - 100,
+        backgroundColor: '#000000',
+        height: '100%',
+        paddingTop: Platform.OS === 'ios' ? 30 : 0,
+      }}>
+      {componentData()}
+    </View>
+  ) : (
+    <ScrollView
+      style={{
+        paddingTop: Platform.OS === 'ios' ? 30 : 0,
+      }}>
+      {componentData()}
     </ScrollView>
   );
 };
@@ -75,9 +104,9 @@ const FeedBackScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#000000',
-    minHeight: Dimensions.get('window').height,
     height: '100%',
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0,
   },
   text: {
     marginTop: 30,

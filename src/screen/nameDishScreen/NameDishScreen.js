@@ -78,7 +78,10 @@ const NameDishScreen = ({navigation, route}) => {
       ) : (
         <></>
       )}
-      <ScrollView>
+      <ScrollView
+        style={{
+          paddingTop: Platform.OS === 'ios' ? 30 : 0,
+        }}>
         <SimpleHeader title={'Основные Блюда'} right={-40} />
 
         <View style={{alignItems: 'center', marginTop: 30}}>

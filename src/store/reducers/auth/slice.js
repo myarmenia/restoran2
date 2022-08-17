@@ -7,6 +7,7 @@ import {
   SendCodeNum,
   SendPhone,
   SignOut,
+  GetProfileData,
 } from './action';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -34,6 +35,7 @@ const slice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(Login.fulfilled, (state, {payload}) => {
+        console.log('login', payload);
         if (payload === 'Error Here') {
           state.error = payload;
         } else {
@@ -72,21 +74,31 @@ const slice = createSlice({
         state.emailError = 'email';
       })
       .addCase(SendCodeNum.fulfilled, async (state, {payload}) => {
-        state.message = payload.message;
-        state.user.phone_number = payload.phone_number;
-        const userData = await AsyncStorage.getItem('user');
-        const reserveUser = JSON.parse(userData);
-        reserveUser.phone_number = payload.phone_number;
-        await AsyncStorage.setItem('user', JSON.stringify(reserveUser));
-        state.auth = true;
-        state.canAuth = true;
-        state.user = reserveUser;
+        console.log(
+          'message',
+          payload.message === 'Your Phone Number Saved Success',
+        );
+        if (payload.message === 'Your Phone Number Saved Success') {
+          state.message = payload.message;
+          const userData = await AsyncStorage.getItem('user');
+          const reserveUser = JSON.parse(userData);
+          reserveUser.phone_number = payload.phone_number;
+          state.canAuth = true;
+          state.user = reserveUser;
+          await AsyncStorage.clear();
+        }
       })
       .addCase(SendPhone.fulfilled, state => {
         state.name = {...state.name};
       })
-      .addCase(ProfileUpdate.fulfilled, (state, {payload}) => {
+      .addCase(ProfileUpdate.fulfilled, state => {
+        state = {...state};
+      })
+      .addCase(GetProfileData.fulfilled, (state, {payload}) => {
         state.user = payload;
+      })
+      .addCase(GetProfileData.rejected, state => {
+        state.error = 'error';
       });
   },
 });

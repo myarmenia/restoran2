@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 15,
     top: 15,
+    zIndex: 200,
   },
   name: {
     color: '#fff',
