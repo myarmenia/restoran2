@@ -64,7 +64,6 @@ const ProfileScreen = ({navigation}) => {
   }
 
   function onDateSelected(value) {
-    console.log(value);
     setOpenModal(false);
     setDatePickerDate(prev => {
       const next = new Date(prev);
@@ -88,7 +87,6 @@ const ProfileScreen = ({navigation}) => {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
       });
-      console.log(res);
       setAvatar(res[0]);
     } catch (err) {
       if (!DocumentPicker.isCancel(err)) {
@@ -368,7 +366,6 @@ const ProfileScreen = ({navigation}) => {
                   style={styles.dateContainer}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.text}>
-                      {console.log('ooooooooooo', datePickerDate)}
                       {datePickerDate
                         ? datePickerDate.getFullYear() +
                           '-' +
@@ -410,7 +407,6 @@ const ProfileScreen = ({navigation}) => {
                 }
                 await dispatch(ProfileUpdate(data))
                   .then(async res => {
-                    console.log('resFirst', res);
                     if (res?.meta?.arg?.requestStatus === 'rejected') {
                       setError(
                         'Увы, но данные не обновились, попробуйте позже',

@@ -34,6 +34,7 @@ import CurrentOrderScreen from '../screen/currentOrderScreen/CurrentOrderScreen'
 import MenuCategoriesScreen from '../screen/menuCategories/MenuCategoriesScreen';
 import MainDishesScreen from '../screen/mainDishesScreen/MainDishesScreen';
 import NameDishScreen from '../screen/nameDishScreen/NameDishScreen';
+import {Platform} from 'react-native';
 
 const ProfileComponent = () => {
   return (
@@ -46,6 +47,7 @@ const ProfileComponent = () => {
       <Drawer.Screen name="Favorites" component={FavoritesScreen} />
       <Drawer.Screen name="FeedBack" component={FeedBackScreen} />
       <Drawer.Screen name="PreferencesScreen" component={PreferencesScreen} />
+      <Drawer.Screen name="CurrentOrder" component={CurrentOrderScreen} />
     </Drawer.Navigator>
   );
 };
@@ -89,9 +91,9 @@ const BottomTabNavigator = () => {
       screenOptions={({route}) => ({
         tabBarStyle: {
           backgroundColor: 'rgba(32, 33, 36, 1)',
-          height: 70,
-          paddingBottom: 10,
+          height: Platform.OS === 'ios' ? 85 : 70,
           borderTopWidth: 0,
+          paddingBottom: Platform.OS === 'ios' ? 25 : 10,
         },
         headerShown: false,
         tabBarHideOnKeyboard: true,

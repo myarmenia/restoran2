@@ -39,7 +39,6 @@ const LoginScreen = ({navigation}) => {
       await dispatch(Login({email, password}))
         .then(res => {
           setLoading(false);
-          console.log(res?.payload);
           if (
             !res?.payload?.user?.phone_number &&
             res?.payload !== false &&

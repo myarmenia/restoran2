@@ -23,10 +23,10 @@ const Route = () => {
   };
 
   useEffect(() => {
-      setLocalAuth(canAuth);
+    setLocalAuth(canAuth);
   }, [canAuth]);
 
-  return localAuth ? <SummaryNavigation /> : <AutoStack />;
+  return localAuth || canAuth ? <SummaryNavigation /> : <AutoStack />;
 };
 
 export default Route;

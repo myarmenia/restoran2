@@ -30,7 +30,6 @@ const AddDishesScreen = ({navigation}) => {
       <ScrollView>
         {Object.values(yourOrder).length ? (
           Object.values(yourOrder).map(elem => {
-            console.log(elem);
             return (
               <>
                 <View style={styles.header}>

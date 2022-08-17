@@ -3,20 +3,19 @@ import {Text, View, StyleSheet, TextInput, Dimensions} from 'react-native';
 import MainButton from '../UI/buttons/MainButton';
 import {SendCodeNum} from '../../store/reducers/auth/action';
 import {useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SendCode = ({route}) => {
   const [value, setValue] = useState('');
   const dispatch = useDispatch();
 
   const goToLoginPage = async () => {
-    await dispatch(
+    dispatch(
       SendCodeNum({
         phone_number: route.params.phone_number,
         code: value,
       }),
-    ).then(res => {
-      if (res?.meta?.arg?.requestStatus === 'fulfilled')
-    });
+    );
   };
 
   return (

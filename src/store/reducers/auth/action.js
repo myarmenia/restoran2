@@ -48,7 +48,12 @@ export const SendCodeNum = createAsyncThunk(
         headers: {Authorization: `${bearer} ${token}`},
       });
       console.log(response.data);
-      return response.data;
+      const message = response.data.message;
+      const userData = await AsyncStorage.getItem('user');
+      const reserveUser = JSON.parse(userData);
+      reserveUser.phone_number = response.data.phone_number;
+      await AsyncStorage.clear();
+      return {message: message, canAuth: true, user: reserveUser};
     } catch (e) {
       console.log(e.message);
       return thunkAPI.rejectWithValue('Error Here');
@@ -143,9 +148,6 @@ export const GetProfileData = createAsyncThunk(
 );
 
 export const SignOut = createAsyncThunk('auth/SignOut', async () => {
-  await AsyncStorage.setItem('token', '');
-  await AsyncStorage.setItem('bearer', '');
-  await AsyncStorage.setItem('refreshToken', '');
-  await AsyncStorage.setItem('user', JSON.stringify({}));
+  await AsyncStorage.clear();
   return true;
 });

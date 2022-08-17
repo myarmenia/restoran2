@@ -25,10 +25,6 @@ const DatePickerComp = ({mode, setDate, date, openModal, setOpenModal}) => {
     });
   }
 
-  function onDateChanged(value) {
-    console.log('value', value);
-  }
-
   return (
     <View style={styleSheet.MainContainer}>
       <DatePicker

@@ -6,11 +6,13 @@ import {
   Image,
   Text,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 
-const OrderHistory = ({state}) => {
-  const {orders} = useSelector(({restaurant}) => restaurant);
+const OrderHistory = ({navigation}) => {
+  const {orders, restaurants} = useSelector(({restaurant}) => restaurant);
+  console.log('lorak', restaurants);
   return orders?.length &&
     orders.reduce((last, next) => {
       if (
@@ -34,9 +36,17 @@ const OrderHistory = ({state}) => {
           item?.coming_date.split(' ')[1].split(':')[1],
         ) <= +Date.now() ? (
           <View>
-            <View style={styles.container}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('CurrentOrder', {
+                  menu: item?.menus,
+                  restId: item?.restaurant_id,
+                });
+              }}
+              disabled={!item.menus.length}
+              style={styles.container}>
               <View style={styles.subContainer} activeOpacity={0.7}>
-                <View style={{flex: 2, marginRight: 15}}>
+                <View style={{marginRight: 15}}>
                   <Image
                     style={styles.img}
                     resizeMode="cover"
@@ -49,19 +59,26 @@ const OrderHistory = ({state}) => {
                     }
                   />
                 </View>
-                <View style={{flex: 7}}>
+                <View
+                  style={{
+                    textAlign: 'center',
+                    justifyContent: 'space-between',
+                  }}>
                   <Text style={styles.name}>{item?.rest?.name}</Text>
-                  <Text style={styles.categories}>{item?.desc}</Text>
                   <Text style={styles.categories}>
+                    {restaurants.filter(el => el.id === item?.rest?.id)[0].desc}
+                  </Text>
+                  <Text style={styles.desc}>
                     Вы забронировали столик для {item?.people_nums}{' '}
                     {item?.people_nums >= 1 && item?.people_nums <= 4
                       ? 'человекa'
-                      : 'человек'}
+                      : 'человек'}{' '}
+                    {item?.menus?.length ? '+ меню' : ''}
                   </Text>
-                  <Text style={styles.name}>{item?.coming_date}</Text>
+                  <Text style={styles.date}>{item?.coming_date}</Text>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
             <View style={styles.line} />
           </View>
         ) : (
@@ -85,18 +102,16 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#000000',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: 8,
+    marginVertical: 10,
   },
 
   subContainer: {
-    justifyContent: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 30,
+    paddingLeft: 30,
   },
   img: {
-    marginBottom: 10,
     borderRadius: 50,
     width: 80,
     height: 80,
@@ -104,11 +119,18 @@ const styles = StyleSheet.create({
   name: {
     color: '#fff',
     fontSize: 17,
-    marginBottom: 0,
   },
   categories: {
+    fontSize: 12,
+    color: '#5F6368',
+  },
+  desc: {
     fontSize: 9,
     color: '#5F6368',
+  },
+  date: {
+    fontSize: 9,
+    color: '#fff',
   },
 
   line: {

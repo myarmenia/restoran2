@@ -80,7 +80,6 @@ const FeedBackScreen = ({navigation}) => {
       </>
     );
   };
-  console.log(viewHeight, Dimensions.get('screen').height);
   return viewHeight < Dimensions.get('screen').height ? (
     <View
       style={{

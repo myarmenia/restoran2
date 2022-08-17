@@ -3,12 +3,12 @@ import {StyleSheet, View, Dimensions} from 'react-native';
 import OrderHistory from '../../components/OrderHistory';
 import SimpleHeader from '../../components/headers/SimpleHeader';
 
-const OrderHistoryScreen = () => {
+const OrderHistoryScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <SimpleHeader title={'История заказов'} />
       <View style={styles.line} />
-      <OrderHistory />
+      <OrderHistory navigation={navigation} />
     </View>
   );
 };

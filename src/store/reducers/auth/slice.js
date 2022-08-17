@@ -32,74 +32,64 @@ const slice = createSlice({
       return reserveState;
     },
   },
-  extraReducers: builder => {
-    builder
-      .addCase(Login.fulfilled, (state, {payload}) => {
-        console.log('login', payload);
-        if (payload === 'Error Here') {
-          state.error = payload;
-        } else {
-          state.error = '';
-          if (payload?.access_token) {
-            state.token = payload?.access_token;
-            state.tokenType = payload?.token_type;
-            state.refreshToken = payload?.refresh_token;
-          }
-          if (payload?.user?.phone_number) {
-            state.canAuth = true;
-            state.user = payload?.user;
-          }
-        }
-        return state;
-      })
-      .addCase(SignOut.fulfilled, state => {
-        state = initialState;
-        return state;
-      })
-      .addCase(AutoSignIn.fulfilled, (state, {payload}) => {
-        const {token, bearer, refreshToken, user} = payload;
-        state.canAuth = true;
-        state.token = token;
-        state.tokenType = bearer;
-        state.refreshToken = refreshToken;
+  extraReducers: {
+    [Login.fulfilled]: (state, {payload}) => {
+      console.log('login', payload);
+      if (payload === 'Error Here') {
+        state.error = payload;
+      } else {
         state.error = '';
-        state.message = '';
-        state.user = JSON.parse(user);
-      })
-      .addCase(Registration.fulfilled, state => {
-        state.emailError = '';
-        state.name = {...state.name};
-      })
-      .addCase(Registration.rejected, state => {
-        state.emailError = 'email';
-      })
-      .addCase(SendCodeNum.fulfilled, async (state, {payload}) => {
-        console.log(
-          'message',
-          payload.message === 'Your Phone Number Saved Success',
-        );
-        if (payload.message === 'Your Phone Number Saved Success') {
-          state.message = payload.message;
-          const userData = await AsyncStorage.getItem('user');
-          const reserveUser = JSON.parse(userData);
-          reserveUser.phone_number = payload.phone_number;
-          state.canAuth = true;
-          state.user = reserveUser;
-          await AsyncStorage.clear();
+        if (payload?.access_token) {
+          state.token = payload?.access_token;
+          state.tokenType = payload?.token_type;
+          state.refreshToken = payload?.refresh_token;
         }
-      })
-      .addCase(SendPhone.fulfilled, state => {
-        state.name = {...state.name};
-      })
-      .addCase(ProfileUpdate.fulfilled, state => {
-        state = {...state};
-      })
-      .addCase(GetProfileData.fulfilled, (state, {payload}) => {
-        state.user = payload;
-      })
-      .addCase(GetProfileData.rejected, state => {
-        state.error = 'error';
-      });
+        if (payload?.user?.phone_number) {
+          state.canAuth = true;
+          state.user = payload?.user;
+        }
+      }
+      return state;
+    },
+    [SignOut.fulfilled]: state => {
+      state = initialState;
+      return state;
+    },
+    [AutoSignIn.fulfilled]: (state, {payload}) => {
+      const {token, bearer, refreshToken, user} = payload;
+      state.canAuth = true;
+      state.token = token;
+      state.tokenType = bearer;
+      state.refreshToken = refreshToken;
+      state.error = '';
+      state.message = '';
+      state.user = JSON.parse(user);
+    },
+    [Registration.fulfilled]: state => {
+      state.emailError = '';
+    },
+    [Registration.rejected]: state => {
+      state.emailError = 'email';
+    },
+    [SendCodeNum.fulfilled]: (state, {payload}) => {
+      if (payload.message === 'Your Phone Number Saved Success') {
+        state.message = payload.message;
+        state.canAuth = payload.canAuth;
+        state.user = payload.user;
+      }
+    },
+    [SendPhone.fulfilled]: state => {
+      state.name = {...state.name};
+    },
+    [ProfileUpdate.fulfilled]: (state, {payload}) => {
+      state.user = {...state.user, payload};
+    },
+    [GetProfileData.fulfilled]: (state, {payload}) => {
+      state.user = payload;
+    },
+    [GetProfileData.rejected]: state => {
+      state.error = 'error';
+    },
   },
 });
 
