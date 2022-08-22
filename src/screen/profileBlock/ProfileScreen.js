@@ -43,7 +43,7 @@ const ProfileScreen = ({navigation}) => {
     const newDate = new Date();
     if (date?.toString().indexOf('-') !== -1 && date !== undefined) {
       const dateArr = date.split('-');
-      newDate.setMonth(dateArr[1]);
+      newDate.setMonth(dateArr[1] - 1);
       newDate.setDate(dateArr[2]);
       const datePicker = new Date(newDate);
       datePicker.setFullYear(dateArr[0]);
@@ -175,6 +175,7 @@ const ProfileScreen = ({navigation}) => {
                         }
                       : require('../../assets/png/profileImg.png')
                   }
+                  loadingIndicatorSource={require('../../assets/png/profileImg.png')}
                   style={{
                     width: 88,
                     height: 88,
@@ -221,8 +222,21 @@ const ProfileScreen = ({navigation}) => {
               {email}
             </Text>
           </View>
+          {/* <View
+            style={{backgroundColor: '#17181B', height: 1.5, marginTop: 15}}
+          />
+          <Text
+            // onPress={() => navigation.navigate('OrderHistory')}
+            style={{
+              color: '#5F6368',
+              fontSize: 18,
+              marginTop: 15,
+              marginLeft: 40,
+            }}>
+            Уведомления
+          </Text> */}
           <View
-            style={{backgroundColor: '#17181B', height: 1.5, marginTop: 40}}
+            style={{backgroundColor: '#17181B', height: 1.5, marginTop: 15}}
           />
           <Text
             onPress={() => navigation.navigate('OrderHistory')}
@@ -305,6 +319,7 @@ const ProfileScreen = ({navigation}) => {
                       }
                     : require('../../assets/png/profileImg.png')
                 }
+                loadingIndicatorSource={require('../../assets/png/profileImg.png')}
                 style={{
                   width: 88,
                   height: 88,
@@ -372,11 +387,11 @@ const ProfileScreen = ({navigation}) => {
                           `0${datePickerDate.getMonth() + 1}`.slice(-2) +
                           '-' +
                           `0${datePickerDate.getDate()}`.slice(-2)
-                        : `0${new Date().getDate()}`.slice(-2) +
-                          '.' +
+                        : new Date().getFullYear() +
+                          '-' +
                           `0${new Date().getMonth() + 1}`.slice(-2) +
-                          '.' +
-                          new Date().getFullYear()}
+                          '-' +
+                          `0${new Date().getDate()}`.slice(-2)}
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -391,7 +406,7 @@ const ProfileScreen = ({navigation}) => {
                   dob:
                     datePickerDate.getFullYear() +
                     '-' +
-                    `0${datePickerDate.getMonth()}`.slice(-2) +
+                    `0${datePickerDate.getMonth() + 1}`.slice(-2) +
                     '-' +
                     `0${datePickerDate.getDate()}`.slice(-2),
                   gender:
@@ -402,7 +417,7 @@ const ProfileScreen = ({navigation}) => {
                 };
                 if (typeof avatar === 'object') {
                   data.avatar = avatar;
-                } else if (avatar.length === 0) {
+                } else if (typeof avatar === 'string' && avatar.length === 0) {
                   data.avatar = '';
                 }
                 await dispatch(ProfileUpdate(data))

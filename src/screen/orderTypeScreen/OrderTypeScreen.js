@@ -443,12 +443,15 @@ const OrderTypeScreen = ({navigation, route}) => {
       style={{
         minHeight: 0.8 * Dimensions.get('screen').height - 100,
         backgroundColor: '#000000',
+        paddingTop: Platform.OS === 'ios' ? 30 : 0,
         height: '100%',
       }}>
       {componentData()}
     </View>
   ) : (
-    <ScrollView>{componentData()}</ScrollView>
+    <ScrollView style={{paddingTop: Platform.OS === 'ios' ? 30 : 0}}>
+      {componentData()}
+    </ScrollView>
   );
 };
 

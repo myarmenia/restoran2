@@ -182,11 +182,12 @@ const mapStyle = [
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+    marginTop: -30,
   },
 });
 
@@ -350,14 +351,6 @@ const MapScreen = ({navigation}) => {
       ) : (
         <></>
       )}
-      <View
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          zIndex: 100,
-          width: 0.9 * Dimensions.get('screen').width,
-        }}></View>
     </View>
   );
 };

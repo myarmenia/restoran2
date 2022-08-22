@@ -69,7 +69,8 @@ const OrderHistory = ({navigation}) => {
                     {restaurants.filter(el => el.id === item?.rest?.id)[0].desc}
                   </Text>
                   <Text style={styles.desc}>
-                    Вы забронировали столик для {item?.people_nums}{' '}
+                    Вы забронировали столик для{' '}
+                    <Text style={{fontWeight: '700'}}>{item?.people_nums}</Text>{' '}
                     {item?.people_nums >= 1 && item?.people_nums <= 4
                       ? 'человекa'
                       : 'человек'}{' '}
@@ -119,18 +120,22 @@ const styles = StyleSheet.create({
   name: {
     color: '#fff',
     fontSize: 17,
+    fontWeight: '400',
   },
   categories: {
     fontSize: 12,
     color: '#5F6368',
+    fontWeight: '400',
   },
   desc: {
     fontSize: 9,
     color: '#5F6368',
+    fontWeight: '400',
   },
   date: {
     fontSize: 9,
     color: '#fff',
+    fontWeight: '400',
   },
 
   line: {

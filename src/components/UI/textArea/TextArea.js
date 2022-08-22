@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, StyleSheet, View, TextInput} from 'react-native';
+import {StyleSheet, View, TextInput} from 'react-native';
 
 const TextArea = ({placeholder, horizontal, onChangeText, text}) => {
   return (
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#202124',
     fontSize: 18,
     paddingHorizontal: 30,
+    paddingTop: 30,
     color: '#fff',
     height: '100%',
   },
