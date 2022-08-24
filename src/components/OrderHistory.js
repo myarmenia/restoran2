@@ -12,7 +12,6 @@ import {useSelector} from 'react-redux';
 
 const OrderHistory = ({navigation}) => {
   const {orders, restaurants} = useSelector(({restaurant}) => restaurant);
-  console.log('lorak', restaurants);
   return orders?.length &&
     orders.reduce((last, next) => {
       if (

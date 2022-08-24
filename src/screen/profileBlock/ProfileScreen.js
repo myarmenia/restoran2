@@ -22,6 +22,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import MainButton from '../../components/UI/buttons/MainButton';
 import DatePicker from 'react-native-date-picker';
 import * as DocumentPicker from 'react-native-document-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const ProfileScreen = ({navigation}) => {
   const {user} = useSelector(({auth}) => auth);
@@ -67,10 +68,18 @@ const ProfileScreen = ({navigation}) => {
     setOpenModal(false);
     setDatePickerDate(prev => {
       const next = new Date(prev);
-      next.setFullYear(+value.getFullYear());
-      next.setMonth(+value.getMonth());
-      next.setDate(+value.getDate());
-      return next;
+      if (Platform.OS === 'ios') {
+        next.setFullYear(+value.getFullYear());
+        next.setMonth(+value.getMonth());
+        next.setDate(+value.getDate());
+        return next;
+      } else if (Platform.OS === 'android') {
+        if (value.type !== 'dismissed') {
+          return new Date(value.nativeEvent.timestamp);
+        } else {
+          return prev;
+        }
+      }
     });
   }
 
@@ -101,23 +110,36 @@ const ProfileScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       {loading ? <LoadingComponent /> : <></>}
-      <DatePicker
-        modal
-        open={Boolean(openModal)}
-        date={datePickerDate}
-        mode={'date'}
-        onConfirm={onDateSelected}
-        onCancel={() => {
-          setOpenModal(false);
-        }}
-        maximumDate={new Date()}
-        locale="ru-RU"
-        textColor={'white'}
-        theme={'dark'}
-        cancelText={'Отменить'}
-        confirmText={'Выбрать'}
-        title={'Выберите Дату'}
-      />
+      {Platform.OS === 'ios' ? (
+        <DatePicker
+          modal
+          androidVariant={'iosClone'}
+          open={Boolean(openModal)}
+          date={datePickerDate}
+          mode={'date'}
+          onConfirm={onDateSelected}
+          onCancel={() => {
+            setOpenModal(false);
+          }}
+          maximumDate={new Date()}
+          locale="ru-RU"
+          textColor={'white'}
+          theme={'dark'}
+          cancelText={'Отменить'}
+          confirmText={'Выбрать'}
+          title={'Выберите Дату'}
+        />
+      ) : (
+        openModal && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={datePickerDate}
+            mode={'date'}
+            onChange={onDateSelected}
+            maximumDate={new Date()}
+          />
+        )
+      )}
       {error ? (
         <View
           style={{

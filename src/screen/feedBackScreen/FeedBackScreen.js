@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Text, StyleSheet, View, Dimensions, ScrollView} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import SimpleHeader from '../../components/headers/SimpleHeader';
 import CustomInput from '../../components/UI/inputs/CustomInput';
 import TextArea from '../../components/UI/textArea/TextArea';
@@ -14,19 +22,84 @@ const FeedBackScreen = ({navigation}) => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
+  const [openModal, setOpenModal] = useState(false);
   const [viewHeight, setViewHeight] = useState(1);
   const {status} = useSelector(({support}) => support);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (+status === 200) {
-      navigation.navigate('Home');
-    }
-  }, [status]);
-
   const componentData = () => {
     return (
       <>
+        {openModal ? (
+          <View
+            style={{
+              backgroundColor: 'rgba(0,0,0,0.4)',
+              position: 'absolute',
+              zIndex: 100,
+            }}>
+            <View
+              style={{
+                zIndex: 200,
+                backgroundColor: 'rgba(0,0,0)',
+                width: Dimensions.get('screen').width,
+                height: Dimensions.get('screen').height,
+              }}>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  top: 0.3 * Dimensions.get('screen').height,
+                  margin: 40,
+                }}>
+                <View
+                  style={{
+                    backgroundColor: '#17181B',
+                    width: '100%',
+                    elevation: 10,
+                    borderRadius: 10,
+                    padding: 10,
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: '#FFFFFF',
+                      marginHorizontal: 80,
+                      textAlign: 'center',
+                      marginTop: 33,
+                      marginBottom: 50,
+                    }}>
+                    {status === 200
+                      ? 'Ваше сообщение успешно отправлено.'
+                      : 'Увы, но что-то пошло не так, попытайтесь заново.'}
+                  </Text>
+                  <View
+                    style={{
+                      marginVertical: 7,
+                    }}>
+                    <MainButton
+                      goTo={() => {
+                        setOpenModal(false);
+                        if (status === 200) {
+                          setTheme('');
+                          setMessage('');
+                          navigation.navigate('Home');
+                        }
+                      }}
+                      style={{
+                        fontSize: 17,
+                        fontWeight: 'bold',
+                        color: 'white',
+                      }}
+                      textBtn={status === 200 ? 'Отлично' : 'Ладно'}
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        ) : (
+          <></>
+        )}
         <SimpleHeader title={'Обратная связь'} />
         <View
           style={styles.container}
@@ -40,7 +113,11 @@ const FeedBackScreen = ({navigation}) => {
               Свяжитесь с нами, если есть проблема
             </Text>
             <View style={{marginBottom: -12}}>
-              <CustomInput placeholder={'Тема'} onChangeText={setTheme} />
+              <CustomInput
+                value={theme}
+                placeholder={'Тема'}
+                onChangeText={setTheme}
+              />
               {error?.theme ? (
                 <Text style={styles.error}>{error.theme}</Text>
               ) : (
@@ -72,6 +149,7 @@ const FeedBackScreen = ({navigation}) => {
                     setError(res.payload);
                   });
                   await setLoading(false);
+                  setOpenModal(true);
                 }}
               />
             </View>

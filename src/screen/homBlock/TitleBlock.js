@@ -155,7 +155,10 @@ const TitleBlock = ({navigation}) => {
                   numColumns={3}
                   scrollEnabled={true}
                   showsVerticalScrollIndicator={true}
-                  contentContainerStyle={{paddingBottom: 80}}
+                  contentContainerStyle={{
+                    paddingBottom: 80,
+                    width: 0.95 * Dimensions.get('screen').width,
+                  }}
                   keyExtractor={(item, index) => index.toString()}
                   data={
                     typeof restaurant.floor_planes[hall].tables === 'string'
@@ -173,7 +176,8 @@ const TitleBlock = ({navigation}) => {
                           borderRadius: 15,
                           justifyContent: 'center',
                           padding: 10,
-                          alignItems: 'flex-start',
+                          alignItems: 'center',
+                          maxWidth: 0.25 * Dimensions.get('screen').width,
                         }}
                         disabled={el.item.free}
                         onPress={() => {
@@ -227,7 +231,8 @@ const TitleBlock = ({navigation}) => {
                           borderRadius: 10,
                           justifyContent: 'center',
                           padding: 10,
-                          alignItems: 'flex-start',
+                          alignItems: 'center',
+                          maxWidth: 0.25 * Dimensions.get('screen').width,
                         }}
                         disabled={el.item.free}
                         onPress={() => {

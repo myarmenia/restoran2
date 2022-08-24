@@ -39,7 +39,6 @@ const CurrentOrderScreen = ({route, navigation}) => {
       ),
     );
   }, []);
-
   return (
     <View style={styles.outerContainer}>
       {loading ? <LoadingComponent /> : <></>}
@@ -101,7 +100,6 @@ const CurrentOrderScreen = ({route, navigation}) => {
                           <LikeComponent choosed={choosed.includes(item?.id)} />
                         </TouchableOpacity>
                       </View>
-
                       <Text style={styles.categories}>
                         {route.params.menu[index]?.desc}
                       </Text>

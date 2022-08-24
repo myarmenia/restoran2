@@ -24,6 +24,7 @@ export const screenOptionStyle = {
 export const HomeStackNavigation = () => {
   return (
     <Stack.Navigator
+        detachInactiveScreens={false}
       screenOptions={{
         headerShown: false,
       }}>

@@ -31,14 +31,14 @@ const SimpleHeader = ({title, right}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 70,
-    paddingVertical: 20,
+    height: Platform.OS === 'ios' ? 70 : 60,
+    paddingVertical: Platform.OS === 'ios' ? 20 : 15,
     backgroundColor: '#000000',
     flexDirection: 'row',
     borderBottomColor: '#17181B',
     alignItems: 'center',
     paddingLeft: 30,
-    paddingTop: Platform.OS === 'ios' ? 30 : 0,
+    paddingTop: Platform.OS === 'ios' ? 30 : 20,
   },
   back: {
     backgroundColor: '#000000',

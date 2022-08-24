@@ -249,8 +249,6 @@ const AddDishes = ({restId, setLoading, menu, menuDesc, data, navigation}) => {
                   : Object.values(productsArray),
               }),
             )
-              .then(res => console.log('store order ----> ', res))
-              .catch(e => console.log(e));
             await dispatch(Orders());
             await dispatch(broneRest([restId]));
             await setLoading(false);

@@ -3,6 +3,7 @@ import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CalendarSvg from '../../../assets/svg/calendar';
 import ClockSvg from '../../../assets/svg/Clock';
 import DatePicker from 'react-native-date-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const DatePickerComp = ({mode, setDate, date, openModal, setOpenModal}) => {
   function showDatePicker() {
@@ -13,37 +14,64 @@ const DatePickerComp = ({mode, setDate, date, openModal, setOpenModal}) => {
     setOpenModal(false);
     setDate(prev => {
       const next = new Date(prev);
-      if (mode === 'date') {
-        next.setFullYear(+value.getFullYear());
-        next.setMonth(+value.getMonth());
-        next.setDate(+value.getDate());
-      } else {
-        next.setHours(+value.getHours());
-        next.setMinutes(+value.getMinutes());
+      console.log(prev, new Date(value.nativeEvent.timestamp));
+      if (Platform.OS === 'ios') {
+        if (mode === 'date') {
+          next.setFullYear(+value.getFullYear());
+          next.setMonth(+value.getMonth());
+          next.setDate(+value.getDate());
+        } else {
+          next.setHours(+value.getHours());
+          next.setMinutes(+value.getMinutes());
+        }
+        return next;
+      } else if (Platform.OS === 'android') {
+        if (value.type !== 'dismissed') {
+          return new Date(value.nativeEvent.timestamp);
+        } else {
+          console.log(prev);
+          return prev;
+        }
       }
-      return next;
     });
   }
 
+  console.log('hahaha', date);
+
   return (
     <View style={styleSheet.MainContainer}>
-      <DatePicker
-        modal
-        open={Boolean(openModal)}
-        date={date}
-        mode={mode}
-        onConfirm={onDateSelected}
-        onCancel={() => {
-          setOpenModal(false);
-        }}
-        minimumDate={new Date()}
-        locale="ru-RU"
-        textColor={'white'}
-        theme={'dark'}
-        cancelText={'Отменить'}
-        confirmText={'Выбрать'}
-        title={mode === 'date' ? 'Выберите Дату' : 'Выберите Время'}
-      />
+      {Platform.OS === 'ios' ? (
+        <DatePicker
+          modal
+          androidVariant={'iosClone'}
+          is24hourSource="locale"
+          open={Boolean(openModal)}
+          date={date}
+          mode={mode}
+          onConfirm={onDateSelected}
+          onCancel={() => {
+            setOpenModal(false);
+          }}
+          minimumDate={new Date()}
+          locale="ru-RU"
+          textColor={'white'}
+          theme={'dark'}
+          cancelText={'Отменить'}
+          confirmText={'Выбрать'}
+          title={mode === 'date' ? 'Выберите Дату' : 'Выберите Время'}
+        />
+      ) : (
+        openModal && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            onChange={onDateSelected}
+            minimumDate={new Date()}
+          />
+        )
+      )}
       <TouchableOpacity onPress={showDatePicker} style={styleSheet.container}>
         {mode === 'date' ? (
           <View style={{flexDirection: 'row', alignItems: 'center'}}>

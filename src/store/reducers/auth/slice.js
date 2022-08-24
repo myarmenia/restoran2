@@ -9,7 +9,6 @@ import {
   SignOut,
   GetProfileData,
 } from './action';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
   canAuth: false,
@@ -34,7 +33,6 @@ const slice = createSlice({
   },
   extraReducers: {
     [Login.fulfilled]: (state, {payload}) => {
-      console.log('login', payload);
       if (payload === 'Error Here') {
         state.error = payload;
       } else {

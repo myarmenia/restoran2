@@ -1,6 +1,7 @@
 <resources>
-    <color name="background">#000000</color>
-    <color name="darkgrey">#000000</color>
-    <color name="foreground">#ffffff</color>
-    <color name="highlight">#cf468f</color>
+    <color name="background">#17181B</color>
+    <color name="darkgrey">#17181B</color>
+    <color name="foreground">#FFFFFF</color>
+    <color name="highlight">#17181B</color>
+    <color name="activated">#a0a0a1</color>
 </resources>

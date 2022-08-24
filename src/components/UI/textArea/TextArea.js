@@ -8,6 +8,8 @@ const TextArea = ({placeholder, horizontal, onChangeText, text}) => {
         multiline
         style={styles.TextInputStyleClass}
         value={text}
+        blurOnSubmit={true}
+        returnKeyType="done"
         onChangeText={onChangeText}
         underlineColorAndroid="transparent"
         placeholder={placeholder ? placeholder : 'Email'}
