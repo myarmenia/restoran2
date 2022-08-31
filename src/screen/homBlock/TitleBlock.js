@@ -91,7 +91,7 @@ const TitleBlock = ({navigation}) => {
                 source={
                   restaurant?.images[0]?.path
                     ? {
-                        uri: `https://back.tap-table.ru/get_file?path=/${restaurant?.images[0]?.path}`,
+                        uri: `https://tap-table.ru/get_file?path=/${restaurant?.images[0]?.path}`,
                       }
                     : require('../../assets/img/home/restaurants/1.png')
                 }
@@ -327,10 +327,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   modal: {
+    alignItems: 'center',
+    marginHorizontal: 40,
     backgroundColor: '#17181B',
-    width: '100%',
-    elevation: 10,
-    borderRadius: 10,
   },
   close: {
     marginTop: 15,

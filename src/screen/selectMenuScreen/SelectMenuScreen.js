@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, View, Dimensions, Platform} from 'react-native';
-import SimpleHeader from '../../components/headers/SimpleHeader';
 import BookingRestaurants from '../../components/BookingRestaurants';
 
 const SelectMenuScreen = ({navigation}) => {

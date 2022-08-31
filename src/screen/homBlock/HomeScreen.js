@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, StyleSheet, View, Dimensions} from 'react-native';
+import {Text, StyleSheet, View, Dimensions, Platform} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import CategoriesBlock from '../../screen/homBlock/CategoriesBlock';
 import TopRestaurants from '../../components/TopRestaurants';
@@ -13,12 +13,18 @@ import {
 import {GetProfileData} from '../../store/reducers/auth/action';
 import {DismissKeyboard} from '../../components/UI/DismissKeyboard';
 import SearchComponent from '../../components/searchComponent';
+import Echo from 'laravel-echo';
+import PusherNative from 'pusher-js/react-native';
+import LoadingComponent from '../../components/loadingComponent';
+
+window.Echo = Echo;
+window.Pusher = PusherNative;
 
 const HomeScreen = ({navigation}) => {
   const {restaurants} = useSelector(state => state.restaurant);
   const [rest, setRest] = useState(restaurants);
   const [title, setTitle] = useState('Топ Ресторанов');
-
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,16 +32,29 @@ const HomeScreen = ({navigation}) => {
   }, [restaurants]);
 
   useEffect(() => {
-    dispatch(GetProfileData());
-    dispatch(Restaurant());
-    dispatch(Favorite());
-    dispatch(Kitchen());
-    dispatch(Orders());
-    dispatch(Preference());
+    setLoading(true);
+    getDates();
   }, []);
+
+  // useEffect(() => {
+  //   if (user?.id) {
+  //     listenMessages();
+  //   }
+  // }, [user?.id]);
+
+  const getDates = async () => {
+    await dispatch(GetProfileData());
+    await dispatch(Restaurant());
+    await dispatch(Favorite());
+    await dispatch(Kitchen());
+    await dispatch(Orders());
+    await dispatch(Preference());
+    setLoading(false);
+  };
 
   return (
     <>
+      {loading ? <LoadingComponent /> : <></>}
       <SearchComponent data={restaurants} navigation={navigation} />
       <DismissKeyboard>
         <View style={styles.container}>

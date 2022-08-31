@@ -27,7 +27,7 @@ const BookingRestaurants = ({navigation}) => {
       numColumns={2}
       keyExtractor={(item, index) => index.toString()}
       columnWrapperStyle={{justifyContent: 'center'}}
-      renderItem={({item}) => { 
+      renderItem={({item}) => {
         return new Date(item.coming_date.split(' ')[0]).setHours(
           item.coming_date.split(' ')[1].split(':')[0],
           item.coming_date.split(' ')[1].split(':')[1],
@@ -48,7 +48,7 @@ const BookingRestaurants = ({navigation}) => {
                 source={
                   item?.rest?.images[0]?.path
                     ? {
-                        uri: `https://back.tap-table.ru/get_file?path=/${item.rest.images[0].path}`,
+                        uri: `https://tap-table.ru/get_file?path=/${item.rest.images[0].path}`,
                       }
                     : require('../assets/img/home/restaurants/1.png')
                 }

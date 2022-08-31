@@ -36,8 +36,6 @@ const DatePickerComp = ({mode, setDate, date, openModal, setOpenModal}) => {
     });
   }
 
-  console.log('hahaha', date);
-
   return (
     <View style={styleSheet.MainContainer}>
       {Platform.OS === 'ios' ? (

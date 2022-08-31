@@ -6,6 +6,7 @@ import {
   Text,
   Dimensions,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import DatePicker from '../../components/UI/datePicker/DatePicker';
 import MainButton from '../../components/UI/buttons/MainButton';
@@ -19,6 +20,7 @@ import {
 } from '../../store/reducers/restaurant/action';
 import {addRest} from '../../store/reducers/restaurant/slice';
 import LoadingComponent from '../../components/loadingComponent';
+import CloseSvg from '../../assets/svg/CloseSvg';
 
 const weekday = [
   'Sunday',
@@ -66,6 +68,7 @@ const OrderTypeScreen = ({navigation, route}) => {
   const [date, setDate] = useState(new Date());
   const [timePicker, setTimePicker] = useState(false);
   const [count, setCount] = useState(1);
+  const [openModal, setOpenModal] = useState(false);
   const [viewHeight, setViewHeight] = useState(1);
   const [loading, setLoading] = useState(false);
   const [wrongDateModal, setWrongDateModal] = useState('');
@@ -76,6 +79,42 @@ const OrderTypeScreen = ({navigation, route}) => {
     return (
       <>
         {loading ? <LoadingComponent /> : <></>}
+        {openModal ? (
+          <View
+            style={{
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 100,
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                marginHorizontal: 40,
+                backgroundColor: '#17181B',
+                borderRadius: 30
+              }}>
+              <View style={styles.modal}>
+                <TouchableOpacity
+                  style={styles.close}
+                  onPress={() => {
+                    setOpenModal(false);
+                    navigation.navigate('Home')
+                  }}>
+                  <CloseSvg />
+                </TouchableOpacity>
+                <Text style={styles.textModal}>Ваш заказ в обработке</Text>
+              </View>
+            </View>
+          </View>
+        ) : (
+          <></>
+        )}
         {wrongDateModal ? (
           <View
             style={{
@@ -429,7 +468,7 @@ const OrderTypeScreen = ({navigation, route}) => {
                 );
                 await dispatch(Orders());
                 await setLoading(false);
-                navigation.navigate('Home');
+                setOpenModal(true);
               }
             }}
           />
@@ -489,6 +528,20 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
     color: 'white',
+  },
+  modal: {
+    marginHorizontal: 20,
+  },
+  close: {
+    marginTop: 15,
+    alignItems: 'flex-end',
+  },
+  textModal: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    textAlign: 'center',
+    marginTop: 33,
+    marginBottom: 40,
   },
 });
 

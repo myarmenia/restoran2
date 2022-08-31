@@ -6,9 +6,6 @@ import Route from './src/navigation/Route';
 import {store} from './src/store';
 import {Provider} from 'react-redux';
 
-// LogBox.ignoreLogs([
-//   "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
-// ]);
 LogBox.ignoreAllLogs();
 
 const App = () => {

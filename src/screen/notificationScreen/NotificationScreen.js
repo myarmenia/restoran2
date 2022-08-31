@@ -1,14 +1,12 @@
 import React from 'react';
 import {StyleSheet, View, Dimensions, Platform} from 'react-native';
-import OrderHistory from '../../components/OrderHistory';
 import SimpleHeader from '../../components/headers/SimpleHeader';
 
-const OrderHistoryScreen = ({navigation}) => {
+const NotificationScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <SimpleHeader title={'История заказов'} />
+      <SimpleHeader title={'Уведомления'} />
       <View style={styles.line} />
-      <OrderHistory navigation={navigation} />
     </View>
   );
 };
@@ -50,4 +48,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderHistoryScreen;
+export default NotificationScreen;

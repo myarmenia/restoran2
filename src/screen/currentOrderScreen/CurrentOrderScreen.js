@@ -14,15 +14,17 @@ import CallSvg from '../../assets/svg/callSvg/CallSvg';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Preferences,
-  MenusByMenuID, Preference,
-} from "../../store/reducers/restaurant/action";
+  Preference,
+} from '../../store/reducers/restaurant/action';
 import LikeComponent from '../../components/UI/LikeComponent';
 import LoadingComponent from '../../components/loadingComponent';
-import SimpleHeader from "../../components/headers/SimpleHeader";
+import SimpleHeader from '../../components/headers/SimpleHeader';
 
-const CurrentOrderScreen = ({route, navigation}) => {
+const CurrentOrderScreen = ({route}) => {
   const dispatch = useDispatch();
-  const {phoneNumbers, preference} = useSelector(({restaurant}) => restaurant);
+  const {preference, restaurants} = useSelector(
+    ({restaurant}) => restaurant,
+  );
   const [sum, setSum] = useState(0);
   const [choosed, setChoosed] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -153,7 +155,12 @@ const CurrentOrderScreen = ({route, navigation}) => {
             <View style={{flex: 1}} />
             <TouchableOpacity
               onPress={() =>
-                Linking.openURL(`tel:${phoneNumbers[route.params.restId]}`)
+                Linking.openURL(
+                  `tel://${
+                    restaurants.filter(el => el.id === route.params.restId)[0]
+                      .phone_number
+                  }`,
+                )
               }
               style={{
                 flex: 1,

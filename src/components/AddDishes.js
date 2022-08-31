@@ -27,7 +27,7 @@ const AddDishes = ({restId, setLoading, menu, menuDesc, data, navigation}) => {
   const [openModal, setOpenModal] = useState(false);
   const [index, setIndex] = useState(-1);
   const [productsArray, setProductsArray] = useState(menu);
-  const {phoneNumbers} = useSelector(({restaurant}) => restaurant);
+  const {restaurants} = useSelector(({restaurant}) => restaurant);
   const [sum, setSum] = useState(0);
   const {preference} = useSelector(({restaurant}) => restaurant);
   const [choosed, setChoosed] = useState([]);
@@ -224,7 +224,12 @@ const AddDishes = ({restId, setLoading, menu, menuDesc, data, navigation}) => {
       <View style={{flexDirection: 'row', marginTop: 40}}>
         <View style={{flex: 1}} />
         <TouchableOpacity
-          onPress={() => Linking.openURL(`tel:${phoneNumbers[restId]}`)}
+          onPress={() => Linking.openURL(
+              `tel://${
+                  restaurants.filter(el => el.id === restId)[0]
+                      .phone_number
+              }`,
+          )}
           style={{
             flex: 1,
             flexDirection: 'row',

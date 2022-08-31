@@ -1,19 +1,67 @@
-import React, {memo, useState} from 'react';
-import {Text, View, StyleSheet, TextInput, Dimensions} from 'react-native';
+import React, {memo, useEffect, useState} from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import MainButton from '../UI/buttons/MainButton';
-import {SendCodeNum} from '../../store/reducers/auth/action';
+import {SendCodeNum, SendPhone} from '../../store/reducers/auth/action';
 import {useDispatch} from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import BackgroundTimer from 'react-native-background-timer';
 
 const SendCode = ({route}) => {
   const [value, setValue] = useState('');
+  const [secondsLeft, setSecondsLeft] = useState(301);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    BackgroundTimer.runBackgroundTimer(() => {
+      setSecondsLeft(secs => {
+        if (secs > 0) {
+          return secs - 1;
+        } else {
+          return 0;
+        }
+      });
+    }, 1000);
+    return () => {
+      BackgroundTimer.stopBackgroundTimer();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (secondsLeft === 0) {
+      BackgroundTimer.stopBackgroundTimer();
+    }
+  }, [secondsLeft]);
+
+  const clockify = () => {
+    let mins = Math.floor((secondsLeft / 60) % 60);
+    let seconds = Math.floor(secondsLeft % 60);
+    let displayMins = mins < 10 ? `0${mins}` : mins;
+    let displaySecs = seconds < 10 ? `0${seconds}` : seconds;
+    return {
+      displayMins,
+      displaySecs,
+    };
+  };
 
   const goToLoginPage = async () => {
     dispatch(
       SendCodeNum({
         phone_number: route.params.phone_number,
         code: value,
+      }),
+    );
+  };
+
+  const sendCodeAgain = async () => {
+    await dispatch(
+      SendPhone({
+        phone_number: route.params.phone_number,
       }),
     );
   };
@@ -38,7 +86,34 @@ const SendCode = ({route}) => {
       <Text style={styles.sendText}>
         на номер +{route.params.phone_number} отправлен код подтверждения
       </Text>
+
+      {secondsLeft ? (
+        <Text style={styles.timerText}>
+          Осталось {clockify().displayMins}:{clockify().displaySecs}
+        </Text>
+      ) : (
+        <></>
+      )}
       <MainButton goTo={goToLoginPage} textBtn={'Войти'} />
+
+      {!secondsLeft ? (
+        <TouchableOpacity disabled={!secondsLeft} onPress={sendCodeAgain}>
+          <Text
+            style={[
+              styles.sendText,
+              {
+                paddingBottom: 35,
+                paddingTop: 10,
+                textAlign: 'center',
+                color: 'green',
+              },
+            ]}>
+            Повторно отправить код
+          </Text>
+        </TouchableOpacity>
+      ) : (
+        <></>
+      )}
     </View>
   );
 };
@@ -70,7 +145,14 @@ const styles = StyleSheet.create({
     color: '#5F6368',
     fontSize: 12,
     lineHeight: 14,
+  },
+  timerText: {
+    color: '#5F6368',
+    fontSize: 16,
+    lineHeight: 14,
     paddingBottom: 35,
+    paddingTop: 20,
+    textAlign: 'center',
   },
   panel: {
     padding: 20,

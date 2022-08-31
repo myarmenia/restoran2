@@ -193,7 +193,7 @@ const ProfileScreen = ({navigation}) => {
                       ? {uri: avatar.uri}
                       : avatar
                       ? {
-                          uri: `https://back.tap-table.ru/get_file?path=/${avatar}`,
+                          uri: `https://tap-table.ru/get_file?path=/${avatar}`,
                         }
                       : require('../../assets/png/profileImg.png')
                   }
@@ -337,7 +337,7 @@ const ProfileScreen = ({navigation}) => {
                     ? {uri: avatar.uri}
                     : avatar
                     ? {
-                        uri: `https://back.tap-table.ru/get_file?path=/${avatar}`,
+                        uri: `https://tap-table.ru/get_file?path=/${avatar}`,
                       }
                     : require('../../assets/png/profileImg.png')
                 }
@@ -473,9 +473,10 @@ const ProfileScreen = ({navigation}) => {
                       });
                     }
                   })
-                  .catch(err =>
-                    setError('Увы, но данные не обновились, попробуйте позже'),
-                  );
+                  .catch(err => {
+                    console.log('im here');
+                    setError('Увы, но данные не обновились, попробуйте позже');
+                  });
                 await setLoading(false);
               }}
               style={{flex: 0.5, marginTop: 8}}>

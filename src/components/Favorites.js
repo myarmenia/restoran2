@@ -56,7 +56,7 @@ const FavoriteComp = ({state, setLoading}) => {
               source={
                 item?.images[0]?.path
                   ? {
-                      uri: `https://back.tap-table.ru/get_file?path=/${item?.images[0]?.path}`,
+                      uri: `https://tap-table.ru/get_file?path=/${item?.images[0]?.path}`,
                     }
                   : require('../assets/img/home/restaurants/1.png')
               }

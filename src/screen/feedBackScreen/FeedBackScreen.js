@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   StyleSheet,
   View,
   Dimensions,
   ScrollView,
-  TouchableOpacity,
   Platform,
 } from 'react-native';
 import SimpleHeader from '../../components/headers/SimpleHeader';
@@ -189,7 +188,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     fontSize: 22,
     color: '#FFFFFF',
-    marginBottom: 35,
+    marginBottom: 20,
   },
   error: {
     fontSize: 14,

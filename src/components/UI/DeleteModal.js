@@ -42,7 +42,7 @@ const DeleteModal = ({
           <CloseSvg />
         </TouchableOpacity>
         <Text style={styles.text}>
-          Вы действительно хотите удалить блюдо из списока?
+          Вы действительно хотите удалить блюдо из списка?
         </Text>
         <View
           style={{

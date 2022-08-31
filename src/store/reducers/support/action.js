@@ -16,7 +16,7 @@ export const Feedback = createAsyncThunk(
           headers: {Authorization: `${bearer} ${token}`},
         },
       );
-      console.log(response.data);
+      console.log('support', response.data);
       return response.data;
     } catch (e) {
       console.log(e);
