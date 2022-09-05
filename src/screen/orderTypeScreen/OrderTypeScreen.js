@@ -97,14 +97,14 @@ const OrderTypeScreen = ({navigation, route}) => {
                 alignItems: 'center',
                 marginHorizontal: 40,
                 backgroundColor: '#17181B',
-                borderRadius: 30
+                borderRadius: 30,
               }}>
               <View style={styles.modal}>
                 <TouchableOpacity
                   style={styles.close}
                   onPress={() => {
                     setOpenModal(false);
-                    navigation.navigate('Home')
+                    navigation.navigate('Home');
                   }}>
                   <CloseSvg />
                 </TouchableOpacity>
@@ -135,6 +135,7 @@ const OrderTypeScreen = ({navigation, route}) => {
                   top: 0.3 * Dimensions.get('screen').height,
                   paddingHorizontal: 50,
                 }}>
+                {console.log('date', date)}
                 <View style={styles.panel}>
                   <Text style={styles.panelTitle}>
                     {wrongDateModal === 'day'
@@ -432,16 +433,55 @@ const OrderTypeScreen = ({navigation, route}) => {
                         el.day.toLowerCase(),
                     )
                     .end.split(':')
-                    .reduce(
-                      (last, next, index, array) =>
-                        last + next * Math.pow(60, array.length - index - 1),
-                      0,
-                    ) >
+                    .reduce((last, next, index, array) => {
+                      if (index === 0 && restaurant.days
+                        .find(
+                          el =>
+                            weekday[date.getDay()].toLowerCase() ===
+                            el.day.toLowerCase(),
+                        ).start.split(':')[0][index] > next) 
+                        return (
+                          last + (24 + next) * Math.pow(60, array.length - index - 1)
+                        );
+                      return (
+                        last + next * Math.pow(60, array.length - index - 1)
+                      );
+                    }, 0) >
                     date.getHours() * 3600 +
                       date.getMinutes() * 60 +
                       date.getSeconds()
                 )
               ) {
+                console.log(
+                  'oh noooo',
+                  restaurant.days
+                    .find(
+                      el =>
+                        weekday[date.getDay()].toLowerCase() ===
+                        el.day.toLowerCase(),
+                    )
+                    .start.split(':')
+                    .reduce(
+                      (last, next, index, array) =>
+                        last + next * Math.pow(60, array.length - index - 1),
+                      0,
+                    ),
+                  restaurant.days
+                    .find(
+                      el =>
+                        weekday[date.getDay()].toLowerCase() ===
+                        el.day.toLowerCase(),
+                    )
+                    .end.split(':')
+                    .reduce(
+                      (last, next, index, array) =>
+                        last + next * Math.pow(60, array.length - index - 1),
+                      0,
+                    ),
+                  date.getHours() * 3600 +
+                    date.getMinutes() * 60 +
+                    date.getSeconds(),
+                );
                 await setLoading(false);
                 setWrongDateModal('time');
               } else {

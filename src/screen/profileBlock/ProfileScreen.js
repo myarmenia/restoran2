@@ -25,14 +25,13 @@ import * as DocumentPicker from 'react-native-document-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const ProfileScreen = ({navigation}) => {
+  const dispatch = useDispatch();
   const {user} = useSelector(({auth}) => auth);
   const [changes, setChanges] = useState(false);
-  const dispatch = useDispatch();
   const [name, setName] = useState(user?.name);
   const [avatar, setAvatar] = useState(user?.avatar);
   const [gender, setGender] = useState(user?.gender);
   const [date, setDate] = useState(user?.dob || new Date());
-  const [year, setYear] = useState(new Date());
   const [number, setNumber] = useState(user?.phone_number);
   const [email, setEmail] = useState(user?.email);
   const [loading, setLoading] = useState(false);
@@ -46,10 +45,8 @@ const ProfileScreen = ({navigation}) => {
       const dateArr = date.split('-');
       newDate.setMonth(dateArr[1] - 1);
       newDate.setDate(dateArr[2]);
-      const datePicker = new Date(newDate);
-      datePicker.setFullYear(dateArr[0]);
-      setDatePickerDate(datePicker);
-      setYear(newDate);
+      newDate.setFullYear(dateArr[0]);
+      setDatePickerDate(newDate);
     }
   }, [date]);
 
@@ -248,7 +245,7 @@ const ProfileScreen = ({navigation}) => {
             style={{backgroundColor: '#17181B', height: 1.5, marginTop: 15}}
           />
           <Text
-            // onPress={() => navigation.navigate('OrderHistory')}
+            // onPress={() => navigation.navigate('NotificationHistory')}
             style={{
               color: '#5F6368',
               fontSize: 18,
@@ -457,27 +454,13 @@ const ProfileScreen = ({navigation}) => {
                         setAvatar(res.payload?.avatar);
                         setDate(res.payload?.dob);
                         setError('');
-                        const newDate = new Date();
-                        if (
-                          user?.dob?.toString().indexOf('-') !== -1 &&
-                          user?.dob !== undefined
-                        ) {
-                          const dateArr = user?.dob.split('-');
-                          newDate.setMonth(dateArr[1] - 1);
-                          newDate.setDate(dateArr[2]);
-                          const datePicker = new Date(newDate);
-                          datePicker.setFullYear(dateArr[0]);
-                          setDatePickerDate(datePicker);
-                          setYear(newDate);
-                        }
                       });
                     }
                   })
                   .catch(err => {
-                    console.log('im here');
                     setError('Увы, но данные не обновились, попробуйте позже');
                   });
-                await setLoading(false);
+                setLoading(false);
               }}
               style={{flex: 0.5, marginTop: 8}}>
               <EditSvg />
