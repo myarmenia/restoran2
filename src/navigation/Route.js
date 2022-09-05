@@ -17,9 +17,7 @@ const Route = () => {
   const {user} = useSelector(state => state.auth);
   const [localAuth, setLocalAuth] = useState(false);
   const [netInfo, setNetInfo] = useState(null);
-  const [notification, setNotification] = useState({
-    data: {cause: {name: 'aaaa'}},
-  });
+  const [notification, setNotification] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,8 +40,8 @@ const Route = () => {
   const authCheck = async () => {
     const token = await AsyncStorage.getItem('token');
     const userData = await AsyncStorage.getItem('user');
-    const {phone_number} = JSON.parse(userData);
-    if (token && phone_number) {
+    const userParseData = JSON.parse(userData);
+    if (token && userParseData?.phone_number) {
       await dispatch(AutoSignIn());
       setLocalAuth(true);
       await listenMessages();
@@ -78,19 +76,15 @@ const Route = () => {
   useEffect(() => {
     setLocalAuth(canAuth);
   }, [canAuth]);
-  console.log('aaaaaaaaa', notification);
 
   return (
     <>
-        <Modal
-        transparent={true}
-        animationType='fade'
-        visible={!!notification}>
-          <NotificationComponent
-            notification={notification}
-            setNotification={setNotification}
-          />
-        </Modal>
+      <Modal transparent={true} animationType="fade" visible={!!notification}>
+        <NotificationComponent
+          notification={notification}
+          setNotification={setNotification}
+        />
+      </Modal>
       {netInfo || netInfo === null ? (
         localAuth || canAuth ? (
           <SummaryNavigation />

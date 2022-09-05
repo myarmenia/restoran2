@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import MapView, {PROVIDER_GOOGLE, Marker, Circle} from 'react-native-maps';
 import {
-  Dimensions,
   PermissionsAndroid,
   Platform,
   StyleSheet,
@@ -240,12 +239,12 @@ const MapScreen = ({navigation}) => {
         setCanShow(true);
         if (Platform.OS === 'android') {
           ToastAndroid.show(
-            'Не удалось получить ваше местоположение. Пожалуйста, проверьте службу определения местоположения вашего устройства!!',
+            'Не удалось получить ваше местоположение. Пожалуйста, проверьте службу определения местоположения вашего устройства!',
             ToastAndroid.SHORT,
           );
         } else {
           AlertIOS.alert(
-            'Не удалось получить ваше местоположение. Пожалуйста, проверьте службу определения местоположения вашего устройства!!',
+            'Не удалось получить ваше местоположение. Пожалуйста, проверьте службу определения местоположения вашего устройства!',
           );
         }
       },
@@ -265,11 +264,11 @@ const MapScreen = ({navigation}) => {
   };
 
   const needToShowMarker = (lat1, lon1) => {
-    const latitude = initCoords?.latitude || 55.751244;
-    const longitude = initCoords?.longitude || 37.618423;
+    const latitude = initCoords?.latitude;
+    const longitude = initCoords?.longitude;
 
-    const R = 6371e3; // metres
-    const φ1 = (lat1 * Math.PI) / 180; // φ, λ in radians
+    const R = 6371e3;
+    const φ1 = (lat1 * Math.PI) / 180;
     const φ2 = (latitude * Math.PI) / 180;
     const Δφ = ((latitude - lat1) * Math.PI) / 180;
     const Δλ = ((longitude - lon1) * Math.PI) / 180;
@@ -288,8 +287,11 @@ const MapScreen = ({navigation}) => {
       <SearchComponent data={restaurants} navigation={navigation} />
       <TouchableOpacity
         onPress={() => {
-          if (geoAuth) getCurrentPosition();
-          else requestPermissions();
+          if (geoAuth) {
+            getCurrentPosition();
+          } else {
+            requestPermissions();
+          }
         }}
         style={{
           position: 'absolute',
