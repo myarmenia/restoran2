@@ -312,9 +312,10 @@ const MapScreen = ({navigation}) => {
           showsMyLocationButton={false}
           showsUserLocation={true}
           customMapStyle={mapStyle}
+          onUserLocationChange={getCurrentPosition}
           initialRegion={{
-            latitude: initCoords?.latitude || 55.751244,
-            longitude: initCoords?.longitude || 37.618423,
+            latitude: initCoords?.latitude,
+            longitude: initCoords?.longitude,
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121,
           }}>

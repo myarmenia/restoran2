@@ -14,6 +14,10 @@ export const Login = createAsyncThunk('auth/Login', async (data, thunkAPI) => {
       await AsyncStorage.setItem('bearer', response.data?.token_type);
       await AsyncStorage.setItem('refreshToken', response.data?.refresh_token);
       await AsyncStorage.setItem('user', JSON.stringify(response.data.user));
+      await AsyncStorage.setItem(
+        'phoneNumber',
+        JSON.stringify(response.data.user?.phone_number),
+      );
     }
     return response.data;
   } catch (e) {
@@ -30,7 +34,8 @@ export const AutoSignIn = createAsyncThunk(
       const bearer = await AsyncStorage.getItem('bearer');
       const refreshToken = await AsyncStorage.getItem('refreshToken');
       const user = await AsyncStorage.getItem('user');
-      return {token, bearer, refreshToken, user};
+      const phoneNumber = await AsyncStorage.getItem('phoneNumber');
+      return {token, bearer, refreshToken, user, phoneNumber};
     } catch (e) {
       console.log(e.message);
       return thunkAPI.rejectWithValue('Error Here');
