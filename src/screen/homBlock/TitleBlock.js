@@ -23,6 +23,8 @@ const TitleBlock = ({navigation}) => {
   );
   const [openModal, setOpenModal] = useState(false);
   const [hall, setHall] = useState(0);
+  console.log('resasast', restaurant);
+  console.log('rest', restaurant.floor_planes[0]);
 
   useEffect(() => {
     setHall(0);
@@ -210,9 +212,10 @@ const TitleBlock = ({navigation}) => {
                               tableId: el.item.id,
                               hall: restaurant?.floor_planes[hall].id,
                             });
-                          } else {
-                            setOpenModal(true);
-                          }
+                          } 
+                          // else {
+                          //   setOpenModal(true);
+                          // }
                         }}
                         key={+el.index}>
                         <Text style={styles.text}>Столик №{+el.item.id}</Text>
@@ -234,7 +237,7 @@ const TitleBlock = ({navigation}) => {
                           alignItems: 'center',
                           maxWidth: 0.25 * Dimensions.get('screen').width,
                         }}
-                        disabled={el.item.free}
+                        disabled={!el.item.free}
                         onPress={() => {
                           const arr = orders.length
                             ? orders.map(elem => {
@@ -267,9 +270,15 @@ const TitleBlock = ({navigation}) => {
                               tableId: el.item.id,
                               hall: restaurant?.floor_planes[hall].id,
                             });
-                          } else {
-                            setOpenModal(true);
-                          }
+                          } 
+                          // else {
+                          //   setOpenModal(true);
+                          // }
+                          navigation.navigate('OrderTypeScreen', {
+                            restId: restaurant?.id,
+                            tableId: el.item.id,
+                            hall: restaurant?.floor_planes[hall].id,
+                          });
                         }}
                         key={+el.index}>
                         <Text style={styles.text}>Столик №{+el.item.id}</Text>
@@ -328,21 +337,21 @@ const styles = StyleSheet.create({
   },
   modal: {
     alignItems: 'center',
-    marginHorizontal: 40,
+    marginHorizontal: 10,
     backgroundColor: '#17181B',
   },
   close: {
     marginTop: 15,
-    alignItems: 'flex-end',
-    paddingRight: 15,
+    right: 0,
+    position: 'absolute',
   },
   textModal: {
     fontSize: 16,
     color: '#FFFFFF',
-    marginHorizontal: 80,
     textAlign: 'center',
-    marginTop: 33,
+    marginTop: 50,
     marginBottom: 50,
+    marginHorizontal: 10,
   },
   btn: {
     backgroundColor: '#202124',

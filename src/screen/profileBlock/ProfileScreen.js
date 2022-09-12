@@ -32,7 +32,7 @@ const ProfileScreen = ({navigation}) => {
   const [avatar, setAvatar] = useState(user?.avatar);
   const [gender, setGender] = useState(user?.gender);
   const [date, setDate] = useState(user?.dob || new Date());
-  const [year, setYear] = useState(new Date());
+  const [year, setYea] = useState(new Date());
   const [number, setNumber] = useState(user?.phone_number);
   const [email, setEmail] = useState(user?.email);
   const [loading, setLoading] = useState(false);
@@ -49,7 +49,6 @@ const ProfileScreen = ({navigation}) => {
       const datePicker = new Date(newDate);
       datePicker.setFullYear(dateArr[0]);
       setDatePickerDate(datePicker);
-      setYear(newDate);
     }
   }, [date]);
 
@@ -459,16 +458,15 @@ const ProfileScreen = ({navigation}) => {
                         setError('');
                         const newDate = new Date();
                         if (
-                          user?.dob?.toString().indexOf('-') !== -1 &&
-                          user?.dob !== undefined
+                          res.payload?.dob?.indexOf('-') !== -1 &&
+                          res.payload?.dob !== undefined
                         ) {
-                          const dateArr = user?.dob.split('-');
+                          const dateArr = res.payload?.dob.split('-');
                           newDate.setMonth(dateArr[1] - 1);
                           newDate.setDate(dateArr[2]);
                           const datePicker = new Date(newDate);
                           datePicker.setFullYear(dateArr[0]);
                           setDatePickerDate(datePicker);
-                          setYear(newDate);
                         }
                       });
                     }

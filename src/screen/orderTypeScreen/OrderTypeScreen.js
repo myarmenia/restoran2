@@ -74,6 +74,147 @@ const OrderTypeScreen = ({navigation, route}) => {
   const [wrongDateModal, setWrongDateModal] = useState('');
   const dispatch = useDispatch();
   const {restaurant} = useSelector(({restaurant}) => restaurant);
+  console.log('rest', restaurant);
+
+  const validDayRequest = async withoutMenu => {
+    if (withoutMenu) {
+      await dispatch(
+        orderStore({
+          restaurant_id: restaurant?.id,
+          coming_date:
+            `${date.getFullYear()}-` +
+            `0${date.getMonth() + 1}`.slice(-2) +
+            '-' +
+            `0${date.getDate()}`.slice(-2) +
+            ' ' +
+            `0${date.getHours()}`.slice(-2) +
+            ':' +
+            `0${date.getMinutes()}`.slice(-2),
+          people_nums: count,
+          floors: [
+            {
+              id: route.params.hall,
+              table_id: route.params.tableId,
+            },
+          ],
+        }),
+      );
+      await dispatch(Orders());
+      await setLoading(false);
+      setOpenModal(true);
+    } else {
+      await dispatch(
+        addRest([
+          {
+            restaurant_id: route.params.restId,
+            coming_date:
+              `${date.getFullYear()}-` +
+              `0${date.getMonth() + 1}`.slice(-2) +
+              '-' +
+              `0${date.getDate()}`.slice(-2) +
+              ' ' +
+              `0${date.getHours()}`.slice(-2) +
+              ':' +
+              `0${date.getMinutes()}`.slice(-2),
+            people_nums: count,
+            floors: [
+              {
+                id: route.params.hall,
+                table_id: route.params.tableId,
+              },
+            ],
+            menus: [],
+          },
+          restaurant?.phoneNumber,
+          route.params.tableId,
+        ]),
+      );
+      await dispatch(Menus(route.params.restId));
+      await setLoading(false);
+      navigation.navigate('MenuCategoriesScreen');
+    }
+  };
+
+  const validDay = withoutMenu => {
+    const workDay = restaurant.days.find(
+      el => weekday[date.getDay()].toLowerCase() === el.day.toLowerCase(),
+    );
+    const workDayStart = workDay.start
+      .split(':')
+      .reduce(
+        (last, next, index, array) =>
+          last + next * Math.pow(60, array.length - index - 1),
+        0,
+      );
+    const workDayEnd = workDay.end
+      .split(':')
+      .reduce(
+        (last, next, index, array) =>
+          last + next * Math.pow(60, array.length - index - 1),
+        0,
+      );
+    const endDay = '23:59:59'
+      .split(':')
+      .reduce(
+        (last, next, index, array) =>
+          last + next * Math.pow(60, array.length - index - 1),
+        0,
+      );
+    console.log('date ---> ', date.getHours());
+    const currentDate = date.getHours() * 3600 + date.getMinutes() * 60;
+    if (workDay) {
+      if (workDayStart < workDayEnd) {
+        console.log('mta1', workDayStart, currentDate, workDayEnd);
+        if (workDayStart <= currentDate && currentDate <= workDayEnd) {
+          console.log('mta2');
+          validDayRequest(withoutMenu);
+        } else {
+          console.log('mta3');
+          setWrongDateModal('time');
+        }
+      } else if (
+        restaurant.days.find(
+          el =>
+            weekday[date.getDay() - 1].toLowerCase() === el.day.toLowerCase(),
+        )
+      ) {
+        console.log('mta4', currentDate <= workDayEnd, currentDate, workDayEnd);
+        if (
+          (currentDate >= 0 && currentDate <= workDayEnd) ||
+          (workDayStart <= currentDate && currentDate <= endDay)
+        ) {
+          console.log('mta5');
+          validDayRequest(withoutMenu);
+        } else {
+          console.log('mta6');
+          setWrongDateModal('time');
+        }
+      } else {
+        console.log('mta7');
+        setWrongDateModal('date');
+      }
+    } else if (
+      restaurant.days.find(
+        el => weekday[date.getDay() - 1].toLowerCase() === el.day.toLowerCase(),
+      )
+    ) {
+      console.log('mta8');
+      if (
+        (currentDate >= 0 && currentDate <= workDayEnd) ||
+        (workDayStart <= currentDate && currentDate <= endDay)
+      ) {
+        console.log('mta9');
+        validDayRequest(withoutMenu);
+      } else {
+        console.log('mta10');
+        setWrongDateModal('time');
+      }
+    } else {
+      console.log('mta11');
+      setWrongDateModal('date');
+    }
+    setLoading(false);
+  };
 
   const componentData = () => {
     return (
@@ -97,14 +238,14 @@ const OrderTypeScreen = ({navigation, route}) => {
                 alignItems: 'center',
                 marginHorizontal: 40,
                 backgroundColor: '#17181B',
-                borderRadius: 30
+                borderRadius: 30,
               }}>
               <View style={styles.modal}>
                 <TouchableOpacity
                   style={styles.close}
                   onPress={() => {
                     setOpenModal(false);
-                    navigation.navigate('Home')
+                    navigation.navigate('Home');
                   }}>
                   <CloseSvg />
                 </TouchableOpacity>
@@ -184,7 +325,7 @@ const OrderTypeScreen = ({navigation, route}) => {
         <SimpleHeader title={'Назад'} />
         <View
           onLayout={event => {
-            const {x, y, width, height} = event.nativeEvent.layout;
+            const {height} = event.nativeEvent.layout;
             setViewHeight(height);
           }}
           style={{
@@ -294,86 +435,7 @@ const OrderTypeScreen = ({navigation, route}) => {
             <TouchableOpacity
               onPress={async () => {
                 setLoading(true);
-                if (
-                  !restaurant.days.reduce((last, next) => {
-                    if (
-                      weekday[date.getDay()].toLowerCase() ===
-                      next.day.toLowerCase()
-                    ) {
-                      return true;
-                    }
-                    return last;
-                  }, false)
-                ) {
-                  await setLoading(false);
-                  setWrongDateModal('day');
-                } else if (
-                  !(
-                    restaurant.days
-                      .find(
-                        el =>
-                          weekday[date.getDay()].toLowerCase() ===
-                          el.day.toLowerCase(),
-                      )
-                      .start.split(':')
-                      .reduce(
-                        (last, next, index, array) =>
-                          last + next * Math.pow(60, array.length - index - 1),
-                        0,
-                      ) <
-                      date.getHours() * 3600 +
-                        date.getMinutes() * 60 +
-                        date.getSeconds() &&
-                    restaurant.days
-                      .find(
-                        el =>
-                          weekday[date.getDay()].toLowerCase() ===
-                          el.day.toLowerCase(),
-                      )
-                      .end.split(':')
-                      .reduce(
-                        (last, next, index, array) =>
-                          last + next * Math.pow(60, array.length - index - 1),
-                        0,
-                      ) >
-                      date.getHours() * 3600 +
-                        date.getMinutes() * 60 +
-                        date.getSeconds()
-                  )
-                ) {
-                  await setLoading(false);
-                  setWrongDateModal('time');
-                } else {
-                  await dispatch(
-                    addRest([
-                      {
-                        restaurant_id: route.params.restId,
-                        coming_date:
-                          `${date.getFullYear()}-` +
-                          `0${date.getMonth() + 1}`.slice(-2) +
-                          '-' +
-                          `0${date.getDate()}`.slice(-2) +
-                          ' ' +
-                          `0${date.getHours()}`.slice(-2) +
-                          ':' +
-                          `0${date.getMinutes()}`.slice(-2),
-                        people_nums: count,
-                        floors: [
-                          {
-                            id: route.params.hall,
-                            table_id: route.params.tableId,
-                          },
-                        ],
-                        menus: [],
-                      },
-                      restaurant?.phoneNumber,
-                      route.params.tableId,
-                    ]),
-                  );
-                  await dispatch(Menus(route.params.restId));
-                  await setLoading(false);
-                  navigation.navigate('MenuCategoriesScreen');
-                }
+                await validDay(false);
               }}>
               <LinearGradient
                 colors={['#648E00', '#005100']}
@@ -395,81 +457,7 @@ const OrderTypeScreen = ({navigation, route}) => {
             textBtn={'Забронировать'}
             goTo={async () => {
               setLoading(true);
-              if (
-                !restaurant.days.reduce((last, next) => {
-                  if (
-                    weekday[date.getDay()].toLowerCase() ===
-                    next.day.toLowerCase()
-                  ) {
-                    return true;
-                  }
-                  return last;
-                }, false)
-              ) {
-                await setLoading(false);
-                setWrongDateModal('day');
-              } else if (
-                !(
-                  restaurant.days
-                    .find(
-                      el =>
-                        weekday[date.getDay()].toLowerCase() ===
-                        el.day.toLowerCase(),
-                    )
-                    .start.split(':')
-                    .reduce(
-                      (last, next, index, array) =>
-                        last + next * Math.pow(60, array.length - index - 1),
-                      0,
-                    ) <
-                    date.getHours() * 3600 +
-                      date.getMinutes() * 60 +
-                      date.getSeconds() &&
-                  restaurant.days
-                    .find(
-                      el =>
-                        weekday[date.getDay()].toLowerCase() ===
-                        el.day.toLowerCase(),
-                    )
-                    .end.split(':')
-                    .reduce(
-                      (last, next, index, array) =>
-                        last + next * Math.pow(60, array.length - index - 1),
-                      0,
-                    ) >
-                    date.getHours() * 3600 +
-                      date.getMinutes() * 60 +
-                      date.getSeconds()
-                )
-              ) {
-                await setLoading(false);
-                setWrongDateModal('time');
-              } else {
-                await dispatch(
-                  orderStore({
-                    restaurant_id: restaurant?.id,
-                    coming_date:
-                      `${date.getFullYear()}-` +
-                      `0${date.getMonth() + 1}`.slice(-2) +
-                      '-' +
-                      `0${date.getDate()}`.slice(-2) +
-                      ' ' +
-                      `0${date.getHours()}`.slice(-2) +
-                      ':' +
-                      `0${date.getMinutes()}`.slice(-2),
-                    people_nums: count,
-                    floors: [
-                      {
-                        id: route.params.hall,
-                        table_id: route.params.tableId,
-                      },
-                    ],
-                  }),
-                );
-                await dispatch(Orders());
-                await setLoading(false);
-                setOpenModal(true);
-              }
+              await validDay(true);
             }}
           />
         </View>
