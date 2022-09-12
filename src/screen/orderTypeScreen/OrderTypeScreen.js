@@ -276,6 +276,7 @@ const OrderTypeScreen = ({navigation, route}) => {
                   top: 0.3 * Dimensions.get('screen').height,
                   paddingHorizontal: 50,
                 }}>
+                {console.log('date', date)}
                 <View style={styles.panel}>
                   <Text style={styles.panelTitle}>
                     {wrongDateModal === 'day'
@@ -457,7 +458,124 @@ const OrderTypeScreen = ({navigation, route}) => {
             textBtn={'Забронировать'}
             goTo={async () => {
               setLoading(true);
+<<<<<<< HEAD
               await validDay(true);
+=======
+              if (
+                !restaurant.days.reduce((last, next) => {
+                  if (
+                    weekday[date.getDay()].toLowerCase() ===
+                    next.day.toLowerCase()
+                  ) {
+                    return true;
+                  }
+                  return last;
+                }, false)
+              ) {
+                await setLoading(false);
+                setWrongDateModal('day');
+              } else if (
+                !(
+                  restaurant.days
+                    .find(
+                      el =>
+                        weekday[date.getDay()].toLowerCase() ===
+                        el.day.toLowerCase(),
+                    )
+                    .start.split(':')
+                    .reduce(
+                      (last, next, index, array) =>
+                        last + next * Math.pow(60, array.length - index - 1),
+                      0,
+                    ) <
+                    date.getHours() * 3600 +
+                      date.getMinutes() * 60 +
+                      date.getSeconds() &&
+                  restaurant.days
+                    .find(
+                      el =>
+                        weekday[date.getDay()].toLowerCase() ===
+                        el.day.toLowerCase(),
+                    )
+                    .end.split(':')
+                    .reduce((last, next, index, array) => {
+                      if (index === 0 && restaurant.days
+                        .find(
+                          el =>
+                            weekday[date.getDay()].toLowerCase() ===
+                            el.day.toLowerCase(),
+                        ).start.split(':')[0][index] > next) 
+                        return (
+                          last + (24 + next) * Math.pow(60, array.length - index - 1)
+                        );
+                      return (
+                        last + next * Math.pow(60, array.length - index - 1)
+                      );
+                    }, 0) >
+                    date.getHours() * 3600 +
+                      date.getMinutes() * 60 +
+                      date.getSeconds()
+                )
+              ) {
+                console.log(
+                  'oh noooo',
+                  restaurant.days
+                    .find(
+                      el =>
+                        weekday[date.getDay()].toLowerCase() ===
+                        el.day.toLowerCase(),
+                    )
+                    .start.split(':')
+                    .reduce(
+                      (last, next, index, array) =>
+                        last + next * Math.pow(60, array.length - index - 1),
+                      0,
+                    ),
+                  restaurant.days
+                    .find(
+                      el =>
+                        weekday[date.getDay()].toLowerCase() ===
+                        el.day.toLowerCase(),
+                    )
+                    .end.split(':')
+                    .reduce(
+                      (last, next, index, array) =>
+                        last + next * Math.pow(60, array.length - index - 1),
+                      0,
+                    ),
+                  date.getHours() * 3600 +
+                    date.getMinutes() * 60 +
+                    date.getSeconds(),
+                );
+                await setLoading(false);
+                setWrongDateModal('time');
+              } else {
+                await dispatch(
+                  orderStore({
+                    restaurant_id: restaurant?.id,
+                    coming_date:
+                      `${date.getFullYear()}-` +
+                      `0${date.getMonth() + 1}`.slice(-2) +
+                      '-' +
+                      `0${date.getDate()}`.slice(-2) +
+                      ' ' +
+                      `0${date.getHours()}`.slice(-2) +
+                      ':' +
+                      `0${date.getMinutes()}`.slice(-2),
+                    people_nums: count,
+                    floors: [
+                      {
+                        id: route.params.hall,
+                        table_id: route.params.tableId,
+                      },
+                    ],
+                  }),
+                );
+                await dispatch(Orders());
+                await setLoading(false);
+                setOpenModal(true);
+              }
+>>>>>>> d7eb35e752f95a0955e30c5e1888181b76eea0c5
             }}
           />
         </View>

@@ -39,9 +39,8 @@ const Route = () => {
 
   const authCheck = async () => {
     const token = await AsyncStorage.getItem('token');
-    const userData = await AsyncStorage.getItem('user');
-    const userParseData = JSON.parse(userData);
-    if (token && userParseData?.phone_number) {
+    const phoneNumber = await AsyncStorage.getItem('phoneNumber');
+    if (token && phoneNumber) {
       await dispatch(AutoSignIn());
       setLocalAuth(true);
       await listenMessages();

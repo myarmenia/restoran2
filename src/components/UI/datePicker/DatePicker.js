@@ -14,7 +14,7 @@ const DatePickerComp = ({mode, setDate, date, openModal, setOpenModal}) => {
     setOpenModal(false);
     setDate(prev => {
       const next = new Date(prev);
-      console.log(prev, new Date(value.nativeEvent.timestamp));
+      console.log(prev, new Date(value));
       if (Platform.OS === 'ios') {
         if (mode === 'date') {
           next.setFullYear(+value.getFullYear());
@@ -27,7 +27,7 @@ const DatePickerComp = ({mode, setDate, date, openModal, setOpenModal}) => {
         return next;
       } else if (Platform.OS === 'android') {
         if (value.type !== 'dismissed') {
-          return new Date(value.nativeEvent.timestamp);
+          return new Date(value);
         } else {
           console.log(prev);
           return prev;

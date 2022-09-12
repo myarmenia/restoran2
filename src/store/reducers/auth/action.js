@@ -35,7 +35,11 @@ export const AutoSignIn = createAsyncThunk(
       const refreshToken = await AsyncStorage.getItem('refreshToken');
       const user = await AsyncStorage.getItem('user');
       const phoneNumber = await AsyncStorage.getItem('phoneNumber');
+<<<<<<< HEAD
       return {token, bearer, refreshToken, user, phoneNumber};
+=======
+      return {token, bearer, refreshToken, user};
+>>>>>>> d7eb35e752f95a0955e30c5e1888181b76eea0c5
     } catch (e) {
       console.log(e.message);
       return thunkAPI.rejectWithValue('Error Here');
